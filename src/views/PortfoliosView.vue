@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="portfolios">
 
   </div>
 </template>
@@ -10,8 +10,8 @@ export default {
 </script>
 
 <style scoped>
-.home{
-  background: black;
+#portfolios {
+  background: skyblue;
   width: 100vw;
   height: 92vh;
 }

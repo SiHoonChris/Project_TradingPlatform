@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div id="financial-statements">
 
   </div>
 </template>
@@ -10,8 +10,8 @@ export default {
 </script>
 
 <style scoped>
-.home{
-  background: black;
+#financial-statements {
+  background: greenyellow;
   width: 100vw;
   height: 92vh;
 }
