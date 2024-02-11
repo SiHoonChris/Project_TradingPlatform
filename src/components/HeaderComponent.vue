@@ -1,6 +1,6 @@
 <template>
   <header>
-    <img :src="homeBtn" alt="homeBtn" @click="moveTo('home')">
+    <img :src="homeBtn" alt="homeBtn" @click="$moveTo_1('home')">
     <div id="header">
       <GlobalIndexes/>
       <SearchAndGo/>
@@ -19,11 +19,6 @@ export default {
   data() {
     return {
       homeBtn: require("@/assets/wallpaper.jpg")
-    }
-  },
-  methods: {
-    moveTo(where) {
-      this.$router.push({name: where});
     }
   }
 }
@@ -45,7 +40,7 @@ img {
   height: 100%;
   background: #0a0a0a;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
 }
 </style>

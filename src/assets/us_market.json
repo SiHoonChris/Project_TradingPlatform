@@ -1,0 +1,37 @@
+[
+  {"name": "Microsoft Corp.", "ticker": "MSFT", "trend": "bull",  "hold": "Y"},
+  {"name": "Apple Inc.", "ticker": "AAPL", "trend": "dear",  "hold": "N"},
+  {"name": "Amazon.com Inc.", "ticker": "AMZN", "trend": "bear",  "hold": "N"},
+  {"name": "Nvidia Corp", "ticker": "NVDA", "trend": "bull",  "hold": "Y"},
+  {"name": "Alphabet Inc. Class A", "ticker": "GOOGL", "trend": "dear",  "hold": "N"},
+
+  {"name": "Meta Platforms, Inc. Class A", "ticker": "META", "trend": "bear",  "hold": "N"},
+  {"name": "Alphabet Class C", "ticker": "GOOG", "trend": "bear",  "hold": "N"},
+  {"name": "Berkshire Hethaway Class B", "ticker": "BRKb", "trend": "bull",  "hold": "Y"},
+  {"name": "Tesla, Inc.", "ticker": "TSLA", "trend": "dear",  "hold": "N"},
+  {"name": "Eli Lilly & Co.", "ticker": "LLY", "trend": "bear",  "hold": "N"},
+
+  {"name": "United Health Group Inc.", "ticker": "UNH", "trend": "bull",  "hold": "Y"},
+  {"name": "JP Morgan Chase", "ticker": "JPM", "trend": "dear",  "hold": "N"},
+  {"name": "Brodcom Inc.", "ticker": "AVGO", "trend": "bear",  "hold": "N"},
+  {"name": "Visa Inc.", "ticker": "V", "trend": "bear",  "hold": "N"},
+  {"name": "Exxon Mobil Corp.", "ticker": "XOM", "trend": "bull",  "hold": "Y"},
+
+  {"name": "Johnson & Johnson", "ticker": "JNJ", "trend": "dear",  "hold": "N"},
+  {"name": "Home Depot, Inc.", "ticker": "HD", "trend": "bear",  "hold": "N"},
+  {"name": "Mastercard Inc.", "ticker": "MA", "trend": "bull",  "hold": "Y"},
+  {"name": "Procter & Gamble Company", "ticker": "PG", "trend": "dear",  "hold": "N"},
+  {"name": "Merk & Co., Inc.", "ticker": "MRK", "trend": "bear",  "hold": "N"},
+
+  {"name": "Costco Wholesale Corp.", "ticker": "COST", "trend": "bull",  "hold": "Y"},
+  {"name": "Abbvie Inc.", "ticker": "ABBV", "trend": "dear",  "hold": "N"},
+  {"name": "Adobe Inc.", "ticker": "ADBE", "trend": "bear",  "hold": "N"},
+  {"name": "Salesforce, Inc.", "ticker": "CRM", "trend": "bull",  "hold": "Y"},
+  {"name": "Chevron Corp.", "ticker": "CVX", "trend": "dear",  "hold": "N"},
+
+  {"name": "Advanced Micro Devices", "ticker": "AMD", "trend": "bear",  "hold": "N"},
+  {"name": "Coca-Cola Company", "ticker": "KO", "trend": "bull",  "hold": "Y"},
+  {"name": "Bank of America Corp.", "ticker": "BAC", "trend": "dear",  "hold": "N"},
+  {"name": "Walmart Inc.", "ticker": "WMT", "trend": "dear",  "hold": "N"},
+  {"name": "Pepsico, Inc.", "ticker": "PEP", "trend": "bull",  "hold": "Y"}
+]

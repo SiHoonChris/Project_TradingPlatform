@@ -1,18 +1,14 @@
 <template>
   <nav id="header-right">
-    <span @click="moveTo('portfolios')">Portfolio</span>
-    <span @click="moveTo('transactions')">Transaction</span>
-    <span @click="moveTo('financialStatements')">Statements</span>
+    <span @click="$moveTo_1('portfolios')">Portfolio</span>
+    <span @click="$moveTo_1('transactions')">Transaction</span>
+    <span @click="$moveTo_1('financialStatements')">Statements</span>
   </nav>
 </template>
 
 <script>
 export default {
-  methods: {
-    moveTo(where) {
-      this.$router.push({name: where});
-    }
-  }
+  
 }
 </script>
 
