@@ -1,10 +1,10 @@
 <template>
   <div id="header-center">
-    <input id="search-and-go" name="search-and-go" type="text" placeholder=" Name, ticker symbol, or code" v-model="urlParam"/>
-    <div id="search-results">
-      <div v-for="(data, i) in Object.keys(searchResults[searchResults.length-1])" :key="i" class="result"
-      @click="$moveTo_2(searchResults[i].ticker)">
-        {{searchResults[i].name}}
+    <input id="search-and-go" name="search-and-go" type="text" placeholder="Name, ticker symbol, or code" v-model="urlParam"/>
+    <div v-if="urlParam !== null && urlParam !== ''" id="suggestion">
+      <div v-for="(data, i) in Object.keys(Suggestions[Suggestions.length-1])" :key="i" class="result"
+      @click="$moveTo_2(Suggestions[i].ticker)">
+        {{Suggestions[i].name}}
       </div>
     </div>
   </div>
@@ -17,17 +17,21 @@ export default {
   data () {
     return {
       DATAS: us_market,
-      searchResults: [''],
-      urlParam: ''
+      Suggestions: [{}],
+      urlParam: null
     }
   },
   watch: {
     urlParam: function(val) {
       if(val !== ""){
-        this.searchResults 
+        this.Suggestions
           = this.DATAS
-              .filter(e => e.name.toLowerCase().includes(val.toLowerCase()) || e.ticker.toLowerCase().includes(val.toLowerCase()));
-        document.getElementById("search-results").style.display = val === "" ? "none" : "block";
+              .filter(
+                e => e.name.toLowerCase().startsWith(val.toLowerCase()) 
+                || e.ticker.toLowerCase().startsWith(val.toLowerCase()) 
+                || e.name.toLowerCase().includes(val.toLowerCase()) 
+                || e.ticker.toLowerCase().includes(val.toLowerCase())
+              );
       }
     }
   }
@@ -37,16 +41,16 @@ export default {
 <style scoped>
 #header-center {
   width: calc(100vw * 0.33);
-  height: 40vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
 }
 #search-and-go {
-  width: 60%;
+  width: calc(60% - 0.4% - 2px);
   height: calc(7.9vh * 0.5);
   margin-top: calc(7.9vh * 0.25 - 1px);
+  padding-left: 0.4%;
   background: #0a0a0a;
   border: 1px solid gray;
   color: white;
@@ -54,9 +58,9 @@ export default {
 ::placeholder {
   color: gray;
 }
-#search-results {
+#suggestion {
   position: relative;
-  display: none;
+  display: block;
   width: 60%;
   max-height: 30vh;
   background: #0a0a0a;
@@ -64,12 +68,12 @@ export default {
   overflow-y: scroll;
 }
 .result {
-  height: 4vh;
+  height: 3.4vh;
+  padding: 0 1.6%;
   color: white;
-  vertical-align: middle;
 }
 .result:hover {
-  font-weight: bold;
+  background: #a9a9a931;
   text-decoration: underline;
   cursor: pointer;
 }

@@ -1,36 +1,69 @@
 <template>
   <div id="header-left">
     <div id="global-indexes">
-      <div class="indexes">
-        <p>index 1</p>
-        <p>N,NNN.DD ▲xx.xx +x.xx%</p>
+      <div v-for="(data, i) in Object.keys(DATAS[DATAS.length-1])" :key="i" class="result">
+        <p class="index-key">{{data}}</p>
+        <p class="index-values">
+          <span>
+            {{
+              Number( DATAS[DATAS.length-1][data] ).toLocaleString()
+            }}
+          </span>
+          <span>
+            {{
+              Number( 
+                (DATAS[DATAS.length-1][data] - DATAS[DATAS.length-2][data]).toFixed(2) 
+              ).toLocaleString()
+            }}</span>
+          <span>
+            {{
+              Number( 
+                ((DATAS[DATAS.length-1][data] - DATAS[DATAS.length-2][data]) / DATAS[DATAS.length-2][data] * 100).toFixed(2)
+              ).toLocaleString()
+            }}
+          </span>
+        </p>
       </div>
-      <div class="indexes">
-        <p>index 2</p>
-        <p>N,NNN.DD ▲xx.xx +x.xx%</p>
-      </div>
-      <div class="indexes">
-        <p>index 3</p>
-        <p>N,NNN.DD ▲xx.xx +x.xx%</p>
-      </div>
-      <div class="indexes">
-        <p>index 4</p>
-        <p>N,NNN.DD ▲xx.xx +x.xx%</p>
-      </div>
-      <div class="indexes">
-        <p>index 5</p>
-        <p>N,NNN.DD ▲xx.xx +x.xx%</p>
-      </div>
-      <div class="indexes"></div>
     </div>
   </div>
 </template>
 
-<style scoped>
+<script>
+import global_indexes from "@/assets/global_indexes.json"
 
-@keyframes scroll {
-    0% {transform: translateY(0);}
-    100% {transform: translateY(calc(-7.9vh * 5));}
+export default {
+  data () {
+    return {
+      DATAS: global_indexes
+    }
+  },
+  mounted(){
+    const CLONE = document.querySelector('#global-indexes').cloneNode(true);
+    CLONE.id = "global-indexes-clone";
+    document.querySelector("#global-indexes").appendChild(CLONE);
+
+    for(const I of document.querySelectorAll(".index-values > span:nth-child(3)")) {
+      if (Number(I.textContent) === 0) {
+        I.className = "zero";
+        I.previousSibling.className = "zero";
+        I.textContent = "";
+        I.previousSibling.textContent = "";
+      } else if (Number(I.textContent) > 0) {
+        I.className = "plus";
+        I.previousSibling.className = "plus";
+      } else {
+        I.className = "minus"
+        I.previousSibling.className = "minus";
+      };
+    }
+  }
+}
+</script>
+
+<style scoped>
+@keyframes slider {
+  0% {transform: translateY(0);}
+  100% {transform: translateY(calc(-7.9vh*10));}
 }
 
 #header-left {
@@ -39,28 +72,39 @@
   overflow: hidden;
 }
 #global-indexes {
-  height: calc(7.9vh * 5);
   width: 58%;
-  animation: scroll 10s linear infinite;
+  padding-left: 4%;
+  animation: slider 18s linear infinite;
 }
-.indexes {
-  width: 100%;
+.result {
   height: 7.9vh;
 }
 p {
   height: 50%;
   margin: 0;
-  text-align: center;
   color: white;
   font-weight: bold;
 }
-p:nth-child(1) {
-  font-size: 1.2vw;
-  vertical-align: text-bottom;
+.index-key {
+  font-size: 1.3vw;
 }
-p:nth-child(2) {
-  font-size: 1vw;
-  vertical-align: text-top;
+.index-values span:nth-child(1) {
+  font-size: 1.1vw;
+  margin-right: 0.5vw;
 }
+.index-values span:nth-child(2) {
+  font-size: 0.8vw;
+  margin-right: 0.4vw;
+}
+.index-values span:nth-child(3) {
+  font-size: 0.8vw;
+}
+
+.plus { color: green; }
+.plus:nth-child(2)::before { content: "▲"; }
+.plus:nth-child(3)::before { content: "+"; }
+.minus { color: red; }
+.minus:nth-child(2)::before { content: "▼"; }
+.plus:nth-child(3)::after, .minus:nth-child(3)::after { content: "%"; }
 
 </style>
