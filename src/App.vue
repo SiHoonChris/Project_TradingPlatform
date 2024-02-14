@@ -21,7 +21,7 @@ body {
 }
 /* Scroll-bar */
 ::-webkit-scrollbar-track {
-  background-color: yellow;
+  background-color: black;
 }
 ::-webkit-scrollbar {
   background-color: black;

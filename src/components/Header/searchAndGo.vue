@@ -1,12 +1,13 @@
 <template>
   <div id="header-center">
-    <input id="search-and-go" name="search-and-go" type="text" placeholder="Name, ticker symbol, or code" v-model="urlParam"/>
-    <div v-if="urlParam !== null && urlParam !== ''" id="suggestion">
-      <div v-for="(data, i) in Object.keys(Suggestions[Suggestions.length-1])" :key="i" class="result"
-      @click="$moveTo_2(Suggestions[i].ticker)">
+    <input id="search-and-go" name="search-and-go" type="text" placeholder="Name, ticker symbol, or code" 
+           v-model="urlParam" @focus="focusIn" @blur="focusOut"/>
+    <ul v-if="urlParam !== null && urlParam !== '' && focus" id="suggestion">
+      <li v-for="(data, i) in Suggestions" :key="i" class="result"
+          @click="$moveTo_2(Suggestions[i].ticker)">
         {{Suggestions[i].name}}
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -18,7 +19,9 @@ export default {
     return {
       DATAS: us_market,
       Suggestions: [{}],
-      urlParam: null
+      urlParam: null,
+      focus: false,
+      where: null
     }
   },
   watch: {
@@ -34,6 +37,10 @@ export default {
               );
       }
     }
+  },
+  methods: {
+    focusIn : function(){ this.focus = true; },
+    focusOut: function(){ this.focus = false; }
   }
 }
 </script>
@@ -63,8 +70,11 @@ export default {
   display: block;
   width: 60%;
   max-height: 30vh;
+  margin: 0;
+  padding: 0;
   background: #0a0a0a;
   border: 1px solid gray;
+  list-style-type: none;
   overflow-y: scroll;
 }
 .result {
@@ -73,7 +83,7 @@ export default {
   color: white;
 }
 .result:hover {
-  background: #a9a9a931;
+  background: #a9a9a938;
   text-decoration: underline;
   cursor: pointer;
 }
