@@ -2,12 +2,14 @@
   <div id="header-center">
     <input id="search-and-go" name="search-and-go" type="text" placeholder="Name, ticker symbol, or code" 
            v-model="urlParam" @focus="focusIn" @blur="focusOut"/>
-    <ul v-if="urlParam !== null && urlParam !== '' && focus" id="suggestion">
-      <li v-for="(data, i) in Suggestions" :key="i" class="result"
-          @click="$moveTo_2(Suggestions[i].ticker)">
-        {{Suggestions[i].name}}
-      </li>
-    </ul>
+    <label for="search-and-go">
+      <ul v-if="urlParam !== null && urlParam !== '' && Suggestions.length !== 0 && focus" id="suggestion">
+        <li v-for="(data, i) in Suggestions" :key="i" class="list"
+            @click="$moveTo_2(Suggestions[i].ticker)">
+          {{Suggestions[i].name}}
+        </li>
+      </ul>
+    </label>
   </div>
 </template>
 
@@ -65,6 +67,11 @@ export default {
 ::placeholder {
   color: gray;
 }
+label {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
 #suggestion {
   position: relative;
   display: block;
@@ -77,12 +84,12 @@ export default {
   list-style-type: none;
   overflow-y: scroll;
 }
-.result {
+.list {
   height: 3.4vh;
   padding: 0 1.6%;
   color: white;
 }
-.result:hover {
+.list:hover {
   background: #a9a9a938;
   text-decoration: underline;
   cursor: pointer;

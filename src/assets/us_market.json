@@ -1,4 +1,7 @@
 [
+  {"name": "Samsung Electroics", "ticker": "005930", "trend": "bull", "hold": "N"},
+  {"name": "SK Hynix", "ticker": "000660", "trend": "bear", "hold": "Y"},
+
   {"name": "Microsoft Corp.", "ticker": "MSFT", "trend": "bull",  "hold": "Y"},
   {"name": "Apple Inc.", "ticker": "AAPL", "trend": "dear",  "hold": "N"},
   {"name": "Amazon.com Inc.", "ticker": "AMZN", "trend": "bear",  "hold": "N"},

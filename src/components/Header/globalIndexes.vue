@@ -38,10 +38,7 @@ export default {
     }
   },
   mounted(){
-    const CLONE = document.querySelector('#global-indexes').cloneNode(true);
-    CLONE.id = "global-indexes-clone";
-    document.querySelector("#global-indexes").appendChild(CLONE);
-
+    /* 지수 및 환율의 등락폭, 등락률 */
     for(const I of document.querySelectorAll(".index-values > span:nth-child(3)")) {
       if (Number(I.textContent) === 0) {
         I.className = "zero";
@@ -56,25 +53,46 @@ export default {
         I.previousSibling.className = "minus";
       };
     }
+    /* 수직 회전 */
+    setTimeout(() => {
+      this.slider();
+      setInterval(() => this.slider(), 4000);
+      }
+      , 1600
+    );
+  },
+  methods: {
+    slider(){
+      const result = document.querySelectorAll('.result');
+      const clone = document.querySelector('.result:first-child').cloneNode(true);
+      setTimeout(()=>{
+        for(const e of result){
+          e.style.transform="translateY(-100%)";
+          e.style.transition="1.6s linear";
+        }
+      });
+      setTimeout(()=>{
+        document.querySelector("#global-indexes").appendChild(clone);
+        result[0].remove();
+        for(const i in result){
+          if(i>0) result[i].removeAttribute('style');
+        }
+      }, 1600);
+    }
   }
 }
 </script>
 
 <style scoped>
-@keyframes slider {
-  0% {transform: translateY(0);}
-  100% {transform: translateY(calc(-7.9vh*10));}
-}
-
 #header-left {
   width: calc(100vw * 0.24);
   height: 100%;
   overflow: hidden;
 }
 #global-indexes {
+  height: calc(7.9vh * 10);
   width: 58%;
   padding-left: 4%;
-  animation: slider 18s linear infinite;
 }
 .result {
   height: 7.9vh;
