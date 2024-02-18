@@ -3,9 +3,10 @@
     <input id="search-and-go" name="search-and-go" type="text" placeholder="Name, ticker symbol, or code" 
            v-model="urlParam" @focus="focusIn" @blur="focusOut"/>
     <label for="search-and-go">
-      <ul v-if="urlParam !== null && urlParam !== '' && Suggestions.length !== 0 && focus" id="suggestion">
+      <ul v-if="urlParam !== null && urlParam !== '' && Suggestions.length !== 0 && focus" id="suggestion"
+          @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <li v-for="(data, i) in Suggestions" :key="i" class="list"
-            @click="$moveTo_2(Suggestions[i].ticker)">
+            @click="$moveTo_2(Suggestions[i].ticker, Suggestions[i].name)">
           {{Suggestions[i].name}}
         </li>
       </ul>
@@ -23,6 +24,7 @@ export default {
       Suggestions: [{}],
       urlParam: null,
       focus: false,
+      hover: false,
       where: null
     }
   },
@@ -42,7 +44,9 @@ export default {
   },
   methods: {
     focusIn : function(){ this.focus = true; },
-    focusOut: function(){ this.focus = false; }
+    focusOut: function(){ if(!this.hover) this.focus = false; },
+    mouseEnter: function(){ this.hover = true; },
+    mouseLeave: function(){ this.hover = false; }
   }
 }
 </script>
