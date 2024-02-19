@@ -31,6 +31,6 @@ span:last-child {
   margin-right: 1.4vw; 
 }
 span:hover{
-  color: white;
+  color: whitesmoke;
 }
 </style>

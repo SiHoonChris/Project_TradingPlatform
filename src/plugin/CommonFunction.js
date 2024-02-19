@@ -11,5 +11,10 @@ export default {
                 this.urlParam = n;
             }
         // function : $moveTo_2
+        Vue.config.globalProperties.$moveTo_3 = 
+            function(t) {
+                this.$router.push({name: 'detail', params: {ticker: t}});
+            }
+        // function : $moveTo_3
     }
 }
