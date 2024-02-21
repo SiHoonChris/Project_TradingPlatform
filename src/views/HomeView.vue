@@ -1,6 +1,6 @@
 <template>
   <main @scroll="scroller">
-    <SearchMethod @datas="setData"/>
+    <SearchAndSort @datas="setData"/>
     <div id="charts">
       <ThumbnailChart v-for="(e, i) in datasOnPage.slice(0, this.N)" :key="i"
         :name="e.name" :ticker="e.ticker" :trend="e.trend" :hold="e.hold"/>
@@ -9,11 +9,11 @@
 </template>
 
 <script>
-import SearchMethod from "@/components/Home/SearchMethod.vue"
+import SearchAndSort from "@/components/Home/SearchAndSort.vue"
 import ThumbnailChart from "@/components/Home/ThumbnailChart.vue"
 
 export default {
-  components: { SearchMethod, ThumbnailChart },
+  components: { SearchAndSort, ThumbnailChart },
   data() {
     return {
       datasOnPage: [],
@@ -51,7 +51,7 @@ main::-webkit-scrollbar-track {
 }
 main::-webkit-scrollbar {
 	background-color: black;
-	width: 10px;
+	width: 9px;
 }
 main::-webkit-scrollbar-thumb {
 	border-radius: 30px;
