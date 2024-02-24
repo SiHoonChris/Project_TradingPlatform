@@ -21,7 +21,7 @@ export default {
   data () {
     return {
       DATAS: us_market,
-      Suggestions: [{}],
+      Suggestions: [],
       urlParam: null,
       focus: false,
       hover: false,
@@ -31,14 +31,19 @@ export default {
   watch: {
     urlParam: function(val) {
       if(val !== ""){
+        // this.Suggestions
+        //   = this.DATAS
+        //       .filter(
+        //         e => e.name.toLowerCase().startsWith(val.toLowerCase()) 
+        //         || e.name.toLowerCase().includes(val.toLowerCase()) 
+        //         || e.ticker.toLowerCase().startsWith(val.toLowerCase()) 
+        //         || e.ticker.toLowerCase().includes(val.toLowerCase())
+        //       );
         this.Suggestions
-          = this.DATAS
-              .filter(
-                e => e.name.toLowerCase().startsWith(val.toLowerCase()) 
-                || e.ticker.toLowerCase().startsWith(val.toLowerCase()) 
-                || e.name.toLowerCase().includes(val.toLowerCase()) 
-                || e.ticker.toLowerCase().includes(val.toLowerCase())
-              );
+          .push(...this.DATAS.filter(e => e.name.toLowerCase().startsWith(val.toLowerCase())))
+      }
+      else {
+        this.Suggestions = [];
       }
     }
   },

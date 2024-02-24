@@ -1,9 +1,9 @@
 <template>
-  <main @scroll="scroller">
+  <main id="home" @scroll="scroller">
     <SearchAndSort @datas="setData"/>
     <div id="charts">
       <ThumbnailChart v-for="(e, i) in datasOnPage.slice(0, this.N)" :key="i"
-        :name="e.name" :ticker="e.ticker" :trend="e.trend" :hold="e.hold"/>
+                      :name="e.name" :ticker="e.ticker" :trend="e.trend" :hold="e.hold"/>
     </div>
   </main>
 </template>
@@ -35,9 +35,10 @@ export default {
 </script>
 
 <style scoped>
-main {
-  width: 100vw;
+#home {
+  width: 96vw;
   height: 92vh;
+  padding: 0 2vw;
   margin: 0;
   background: black;
   display: flex;
@@ -46,25 +47,24 @@ main {
   overflow-y: scroll;
   overflow-x: hidden;
 }
-main::-webkit-scrollbar-track {
+#home::-webkit-scrollbar-track {
 	background-color: black;
 }
-main::-webkit-scrollbar {
+#home::-webkit-scrollbar {
 	background-color: black;
 	width: 9px;
 }
-main::-webkit-scrollbar-thumb {
+#home::-webkit-scrollbar-thumb {
 	border-radius: 30px;
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
 	background-color: #333;
 }
 
 #charts {
-    margin-left: 2vw;
-    width: 98vw;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left;
+  width: 98vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
 }
 
 </style>

@@ -9,6 +9,7 @@ export default {
             function(t, n) {
                 this.$router.push({name: 'detail', params: {ticker: t}});
                 this.urlParam = n;
+                this.Suggestions = [];
             }
         // function : $moveTo_2
         Vue.config.globalProperties.$moveTo_3 = 

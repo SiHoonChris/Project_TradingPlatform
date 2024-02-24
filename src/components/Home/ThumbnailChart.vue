@@ -20,7 +20,8 @@ export default {
 section {
   width: 460px;
   height: 328px;
-  margin: 0 2.666vw 5vh 0;
+  margin-right: 2.666vw;
+  margin-bottom: 5vh;
 }
 .title {
   width: 100%;
@@ -37,8 +38,8 @@ section {
   border: 1px solid gray;
 }
 .thumbnail:hover {
-    border: 1px solid whitesmoke;
-    box-shadow: 0.1px 0.1px 1.6px 1.2px whitesmoke;
-    cursor: pointer;
+  border: 1px solid whitesmoke;
+  box-shadow: 0.1px 0.1px 1.6px 1.2px whitesmoke;
+  cursor: pointer;
 }
 </style>

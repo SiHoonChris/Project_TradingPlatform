@@ -4,7 +4,7 @@
       <input id="search-input" name="search" type="text" placeholder="Search" v-model="searchText"/>
       <label name="search">{{numOfResult}}</label>
     </div>
-    <select id="sort" v-model="holdAndTrend">
+    <select id="sort" v-model="holdAndTrend"> <!-- ul-li로 바꾸기 -->
       <option v-for='(e, i) in Object.keys(options)' :key="i" :value='options[e]'>{{e}}</option>
     </select>
   </div>
@@ -35,16 +35,16 @@ export default {
     searchText: function(val) {
       this.searchResults 
         = this.originalDatas
-            .filter(e => e.name.toLowerCase().includes(val.toLowerCase()) || e.ticker.toLowerCase().includes(val.toLowerCase()))
-            .filter(e => e.hold.includes(this.holdAndTrend));
+            .filter(e => e.name.toLowerCase().startsWith(val.toLowerCase()) || e.ticker.toLowerCase().startsWith(val.toLowerCase()))
+            .filter(e => e.hold.startsWith(this.holdAndTrend) || e.trend.startsWith(this.holdAndTrend));
       this.$emit('datas', this.searchResults);
-      document.querySelector('label').style.display = val !== '' ? "block" : "none" ;
+      document.querySelector("label[name='search']").style.display = val !== '' ? "block" : "none" ;
     },
     holdAndTrend: function(val) {
       this.searchResults 
         = this.originalDatas
-            .filter(e => e.hold.includes(val) || e.trend.includes(val))
-            .filter(e => e.name.toLowerCase().includes(this.searchText.toLowerCase()) || e.ticker.toLowerCase().includes(this.searchText.toLowerCase()));
+            .filter(e => e.hold.startsWith(val) || e.trend.startsWith(val))
+            .filter(e => e.name.toLowerCase().startsWith(this.searchText.toLowerCase()) || e.ticker.toLowerCase().startsWith(this.searchText.toLowerCase()));
       this.$emit('datas', this.searchResults);
     }
   }
@@ -53,7 +53,6 @@ export default {
 
 <style scoped>
 #search-and-sort {
-  margin: 0 2vw;
   padding: 6.3vh 0;
   display: flex;
   justify-content: space-between;
@@ -86,6 +85,9 @@ label::after  {content: ')'}
   font-weight: bold;
   width: 6vw;
   height: 3vh;
+}
+option:hover{
+  background: pink;
 }
 
 </style>
