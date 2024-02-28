@@ -1,29 +1,20 @@
 <template>
   <main id="financial-statements">
     <div id="balance-sheet" class="statements">
-      <TableSlot>
-        <template v-slot:header>Balance Sheets</template>
-        <template v-slot:balance></template>
-        <template v-slot:income><div style="display: none;"></div></template>
-      </TableSlot>
+      <BalanceSheetTable/>
     </div>
     <div id="income-statement" class="statements">
-      <TableSlot>
-        <template v-slot:header>Income Statements</template>
-        <template v-slot:balance><div style="display: none;"></div></template>
-        <template v-slot:income></template>
-      </TableSlot>
+      <IncomeStatementTable/>
     </div>
   </main>
 </template>
 
 <script>
-import TableSlot from "@/components/FinancialStatements/TableSlot.vue"
+import BalanceSheetTable from "@/components/FinancialStatements/BalanceSheetTable.vue"
+import IncomeStatementTable from "@/components/FinancialStatements/IncomeStatementTable.vue"
 
 export default {
-  components: { 
-    TableSlot
-  },
+  components: { BalanceSheetTable, IncomeStatementTable },
   data() {
     return {
     }
