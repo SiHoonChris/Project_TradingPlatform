@@ -6,46 +6,46 @@
         <thead>
           <tr>
             <th>{{this.Macro}}</th>
-            <th v-for="(d, i) in DATA" :key="i" @click="periodChange(DATA[i].DATE)">{{DATA[i].DATE}}</th>
+            <th v-for="(d, i) in DATA" :key="i" @click="periodChange(DATA[i].PERIOD)">{{DATA[i].PERIOD}}</th>
           </tr>
         </thead>
         <tbody>
           <tr><td>Assets</td><td v-for="(d, i) in DATA" :key="i"></td></tr>
-          <tr><td>&emsp;Cash</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.CASH}}</td></tr>
-          <tr><td>&emsp;Investment</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.INVESTMENT}}</td></tr>
-          <tr><td>&emsp;Others</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.OTHERS}}</td></tr>
+          <tr><td>&emsp;Cash</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].CASH.toLocaleString()}}</td></tr>
+          <tr><td>&emsp;Investment</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].INVESTMENT.toLocaleString()}}</td></tr>
+          <tr><td>&emsp;Others</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].OTHERS.toLocaleString()}}</td></tr>
           <tr><td>&emsp;&emsp;Total Assets</td>
-            <td v-for="(d, i) in DATA" :key="i">
-              {{DATA[i].DATA.CASH + DATA[i].DATA.INVESTMENT + DATA[i].DATA.OTHERS}}
+            <td v-for="(d, i) in DATA" :key="i"> <!-- 쿼리문에서 계산 예정 -->
+              {{(DATA[i].CASH + DATA[i].INVESTMENT + DATA[i].OTHERS).toLocaleString()}}
             </td>
           </tr>
           <tr><td>Liabilities</td><td v-for="(d, i) in DATA" :key="i"></td></tr>
-          <tr><td>&emsp;Short-term</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.SHORT_TERM_LIABILITIES}}</td></tr>
-          <tr><td>&emsp;Long-term</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.LONG_TERM_LIABILITIES}}</td></tr>
-          <tr><td>&emsp;&emsp;Total-Liabilities</td>
-            <td v-for="(d, i) in DATA" :key="i">
-              {{DATA[i].DATA.SHORT_TERM_LIABILITIES + DATA[i].DATA.LONG_TERM_LIABILITIES}}
+          <tr><td>&emsp;Short-term</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].SHORT_TERM_LIABILITIES.toLocaleString()}}</td></tr>
+          <tr><td>&emsp;Long-term</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].LONG_TERM_LIABILITIES.toLocaleString()}}</td></tr>
+          <tr><td>&emsp;&emsp;Total Liabilities</td>
+            <td v-for="(d, i) in DATA" :key="i"> <!-- 쿼리문에서 계산 예정 -->
+              {{(DATA[i].SHORT_TERM_LIABILITIES + DATA[i].LONG_TERM_LIABILITIES).toLocaleString()}}
             </td>
           </tr>
           <tr><td>Equity</td><td v-for="(d, i) in DATA" :key="i"></td></tr>
-          <tr><td>&emsp;Deposit</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.DEPOSIT}}</td></tr>
-          <tr><td>&emsp;Retained Earnings</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DATA.RETAINED_EARNINGS}}</td></tr>
+          <tr><td>&emsp;Deposit</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].DEPOSIT.toLocaleString()}}</td></tr>
+          <tr><td>&emsp;Retained Earnings</td><td v-for="(d, i) in DATA" :key="i">{{DATA[i].RETAINED_EARNINGS.toLocaleString()}}</td></tr>
           <tr><td>Total Liabilities and Equity</td>
-            <td v-for="(d, i) in DATA" :key="i">
+            <td v-for="(d, i) in DATA" :key="i"> <!-- 쿼리문에서 계산 예정 -->
               {{
-                DATA[i].DATA.SHORT_TERM_LIABILITIES
-                + DATA[i].DATA.LONG_TERM_LIABILITIES
-                + DATA[i].DATA.DEPOSIT
-                + DATA[i].DATA.RETAINED_EARNINGS
+                ( DATA[i].SHORT_TERM_LIABILITIES
+                + DATA[i].LONG_TERM_LIABILITIES
+                + DATA[i].DEPOSIT
+                + DATA[i].RETAINED_EARNINGS ).toLocaleString()
               }}
             </td>
           </tr>
           <tr><td>Debt Rate</td>
-            <td v-for="(d, i) in DATA" :key="i">
+            <td v-for="(d, i) in DATA" :key="i"> <!-- 쿼리문에서 계산 예정 -->
               {{
                 (
-                  (DATA[i].DATA.SHORT_TERM_LIABILITIES + DATA[i].DATA.LONG_TERM_LIABILITIES)
-                  /(DATA[i].DATA.DEPOSIT + DATA[i].DATA.RETAINED_EARNINGS)
+                  (DATA[i].SHORT_TERM_LIABILITIES + DATA[i].LONG_TERM_LIABILITIES)
+                  /(DATA[i].DEPOSIT + DATA[i].RETAINED_EARNINGS)
                   *100
                 ).toFixed(2)
               }}%
@@ -58,19 +58,18 @@
 </template>
 
 <script>
-import BalanceSheet_Year_Data from "@/assets/balance_sheets/per_year.json"
-import BalanceSheet_2023Quarter_Data from "@/assets/balance_sheets/per_2023quarter.json"
-import BalanceSheet_4Q_Data from "@/assets/balance_sheets/per_4th_Quarter.json"
+import BS_3_Year_Data from "@/assets/balance_sheets/3-Year.json"
+import BS_All_Quarter_Data from "@/assets/balance_sheets/2023-All-Quarter.json"
+import BalanceSheet_4Q_Data from "@/assets/balance_sheets/2023-4th-Quarter.json"
 
 export default {
   data() {
     return {
       Macro: null,
-      DATA: BalanceSheet_Year_Data,
-      Per_Year: BalanceSheet_Year_Data,
-      Per_Quarter: BalanceSheet_2023Quarter_Data,
+      DATA: BS_3_Year_Data,
+      Per_Year: BS_3_Year_Data,
+      Per_Quarter: BS_All_Quarter_Data,
       Per_Month: BalanceSheet_4Q_Data
-      // Per_... 에 해당하는 파일들은 테스트용임 - 실제 기능 시에는 쿼리문에 파라미터 전송해서 가져올 것
     }
   },
   methods: {

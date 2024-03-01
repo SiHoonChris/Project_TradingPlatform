@@ -1,0 +1,42 @@
+[
+  {
+    "PERIOD": "4Q",
+    "CASH": 30, 
+    "INVESTMENT":60, 
+    "OTHERS": 30, 
+    "SHORT_TERM_LIABILITIES": 30, 
+    "LONG_TERM_LIABILITIES": 30, 
+    "DEPOSIT": 30, 
+    "RETAINED_EARNINGS": 30
+  },
+  {
+    "PERIOD": "3Q",    
+    "CASH": 30, 
+    "INVESTMENT":60, 
+    "OTHERS": 30, 
+    "SHORT_TERM_LIABILITIES": 30, 
+    "LONG_TERM_LIABILITIES": 30, 
+    "DEPOSIT": 30, 
+    "RETAINED_EARNINGS": 30
+  },
+  {
+    "PERIOD": "2Q",    
+    "CASH": 30, 
+    "INVESTMENT":60, 
+    "OTHERS": 30, 
+    "SHORT_TERM_LIABILITIES": 30, 
+    "LONG_TERM_LIABILITIES": 30, 
+    "DEPOSIT": 30, 
+    "RETAINED_EARNINGS": 30
+  },
+  {
+    "PERIOD": "1Q",
+    "CASH": 30, 
+    "INVESTMENT":60, 
+    "OTHERS": 30, 
+    "SHORT_TERM_LIABILITIES": 30, 
+    "LONG_TERM_LIABILITIES": 30, 
+    "DEPOSIT": 30, 
+    "RETAINED_EARNINGS": 30     
+  }
+]

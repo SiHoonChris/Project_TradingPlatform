@@ -1,0 +1,32 @@
+[
+  {
+    "PERIOD": "DEC",
+    "CASH": 10, 
+    "INVESTMENT": 20, 
+    "OTHERS": 10, 
+    "SHORT_TERM_LIABILITIES": 10, 
+    "LONG_TERM_LIABILITIES": 10, 
+    "DEPOSIT": 10, 
+    "RETAINED_EARNINGS": 10
+  },
+  {
+    "PERIOD": "NOV",
+    "CASH": 10, 
+    "INVESTMENT": 20, 
+    "OTHERS": 10, 
+    "SHORT_TERM_LIABILITIES": 10, 
+    "LONG_TERM_LIABILITIES": 10, 
+    "DEPOSIT": 10, 
+    "RETAINED_EARNINGS": 10
+  },
+  {
+    "PERIOD": "OCT",
+    "CASH": 10, 
+    "INVESTMENT": 20, 
+    "OTHERS": 10, 
+    "SHORT_TERM_LIABILITIES": 10, 
+    "LONG_TERM_LIABILITIES": 10, 
+    "DEPOSIT": 10, 
+    "RETAINED_EARNINGS": 10
+  }
+]
