@@ -1,6 +1,6 @@
 [		
   {
-    "PERIOD": 12,
+    "PERIOD": "Dec",
     "CASH": 53000000, 
     "INVESTMENT": 94000000,
     "OTHERS": 62000000,
@@ -14,7 +14,7 @@
     "DEBT_RATE": 90.0000
   },			    
   {
-    "PERIOD": 11,
+    "PERIOD": "Nov",
     "CASH": 57000000, 
     "INVESTMENT": 100000000,
     "OTHERS": 54000000,
@@ -28,7 +28,7 @@
     "DEBT_RATE": 81.8966
   },			
   {
-    "PERIOD": 10,
+    "PERIOD": "Oct",
     "CASH": 58000000, 
     "INVESTMENT": 100000000,
     "OTHERS": 60000000,
