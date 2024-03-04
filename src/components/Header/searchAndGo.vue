@@ -6,8 +6,8 @@
       <ul v-if="urlParam !== null && urlParam !== '' && Suggestions.length !== 0 && focus" id="suggestion"
           @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <li v-for="(data, i) in Suggestions" :key="i" class="list"
-            @click="$moveTo_2(Suggestions[i].ticker, Suggestions[i].name)">
-          {{Suggestions[i].name}}
+            @click="$moveTo_2(Suggestions[i].TICKER, Suggestions[i].NAME)">
+          {{Suggestions[i].NAME}}
         </li>
       </ul>
     </label>
@@ -15,18 +15,25 @@
 </template>
 
 <script>
-import us_market from "@/assets/us_market.json"
-
 export default {
   data () {
     return {
-      DATAS: us_market,
-      Suggestions: [],
-      urlParam: null,
-      focus: false,
-      hover: false,
+      DATAS: null, 
+      Suggestions: [], 
+      urlParam: null, 
+      focus: false, 
+      hover: false, 
       where: null
     }
+  },
+  created(){
+    this.$http.get("/getAllAssetsData")
+      .then(res => {
+        this.$store.commit('setAllAssetsData', res.data);
+        this.DATAS = this.$store.state.allAssetsData;
+        console.log(this.DATAS);
+      })
+      .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
   },
   watch: {
     urlParam: function(val) {

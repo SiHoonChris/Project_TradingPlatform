@@ -11,12 +11,12 @@
 </template>
 
 <script>
-import us_market from "@/assets/us_market.json"
+//import us_market from "@/assets/us_market.json"
 
 export default {
   data() {
     return {
-      originalDatas: us_market,
+      //originalDatas: us_market,
       searchResults: [],
       searchText: '',
       holdAndTrend: '',

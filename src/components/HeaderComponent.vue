@@ -18,7 +18,7 @@ export default {
   components: { GlobalIndexes, SearchAndGo, NavigationBar },
   data() {
     return {
-      homeBtn: require("@/assets/wallpaper.jpg")
+      homeBtn: require("@/assets/Taurus.jpg")
     }
   }
 }
