@@ -11,20 +11,31 @@
 </template>
 
 <script>
-//import us_market from "@/assets/us_market.json"
-
 export default {
   data() {
     return {
-      //originalDatas: us_market,
+      originalDatas: null,
       searchResults: [],
       searchText: '',
       holdAndTrend: '',
       options: {'All':'', 'Hold':'Y', 'Not-Hold':'N', 'Bull':'bull', 'Bear':'bear', 'Dear':'dear'}
     }
   },
-  mounted(){
-    this.$emit('datas', this.originalDatas);
+  created(){
+    if(this.$store.state.allAssetsData === null){
+      this.$http.get("/getAllAssetsData")
+      .then(res => {
+        this.$emit('datas', res.data);
+        this.originalDatas = res.data;
+      })
+      .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+    }
+    else {
+      this.originalDatas = this.$store.state.allAssetsData;
+    }
+  },
+  mounted(){ 
+    if(this.originalDatas !== null) this.$emit('datas', this.originalDatas);
   },
   computed: {
     numOfResult(){
@@ -35,16 +46,16 @@ export default {
     searchText: function(val) {
       this.searchResults 
         = this.originalDatas
-            .filter(e => e.name.toLowerCase().startsWith(val.toLowerCase()) || e.ticker.toLowerCase().startsWith(val.toLowerCase()))
-            .filter(e => e.hold.startsWith(this.holdAndTrend) || e.trend.startsWith(this.holdAndTrend));
+            .filter(e => e.NAME.toLowerCase().startsWith(val.toLowerCase()) || e.TICKER.toLowerCase().startsWith(val.toLowerCase()))
+            .filter(e => e.HOLD.startsWith(this.holdAndTrend) || e.TREND.startsWith(this.holdAndTrend));
       this.$emit('datas', this.searchResults);
       document.querySelector("label[name='search']").style.display = val !== '' ? "block" : "none" ;
     },
     holdAndTrend: function(val) {
       this.searchResults 
         = this.originalDatas
-            .filter(e => e.hold.startsWith(val) || e.trend.startsWith(val))
-            .filter(e => e.name.toLowerCase().startsWith(this.searchText.toLowerCase()) || e.ticker.toLowerCase().startsWith(this.searchText.toLowerCase()));
+            .filter(e => e.HOLD.startsWith(val) || e.TREND.startsWith(val))
+            .filter(e => e.NAME.toLowerCase().startsWith(this.searchText.toLowerCase()) || e.TICKER.toLowerCase().startsWith(this.searchText.toLowerCase()));
       this.$emit('datas', this.searchResults);
     }
   }

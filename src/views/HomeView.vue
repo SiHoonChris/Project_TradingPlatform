@@ -3,7 +3,7 @@
     <SearchAndSort @datas="setData"/>
     <div id="charts">
       <ThumbnailChart v-for="(e, i) in datasOnPage.slice(0, this.N)" :key="i"
-                      :name="e.name" :ticker="e.ticker" :trend="e.trend" :hold="e.hold"/>
+                      :name="e.NAME" :ticker="e.TICKER" :trend="e.TREND" :hold="e.HOLD"/>
     </div>
   </main>
 </template>
@@ -16,7 +16,7 @@ export default {
   components: { SearchAndSort, ThumbnailChart },
   data() {
     return {
-      datasOnPage: [],
+      datasOnPage: [], 
       N: 9
     }
   },

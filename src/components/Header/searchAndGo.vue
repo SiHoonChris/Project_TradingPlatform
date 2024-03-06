@@ -16,7 +16,7 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       DATAS: null, 
       Suggestions: [], 
@@ -28,12 +28,11 @@ export default {
   },
   created(){
     this.$http.get("/getAllAssetsData")
-      .then(res => {
-        this.$store.commit('setAllAssetsData', res.data);
-        this.DATAS = this.$store.state.allAssetsData;
-        console.log(this.DATAS);
-      })
-      .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+    .then(res => {
+      this.DATAS = res.data;
+      this.$store.commit('setAllAssetsData', res.data);
+    })
+    .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
   },
   watch: {
     urlParam: function(val) {
@@ -47,7 +46,7 @@ export default {
         //         || e.ticker.toLowerCase().includes(val.toLowerCase())
         //       );
         this.Suggestions
-          .push(...this.DATAS.filter(e => e.name.toLowerCase().startsWith(val.toLowerCase())))
+          .push(...this.DATAS.filter(e => e.NAME.toLowerCase().startsWith(val.toLowerCase())))
       }
       else {
         this.Suggestions = [];
