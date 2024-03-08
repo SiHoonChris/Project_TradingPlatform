@@ -14,7 +14,7 @@
 export default {
   data() {
     return {
-      originalDatas: null,
+      originalDatas: null, 
       searchResults: [],
       searchText: '',
       holdAndTrend: '',
@@ -33,7 +33,7 @@ export default {
     else {
       this.originalDatas = this.$store.state.allAssetsData;
     }
-  },
+  }, 
   mounted(){ 
     if(this.originalDatas !== null) this.$emit('datas', this.originalDatas);
   },
@@ -46,7 +46,7 @@ export default {
     searchText: function(val) {
       this.searchResults 
         = this.originalDatas
-            .filter(e => e.NAME.toLowerCase().startsWith(val.toLowerCase()) || e.TICKER.toLowerCase().startsWith(val.toLowerCase()))
+            .filter(e => e.NAME.toLowerCase().startsWith(val.toLowerCase()))
             .filter(e => e.HOLD.startsWith(this.holdAndTrend) || e.TREND.startsWith(this.holdAndTrend));
       this.$emit('datas', this.searchResults);
       document.querySelector("label[name='search']").style.display = val !== '' ? "block" : "none" ;
@@ -55,7 +55,7 @@ export default {
       this.searchResults 
         = this.originalDatas
             .filter(e => e.HOLD.startsWith(val) || e.TREND.startsWith(val))
-            .filter(e => e.NAME.toLowerCase().startsWith(this.searchText.toLowerCase()) || e.TICKER.toLowerCase().startsWith(this.searchText.toLowerCase()));
+            .filter(e => e.NAME.toLowerCase().startsWith(this.searchText.toLowerCase()));
       this.$emit('datas', this.searchResults);
     }
   }

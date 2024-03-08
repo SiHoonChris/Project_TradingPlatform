@@ -6,15 +6,15 @@ export default {
             } 
         // function : $moveTo_1
         Vue.config.globalProperties.$moveTo_2 = 
-            function(t, n) {
-                this.$router.push({name: 'detail', params: {ticker: t}});
-                this.urlParam = n;
-                this.Suggestions = [];
+            function(T) {
+                this.$router.push({name: 'detail', params: {ticker: T}});
             }
         // function : $moveTo_2
         Vue.config.globalProperties.$moveTo_3 = 
-            function(t) {
-                this.$router.push({name: 'detail', params: {ticker: t}});
+            function(T) {
+                this.$moveTo_2(T);
+                this.urlParam = null;
+                this.Suggestions = [];
             }
         // function : $moveTo_3
     }

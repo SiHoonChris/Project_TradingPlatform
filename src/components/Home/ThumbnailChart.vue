@@ -4,7 +4,7 @@
       <span :id="ticker" :class="hold">{{name}}</span>
       <span>{{(trend).toUpperCase()}}</span>
     </div>
-    <div class="thumbnail" @click="$moveTo_3(ticker)">
+    <div class="thumbnail" @click="$moveTo_2(ticker)">
       <svg id="chart" width="460.800" height="305.038"></svg>
     </div>
   </section>
