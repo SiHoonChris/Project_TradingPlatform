@@ -1,27 +1,12 @@
 <template>
   <div id="header-left">
-    <div id="global-indexes">
-      <div v-for="(data, i) in Object.keys(DATAS[DATAS.length-1])" :key="i" class="result">
-        <p class="index-key">{{data}}</p>
+    <div v-if="DATAS !== null" id="global-indexes">
+      <div v-for="(d, i) in Object.keys(DATAS[0])" :key="i" class="result">
+        <p class="index-key">{{d}}</p>
         <p class="index-values">
-          <span>
-            {{
-              Number( DATAS[DATAS.length-1][data] ).toLocaleString()
-            }}
-          </span>
-          <span>
-            {{
-              Number( 
-                (DATAS[DATAS.length-1][data] - DATAS[DATAS.length-2][data]).toFixed(2) 
-              ).toLocaleString()
-            }}</span>
-          <span>
-            {{
-              Number( 
-                ((DATAS[DATAS.length-1][data] - DATAS[DATAS.length-2][data]) / DATAS[DATAS.length-2][data] * 100).toFixed(2)
-              ).toLocaleString()
-            }}
-          </span>
+          <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
+          <span>{{Number((DATAS[0][d] - DATAS[1][d]).toFixed(2)).toLocaleString()}}</span>
+          <span>{{Number(((DATAS[0][d] - DATAS[1][d]) / DATAS[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
         </p>
       </div>
     </div>
@@ -29,16 +14,26 @@
 </template>
 
 <script>
-import global_indexes from "@/assets/global_indexes.json"
-
 export default {
   data () {
     return {
-      DATAS: global_indexes
+      DATAS: null
     }
   },
+  created(){
+    this.$http.get("/getGlobalIndexesData")
+    .then(res => this.DATAS = res.data)
+    .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+  },
   mounted(){
-    /* 지수 및 환율의 등락폭, 등락률 */
+    setTimeout(() => {
+      this.slider();
+      setInterval(() => this.slider(), 4000);
+      }
+      , 1600
+    );
+  },
+  updated(){
     for(const I of document.querySelectorAll(".index-values > span:nth-child(3)")) {
       if (Number(I.textContent) === 0) {
         I.className = "zero";
@@ -53,13 +48,6 @@ export default {
         I.previousSibling.className = "minus";
       };
     }
-    /* 수직 회전 */
-    setTimeout(() => {
-      this.slider();
-      setInterval(() => this.slider(), 4000);
-      }
-      , 1600
-    );
   },
   methods: {
     slider(){
