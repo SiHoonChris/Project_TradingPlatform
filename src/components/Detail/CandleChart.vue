@@ -6,20 +6,30 @@
       </div>
       <div id="chart-tool"></div>
     </div>
-    <div id="asset-chart"></div>
+    <div id="asset-chart">
+      <svg width="200%" height="100%"></svg>
+    </div>
   </div>
 </template>
 
 <script>
+import SamplePriceData from "@/assets/SamplePriceData.json"
+
 export default {
   data() {
     return {
-      assetName: null
+      assetName: null,
+      datasForChart: null
     }
   },
   created() {
-    this.$store.commit('getAssetName', this.$route.params.ticker);
-    this.assetName = this.$store.state.assetName;
+    this.$store.commit('getAssetName', this.$route.params.ticker); // 개발 중에는 주석 처리, 빌드할 때 해제
+    this.assetName = this.$store.state.assetName; // 개발 중에는 주석 처리, 빌드할 때 해제
+    //this.assetName = "name" // 개발 끝나면 지우기
+    this.datasForChart = SamplePriceData;
+  },
+  mounted() {
+    this.$Standard_Candle(this.datasForChart, '#asset-price');
   }
 }
 </script>
@@ -65,5 +75,21 @@ export default {
   #asset-chart {
     width: 100%;
     height: 90%;
+    overflow-x: scroll;
+    overflow-y: hidden;
   }
+
+  /* Scroll-bar */
+::-webkit-scrollbar-track {
+  background-color: black;
+}
+::-webkit-scrollbar {
+  background-color: black;
+  height: 1.6vh;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 30px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #333;
+}
 </style>
