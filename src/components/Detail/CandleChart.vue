@@ -29,7 +29,7 @@ export default {
     this.datasForChart = SamplePriceData;
   },
   mounted() {
-    this.$Standard_Candle(this.datasForChart, '#asset-price');
+    this.$Standard_Candle(this.datasForChart);
   }
 }
 </script>

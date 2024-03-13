@@ -2,12 +2,30 @@
   <div id="main-portfolio">
     <p id="portfolio-name">TITLE</p>
     <div id="main-donut">
-      <svg style="background:lightseagreen; width:100%; height: 361;"></svg>
+      <div style="width:100%; height: 361;"></div>
       <p id="evalutaion">Evaluation</p>
     </div>
     <div id="assets-in-portfolio"></div>
   </div>
 </template>
+
+<script>
+import SamplePortionData from "@/assets/SamplePortionData.json";
+
+export default {
+  data() {
+    return {
+      Data: null
+    }
+  },
+  created() {
+    this.Data = SamplePortionData;
+  },
+  mounted(){ 
+    this.$Donut_Chart(this.Data[0], `#main-donut div`);
+  }
+}
+</script>
 
 <style scoped>
   #main-portfolio {

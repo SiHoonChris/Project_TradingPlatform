@@ -1,0 +1,10 @@
+[
+    { "GOOGL": 8900, "AAPL": 2353, "MSFT": 5323, "KO": 1890 },
+    { "GOOGL": 25, "AAPL": 13, "MSFT": 17, "KO": 8  },
+    { "GOOGL": 8,  "AAPL": 20, "MSFT": 2,  "KO": 16 },
+    { "GOOGL": 10, "AAPL": 3,  "MSFT": 7,  "KO": 5  },
+    { "GOOGL": 18, "AAPL": 2,  "MSFT": 32, "KO": 15 },
+    { "GOOGL": 52, "AAPL": 31, "MSFT": 71, "KO": 24 },
+    { "GOOGL": 12, "AAPL": 17, "MSFT": 12, "KO": 45 },
+    { "GOOGL": 23, "AAPL": 9,  "MSFT": 19, "KO": 13 }
+]

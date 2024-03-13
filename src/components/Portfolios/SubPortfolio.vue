@@ -1,16 +1,7 @@
 <template>
   <div id="sub-portfolio">
     <div id="sub-portfolio-charts">
-      <div class="sub-donuts">1</div>
-      <div class="sub-donuts">2</div>
-      <div class="sub-donuts">3</div>
-      <div class="sub-donuts">4</div>
-      <div class="sub-donuts">5</div>
-      <div class="sub-donuts">6</div>
-      <div class="sub-donuts">7</div>
-      <div class="sub-donuts">8</div>
-      <!-- v-for 반복문 사용하기 -->
-      <!-- 이 부분도 slot으로 처리? -->
+      <div v-for="(d, i) in Data" :key="i" class="sub-donuts"></div>
     </div>
     <div id="sub-portfolio-btns">
       <div id="btn-set">
@@ -20,6 +11,26 @@
     </div>
   </div>
 </template>
+
+<script>
+import SamplePortionData from "@/assets/SamplePortionData.json";
+
+export default {
+  data() {
+    return {
+      Data: null
+    }
+  },
+  created() {
+    this.Data = SamplePortionData;
+  },
+  mounted(){ 
+    for(const i in document.querySelectorAll(".sub-donuts")) {
+      this.$Donut_Chart(this.Data[i], `.sub-donuts:nth-of-type(${Number(i)+1})`);
+    }
+  }
+}
+</script>
 
 <style scoped>
   #sub-portfolio {
