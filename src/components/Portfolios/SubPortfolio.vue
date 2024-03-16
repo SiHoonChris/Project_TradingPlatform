@@ -1,7 +1,12 @@
 <template>
   <div id="sub-portfolio">
     <div id="sub-portfolio-charts">
-      <div v-for="(d, i) in Data" :key="i" class="sub-donuts"></div>
+      <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="this.$Change_Donut_Chart('tester')">
+        <div class="sub-donuts-title">
+          <span>{{d.NAME}}</span>
+        </div>
+        <div class="sub-donuts-chart"></div>
+      </div>
     </div>
     <div id="sub-portfolio-btns">
       <div id="btn-set">
@@ -25,8 +30,8 @@ export default {
     this.Data = SamplePortionData;
   },
   mounted(){ 
-    for(const i in document.querySelectorAll(".sub-donuts")) {
-      this.$Donut_Chart(this.Data[i], `.sub-donuts:nth-of-type(${Number(i)+1})`);
+    for(const i in document.querySelectorAll(".sub-donuts-chart")) {
+      this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
     }
   }
 }
@@ -55,6 +60,21 @@ export default {
     border-right: 1px solid gray;
     border-bottom: 1px solid gray;
     color: white;
+  }
+  .sub-donuts:hover {
+    background: #5f6364;
+    cursor: pointer;
+  }
+  .sub-donuts-title {
+    width: 100%;
+    height: 10%;
+    color: white;
+    display: flex;
+    justify-content: center;
+  }
+  .sub-donuts-chart {
+    width: 100%;
+    height: 90%;
   }
   #sub-portfolio-btns {
     width: 4%;
