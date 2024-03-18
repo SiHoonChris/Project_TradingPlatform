@@ -1,0 +1,32 @@
+* PRICE : 1. 가격은 각국 화폐 단위로 기록 
+          2. 데이터 수신받아서 계산할 때, fx_rate에 기록되어 있는 환율 적용 => 원화 단위로 환산
+
+[
+    { 
+        "NAME": "My Portfolio",
+        "TYPE": "Current",
+        "ASSETS": [
+            {
+                "ASSET_NAME" : "GOOGL",
+                "PRICE" : 141.18,
+                "AMOUNT" : 15
+            },
+            {
+                "ASSET_NAME" : "AAPL",
+                "PRICE" : 172.62,
+                "AMOUNT" : 8
+            },
+            {
+                "ASSET_NAME" : "MSFT",
+                "PRICE" : 416.42,
+                "AMOUNT" : 10
+            },
+            {
+                "ASSET_NAME" : "KO",
+                "PRICE" : 59.88,
+                "AMOUNT" : 30
+            }
+        ]
+    },
+    ...
+]

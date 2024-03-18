@@ -6,10 +6,13 @@
       <p id="evalutaion">Evaluation</p>
     </div>
     <div id="assets-in-portfolio">
-      <p v-for="(d,i) in Object.keys(this.Data[0].ASSETS)" :key="i">
-        <span>{{d}}</span>
-        <span>{{this.Data[0].ASSETS[d]}}</span>
-      </p>
+      <label v-for="(d,i) in Object.keys(this.Data.ASSETS)" :key="i">
+        <input type="checkbox" name="show-color"/>
+        <div class="asset-label">
+          <span>{{d}}</span>
+          <span>{{this.Data.ASSETS[d]}}</span>
+        </div>
+      </label>
     </div>
   </div>
 </template>
@@ -25,11 +28,11 @@ export default {
     }
   },
   created() {
-    this.Data = SamplePortionData;
-    this.Title = this.Data[0].NAME;
+    this.Data = SamplePortionData[0];
+    this.Title = this.Data.NAME;
   },
   mounted(){ 
-    this.$Donut_Chart_With_Detail(this.Data[0].ASSETS, '#main-donut-chart');
+    this.$Donut_Chart_With_Detail(this.Data.ASSETS, '#main-donut-chart');
   }
 }
 </script>
@@ -70,11 +73,24 @@ export default {
     width: 100%;
     height: 18%;
     overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: left;
   }
-  #assets-in-portfolio p {
+  #assets-in-portfolio label {
+    width: 48%;
+    display: flex;
+    color: white;
+    margin: 0;
+  }
+  .asset-label {
     display: flex;
     justify-content: space-between;
-    color: white;
+    width: 70%;
+    padding: 0% 5%;
+  }
+  #assets-in-portfolio input {
+    width: 20%;
     margin: 0;
   }
 

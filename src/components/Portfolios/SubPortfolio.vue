@@ -1,7 +1,7 @@
 <template>
   <div id="sub-portfolio">
     <div id="sub-portfolio-charts">
-      <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="this.$Change_Donut_Chart('tester')">
+      <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
         <div class="sub-donuts-title">
           <span>{{d.NAME}}</span>
         </div>
@@ -32,6 +32,12 @@ export default {
   mounted(){ 
     for(const i in document.querySelectorAll(".sub-donuts-chart")) {
       this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
+    }
+  },
+  methods: {
+    Change_Donut_Chart: function(i){
+      this.$Remove_Donut_Chart("#main-donut-chart > svg");
+      this.$Donut_Chart_With_Detail(this.Data[i].ASSETS, '#main-donut-chart');
     }
   }
 }

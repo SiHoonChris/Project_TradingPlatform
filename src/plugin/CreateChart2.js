@@ -67,13 +67,12 @@ export default {
                 }
             }
         // $Donut_Chart_With_Detail
-        
-        Vue.config.globalProperties.$Change_Donut_Chart =
-            function(d) {
-                // change the donut of main with it of sub
-                alert(d);
+
+        Vue.config.globalProperties.$Remove_Donut_Chart = 
+            function(svg) {
+                document.querySelector(svg).remove();
             }
-        // $Change_Donut_Chart
+        // $Remove_Donut_Chart
 
         Vue.config.globalProperties.$Horizontal_Bar_Chart =
             function() {
