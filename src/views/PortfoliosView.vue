@@ -1,10 +1,10 @@
 <template>
   <main id="portfolios">
     <div id="main-portfolio-sector">
-      <MainPortfolio/>
+      <MainPortfolio :MainPortfolioData="MainPortfolioData" />
     </div>
     <div id="sub-portfolio-sector">
-      <SubPortfolio/>
+      <SubPortfolio @portfolioData="sendDataToMain"/>
     </div>
   </main>
 </template>
@@ -14,7 +14,17 @@ import MainPortfolio from '@/components/Portfolios/MainPortfolio.vue'
 import SubPortfolio from '@/components/Portfolios/SubPortfolio.vue'
 
 export default {
-  components: { MainPortfolio, SubPortfolio }
+  components: { MainPortfolio, SubPortfolio },
+  data(){
+    return{
+      MainPortfolioData: null
+    }
+  },
+  methods: {
+    sendDataToMain(value){
+      this.MainPortfolioData = value;
+    }
+  }
 }
 </script>
 

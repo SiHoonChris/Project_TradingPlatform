@@ -54,17 +54,60 @@ export default {
 
         Vue.config.globalProperties.$Donut_Chart_With_Detail =
             function(DATA, container) {
-                this.$Donut_Chart(DATA, container);
-                for(const path of document.querySelectorAll('path')){
-                    path.addEventListener("mouseover", e => {
-                        path.style.strokeWidth = "2px";
-                        path.style.stroke = "whitesmoke";
-                    });
-                    path.addEventListener("mouseout", e => {
-                        path.style.strokeWidth = "1px";
-                        path.style.stroke = "#171a1e";
-                    });
-                }
+                // 데이터 가공
+                const NAME_OF_PORTFOLIO = DATA.NAME,
+                      ASSETS_IN_PORTFOLIO = DATA.ASSETS;
+
+                // 포트폴리오 타이틀 출력
+                document.querySelector("#main-portfolio > #portfolio-name").textContent = NAME_OF_PORTFOLIO;
+                
+                // 도넛 차트 생성
+                const WIDTH  = Number(window.getComputedStyle(document.querySelector(container)).width.replace('px', '')),
+                      HEIGHT = Number(window.getComputedStyle(document.querySelector(container)).width.replace('px', '')),
+                      MARGIN = WIDTH * 0.05,
+                      RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
+                      
+                const svg = d3.select(container)
+                              .append("svg")
+                              .attr("width", WIDTH)
+                              .attr("height", HEIGHT)
+                              .append("g")
+                              .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
+                                
+                Colors.slice(0, Object.keys(ASSETS_IN_PORTFOLIO).length);
+                const color = d3.scaleOrdinal().range(Colors);
+                
+                const pie = d3.pie().value(d => d[1]);
+                const data_ready = pie(Object.entries(ASSETS_IN_PORTFOLIO));
+                
+                var arc = d3.arc().innerRadius(MARGIN*4).outerRadius(RADIUS);
+              
+                svg.selectAll('whatever')
+                   .data(data_ready)
+                   .enter()
+                   .append('path')
+                       .attr("class", "portions")
+                       .attr('d', arc)
+                       .attr('fill', d => color(d.data[0]) )
+                       .attr("stroke", "#171a1e")
+                       .style("stroke-width", "1.0px")
+                   .on('mouseover', function(d, i) {
+                       d3.select(this)
+                         .attr("stroke", "whitesmoke")
+                         .attr("stroke-width", "3.0px")})
+                   .on('mouseout', function(d, i) {
+                       d3.select(this).transition()
+                         .attr("stroke", "#171a1e")
+                         .attr("stroke-width", "1.0px")}) 
+                   .transition()
+                         .duration(1400)
+                         .attrTween('d', function(d) {
+                             var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+                             return function(t) {
+                                 return arc(interpolate(t));
+                             };
+                        });
+
             }
         // $Donut_Chart_With_Detail
 

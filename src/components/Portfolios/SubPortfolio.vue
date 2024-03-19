@@ -28,16 +28,19 @@ export default {
   },
   created() {
     this.Data = SamplePortionData;
+    this.$emit('portfolioData', this.Data[0]);
   },
   mounted(){ 
     for(const i in document.querySelectorAll(".sub-donuts-chart")) {
+      if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
       this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
     }
   },
   methods: {
     Change_Donut_Chart: function(i){
       this.$Remove_Donut_Chart("#main-donut-chart > svg");
-      this.$Donut_Chart_With_Detail(this.Data[i].ASSETS, '#main-donut-chart');
+      this.$emit('portfolioData', this.Data[i]);
+      this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
     }
   }
 }
@@ -53,7 +56,7 @@ export default {
   #sub-portfolio-charts {
     width: 96%;
     height: 100%;
-    border: 1px solid gray;
+    border: 0.5px solid gray;
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
@@ -61,14 +64,13 @@ export default {
     overflow-x: hidden;
   }
   .sub-donuts {
-    width: calc(100% / 3 - 1px);
-    height: calc(100% / 2);
-    border-right: 1px solid gray;
-    border-bottom: 1px solid gray;
+    width: 33.1%;
+    height: 49.99%;
+    border: 0.5px solid gray;
     color: white;
   }
   .sub-donuts:hover {
-    background: #5f6364;
+    border: 1px solid white;
     cursor: pointer;
   }
   .sub-donuts-title {

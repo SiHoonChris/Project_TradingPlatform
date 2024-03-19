@@ -1,16 +1,16 @@
 <template>
   <div id="main-portfolio">
-    <p id="portfolio-name">{{this.Title}}</p>
+    <p id="portfolio-name"></p>
     <div id="main-donut">
-      <div id="main-donut-chart" style="width:100%; height: 361;"></div>
+      <div id="main-donut-chart" style="width: 100%; height: 361px;"></div>
       <p id="evalutaion">Evaluation</p>
     </div>
     <div id="assets-in-portfolio">
-      <label v-for="(d,i) in Object.keys(this.Data.ASSETS)" :key="i">
-        <input type="checkbox" name="show-color"/>
+      <label v-for="(d,i) in Object.keys(this.Data)" :key="i">
+        <input type="checkbox" name="color-section" disabled/>
         <div class="asset-label">
           <span>{{d}}</span>
-          <span>{{this.Data.ASSETS[d]}}</span>
+          <span>{{this.Data[d]}}%</span>
         </div>
       </label>
     </div>
@@ -18,21 +18,17 @@
 </template>
 
 <script>
-import SamplePortionData from "@/assets/SamplePortionData.json";
-
 export default {
+  props: ['MainPortfolioData'],
   data() {
     return {
-      Data: null,
-      Title: null
+      Data: {"a": 0}
     }
   },
   created() {
-    this.Data = SamplePortionData[0];
-    this.Title = this.Data.NAME;
   },
-  mounted(){ 
-    this.$Donut_Chart_With_Detail(this.Data.ASSETS, '#main-donut-chart');
+  mounted(){
+    this.Data = this.MainPortfolioData.ASSETS;
   }
 }
 </script>
@@ -41,10 +37,13 @@ export default {
   #main-portfolio {
     height: 76%;
     width: 64%;
-    border: 1px solid gray;
+    border: 0.5px solid gray;
     padding: 2% 3%;
     display: flex;
     flex-direction: column;
+  }
+  #main-portfolio:hover {
+    border: 1px solid white;
   }
 
   #portfolio-name {
@@ -58,15 +57,16 @@ export default {
 
   #main-donut {
     width: 100%;
-    height: 78%;
+    height: 76%;
     display: flex;
     flex-direction: column;
   }
 
   #evalutaion {
-    background: lavender;
+    color: white;
     text-align: center;
     margin: 0;
+    border-bottom: 1px solid gray;
   }
 
   #assets-in-portfolio {
@@ -76,12 +76,15 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: left;
+    align-items: center;
   }
   #assets-in-portfolio label {
-    width: 48%;
+    width: 50%;
+    height: 30%;
+    margin: 1% 0%;
     display: flex;
+    align-items: center;
     color: white;
-    margin: 0;
   }
   .asset-label {
     display: flex;
@@ -89,9 +92,13 @@ export default {
     width: 70%;
     padding: 0% 5%;
   }
-  #assets-in-portfolio input {
-    width: 20%;
+  #assets-in-portfolio input[type="checkbox"] {
+    width: 14%;
+    height: 100%;
     margin: 0;
+    border-radius: 25%;
+    appearance: none;
+    background-color: rosybrown;
   }
 
 </style>
