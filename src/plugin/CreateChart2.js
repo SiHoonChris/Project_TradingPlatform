@@ -88,7 +88,7 @@ export default {
                    .append('path')
                        .attr("class", "portions")
                        .attr('d', arc)
-                       .attr('fill', d => color(d.data[0]) )
+                       .attr('fill', d => color(d.data[0]))
                        .attr("stroke", "#171a1e")
                        .style("stroke-width", "1.0px")
                    .on('mouseover', function(d, i) {
@@ -108,6 +108,9 @@ export default {
                              };
                         });
 
+                // 태그 색상 입히기
+                const ColorTags = document.querySelectorAll("input[name='color-section']");
+                for(let i=0 ; i < ColorTags.length ; i++) {ColorTags[i].style.backgroundColor = Colors[i];}
             }
         // $Donut_Chart_With_Detail
 
@@ -116,11 +119,5 @@ export default {
                 document.querySelector(svg).remove();
             }
         // $Remove_Donut_Chart
-
-        Vue.config.globalProperties.$Horizontal_Bar_Chart =
-            function() {
-                console.log('as');
-            }
-        // $Horizontal_Bar_Chart
     }
 }

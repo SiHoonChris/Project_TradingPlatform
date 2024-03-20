@@ -10,7 +10,7 @@
         <input type="checkbox" name="color-section" disabled/>
         <div class="asset-label">
           <span>{{d}}</span>
-          <span>{{this.Data[d]}}%</span>
+          <span>{{((this.Data[d]/this.Sum)*100).toFixed(4)}}%</span>
         </div>
       </label>
     </div>
@@ -22,13 +22,19 @@ export default {
   props: ['MainPortfolioData'],
   data() {
     return {
-      Data: {"a": 0}
+      Data: {"": 0},
+      Sum: 1
     }
-  },
-  created() {
   },
   mounted(){
     this.Data = this.MainPortfolioData.ASSETS;
+    this.Sum = Object.values(this.Data).reduce((a, b)=> a + b, 0);
+  },
+  watch: {
+    MainPortfolioData: function(d){
+      this.Data = d.ASSETS;
+      this.Sum = Object.values(this.Data).reduce((a, b)=> a + b, 0);
+    }
   }
 }
 </script>
@@ -98,7 +104,7 @@ export default {
     margin: 0;
     border-radius: 25%;
     appearance: none;
-    background-color: rosybrown;
+    background-color: none;
   }
 
 </style>

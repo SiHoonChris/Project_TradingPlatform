@@ -31,7 +31,7 @@ export default {
     this.$emit('portfolioData', this.Data[0]);
   },
   mounted(){ 
-    for(const i in document.querySelectorAll(".sub-donuts-chart")) {
+    for(let i=0 ; i < document.querySelectorAll(".sub-donuts-chart").length ; i++) {
       if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
       this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
     }
