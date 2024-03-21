@@ -107,12 +107,15 @@ export default {
                                  return arc(interpolate(t));
                              };
                         });
+            }
+        // $Donut_Chart_With_Detail
 
-                // 태그 색상 입히기
+        Vue.config.globalProperties.$Color_Tag = 
+            function() {
                 const ColorTags = document.querySelectorAll("input[name='color-section']");
                 for(let i=0 ; i < ColorTags.length ; i++) {ColorTags[i].style.backgroundColor = Colors[i];}
             }
-        // $Donut_Chart_With_Detail
+        // $Color_Tag
 
         Vue.config.globalProperties.$Remove_Donut_Chart = 
             function(svg) {

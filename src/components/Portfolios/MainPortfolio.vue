@@ -30,6 +30,9 @@ export default {
     this.Data = this.MainPortfolioData.ASSETS;
     this.Sum = Object.values(this.Data).reduce((a, b)=> a + b, 0);
   },
+  updated(){
+    this.$Color_Tag();
+  },
   watch: {
     MainPortfolioData: function(d){
       this.Data = d.ASSETS;
