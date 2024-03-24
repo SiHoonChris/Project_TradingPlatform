@@ -31,14 +31,14 @@
         <table>
           <tbody>
             <template v-for="(e,i) in Data" :key="i">
-              <tr>
+              <tr v-if="i >= this.RangeNo * this.numOfList && i < this.RangeNo * this.numOfList + this.numOfList">
                 <td rowspan="2">{{e.Date}}</td>
                 <td>{{e.Transaction}}</td>
                 <td rowspan="2">{{e.Name}}</td>
                 <td>{{e.Transaction !== "Banking"  ?  e.Price === 0 ? e.FX_Rate.toFixed(4) : e.Price.toFixed(4)  :  0}}</td>
                 <td>{{e.Currency}}</td>
               </tr>
-              <tr>
+              <tr v-if="i >= this.RangeNo * this.numOfList && i < this.RangeNo * this.numOfList + this.numOfList">
                 <td>{{e.Detail}}</td>
                 <td>{{e.Transaction !== 'Banking' ? Number(e.Amount).toLocaleString() : 0}}</td>
                 <td>{{Number(e.Value).toLocaleString()}}</td>
@@ -51,16 +51,7 @@
     
     <div id="pagination">
       <p>
-        <span>1</span>
-        <span>2</span>
-        <span>3</span>
-        <span>4</span>
-        <span>5</span>
-        <span>6</span>
-        <span>7</span>
-        <span>8</span>
-        <span>9</span>
-        <span>10</span>
+        <span v-for="(e, i) in Data.filter((e,i) => i % 15 === 0)" :key="i" @click="pageNum(i)">{{i+1}}</span>
       </p>
       <span>[ Total : {{this.Data.length}} ]</span>
     </div>
@@ -75,6 +66,8 @@ export default {
   data() {
     return {
       Data: null,
+      RangeNo: 0,
+      numOfList: 15,
       Settlement: null,
       transaction_list: [ 
         "All", 
@@ -93,6 +86,20 @@ export default {
   },
   created(){
     this.Data = SampleTransactionList;
+  },
+  mounted(){
+    this.onThisPage(this.RangeNo);
+  },
+  methods: {
+    pageNum(n) {
+      this.RangeNo = n;
+      this.onThisPage(n);
+    },
+    onThisPage(n) {
+      const PAGES = document.querySelectorAll("#pagination p span");
+      for(const e of PAGES){e.setAttribute("class", "off");}
+      PAGES[n].setAttribute("class", "on");
+    }
   }
 }
 </script>
@@ -115,11 +122,14 @@ export default {
     color: white;
     margin-right: 1%;
     margin-bottom: 1%;
+    padding-top: 1px;
+    padding-bottom: 1px;
     font-weight: bold;
-    width: 6vw;
+    width: 7vw;
     height: 3vh;
   }
   #table-sort input {
+    width: 12vw;
     height: 3vh;
     border: 1px solid gray;
     background: #0a0a0a;
@@ -205,9 +215,9 @@ export default {
   }
   #pagination > p > span {
     margin: 0 1.4%;
-  }
-  #pagination > p > span:hover {
     cursor: pointer;
+  }
+  #pagination > p > span.on {
     font-weight: bold;
     color: whitesmoke;
   }
