@@ -2,8 +2,8 @@
   <div id="transaction-table">
 
     <div id="table-sort">
-      <select>
-        <option v-for="(d, i) in transaction_list" :key="i">{{d}}</option>
+      <select v-model="ParamValue">
+        <option v-for="(d, i) in transaction_list" :key="i" :value="d">{{d}}</option>
       </select>
       <input type='text' placeholder="Search"/>
     </div>
@@ -32,7 +32,7 @@
           <tbody>
             <template v-for="(e,i) in Data" :key="i">
               <tr v-if="i >= this.RangeNo * this.numOfList && i < this.RangeNo * this.numOfList + this.numOfList">
-                <td rowspan="2">{{e.Date}}</td>
+                <td rowspan="2">{{(new Date(e.Date)).toLocaleString('ja-JP')}}</td>
                 <td>{{e.Transaction}}</td>
                 <td rowspan="2">{{e.Name}}</td>
                 <td>{{e.Transaction !== "Banking"  ?  e.Price === 0 ? e.FX_Rate.toFixed(4) : e.Price.toFixed(4)  :  0}}</td>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import SampleTransactionList from "@/assets/SampleTransactionList.json"
+// import SampleTransactionList from "@/assets/SampleTransactionList.json"
 
 export default {
   data() {
@@ -81,14 +81,21 @@ export default {
         "Exchange-Sell",
         "Buy",
         "Sell"
-      ]
+      ],
+      ParamValue: "All"
     }
   },
   created(){
-    this.Data = SampleTransactionList;
+    // this.Data = SampleTransactionList;
+    this.getAllTransactionHistory();
   },
   mounted(){
     this.onThisPage(this.RangeNo);
+  },
+  watch: {
+    ParamValue: function(val){
+      val === "All" ? this.getAllTransactionHistory() : this.getTransactionHistory(val) ;
+    }
   },
   methods: {
     pageNum(n) {
@@ -99,6 +106,16 @@ export default {
       const PAGES = document.querySelectorAll("#pagination p span");
       for(const e of PAGES){e.setAttribute("class", "off");}
       PAGES[n].setAttribute("class", "on");
+    },
+    getAllTransactionHistory(){
+      this.$http.get("/getAllTransactionHistory")
+        .then(res => this.Data = res.data)
+        .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+    },
+    getTransactionHistory(d){
+      this.$http.get("/getTransactionHistory", {params: { PARAM: d }})
+        .then(res => this.Data = res.data)
+        .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
     }
   }
 }
@@ -125,7 +142,7 @@ export default {
     padding-top: 1px;
     padding-bottom: 1px;
     font-weight: bold;
-    width: 7vw;
+    width: 8vw;
     height: 3vh;
   }
   #table-sort input {
