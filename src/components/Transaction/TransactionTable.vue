@@ -5,7 +5,7 @@
       <select v-model="ParamValue">
         <option v-for="(d, i) in transaction_list" :key="i" :value="d">{{d}}</option>
       </select>
-      <input type='text' placeholder="Search"/>
+      <input type='text' placeholder="Search" v-model="searchName"/>
     </div>
     
     <div id="transaction-list">
@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       Data: null,
+      backupData: null,
       RangeNo: 0,
       numOfList: 15,
       Settlement: null,
@@ -82,7 +83,8 @@ export default {
         "Buy",
         "Sell"
       ],
-      ParamValue: "All"
+      ParamValue: "All",
+      searchName: ''
     }
   },
   created(){
@@ -95,6 +97,11 @@ export default {
   watch: {
     ParamValue: function(val){
       val === "All" ? this.getAllTransactionHistory() : this.getTransactionHistory(val) ;
+      this.Data = this.Data.filter(e => e.Name.toLowerCase().startsWith(this.searchName.toLowerCase()));
+    },
+    searchName: function(val) {
+      this.Data = this.backupData;
+      this.Data = this.Data.filter(e => e.Name.toLowerCase().startsWith(val.toLowerCase()));
     }
   },
   methods: {
@@ -109,12 +116,18 @@ export default {
     },
     getAllTransactionHistory(){
       this.$http.get("/getAllTransactionHistory")
-        .then(res => this.Data = res.data)
+        .then(res => {
+          this.Data = res.data;
+          this.backupData = this.Data;
+        })
         .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
     },
     getTransactionHistory(d){
       this.$http.get("/getTransactionHistory", {params: { PARAM: d }})
-        .then(res => this.Data = res.data)
+        .then(res => {
+          this.Data = res.data;
+          this.backupData = this.Data;
+        })
         .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
     }
   }
