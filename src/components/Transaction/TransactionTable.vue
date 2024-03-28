@@ -5,7 +5,7 @@
       <select v-model="ParamValue">
         <option v-for="(d, i) in transaction_list" :key="i" :value="d">{{d}}</option>
       </select>
-      <input type='text' placeholder="Search" v-model="searchName"/>
+      <input type='text' placeholder="Search" v-model="ParamInput"/>
     </div>
     
     <div id="transaction-list">
@@ -35,7 +35,7 @@
                 <td rowspan="2">{{(new Date(e.Date)).toLocaleString('ja-JP')}}</td>
                 <td>{{e.Transaction}}</td>
                 <td rowspan="2">{{e.Name}}</td>
-                <td>{{e.Transaction !== "Banking"  ?  e.Price === 0 ? e.FX_Rate.toFixed(4) : e.Price.toFixed(4)  :  0}}</td>
+                <td>{{e.Transaction !== "Banking"  ?  e.Price === 0 ? e.Fx_Rate.toFixed(4) : e.Price.toFixed(4)  :  0}}</td>
                 <td>{{e.Currency}}</td>
               </tr>
               <tr v-if="i >= this.RangeNo * this.numOfList && i < this.RangeNo * this.numOfList + this.numOfList">
@@ -66,7 +66,6 @@ export default {
   data() {
     return {
       Data: null,
-      backupData: null,
       RangeNo: 0,
       numOfList: 15,
       Settlement: null,
@@ -84,24 +83,24 @@ export default {
         "Sell"
       ],
       ParamValue: "All",
-      searchName: ''
+      ParamInput: ''
     }
   },
   created(){
     // this.Data = SampleTransactionList;
-    this.getAllTransactionHistory();
+    this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue , this.ParamInput) ;
   },
-  mounted(){
+  updated(){
     this.onThisPage(this.RangeNo);
   },
   watch: {
     ParamValue: function(val){
-      val === "All" ? this.getAllTransactionHistory() : this.getTransactionHistory(val) ;
-      this.Data = this.Data.filter(e => e.Name.toLowerCase().startsWith(this.searchName.toLowerCase()));
+      this.pageNum(0);
+      this.getTransactionHistory(val === "All" ? '' : val, this.ParamInput);
     },
-    searchName: function(val) {
-      this.Data = this.backupData;
-      this.Data = this.Data.filter(e => e.Name.toLowerCase().startsWith(val.toLowerCase()));
+    ParamInput: function(val) {
+      this.pageNum(0);
+      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue, val);
     }
   },
   methods: {
@@ -114,20 +113,9 @@ export default {
       for(const e of PAGES){e.setAttribute("class", "off");}
       PAGES[n].setAttribute("class", "on");
     },
-    getAllTransactionHistory(){
-      this.$http.get("/getAllTransactionHistory")
-        .then(res => {
-          this.Data = res.data;
-          this.backupData = this.Data;
-        })
-        .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
-    },
-    getTransactionHistory(d){
-      this.$http.get("/getTransactionHistory", {params: { PARAM: d }})
-        .then(res => {
-          this.Data = res.data;
-          this.backupData = this.Data;
-        })
+    getTransactionHistory(n, m){
+      this.$http.get("/getTransactionHistory", {params: { Option: n , Input: m }})
+        .then(res => this.Data = res.data) // res.data가 null 일 때의 처리 필요
         .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
     }
   }
@@ -221,12 +209,12 @@ export default {
   td:nth-child(4) { width: 24%; border-left: 1px solid gray; }
   td:nth-child(5) { width: 23.2%; border-left: 1px solid gray; }
   tr:nth-child(odd) > td:nth-child(1) , tr:nth-child(odd) > td:nth-child(3) { vertical-align: middle; text-align: center; }
-  tr:nth-child(odd) > td:nth-child(2) , tr:nth-child(odd) > td:nth-child(4) , tr:nth-child(odd) > td:nth-child(5) { vertical-align: top; }
-  tr:nth-child(even) > td { vertical-align: top; }
+  tr:nth-child(odd) > td:nth-child(2) , tr:nth-child(odd) > td:nth-child(4) , tr:nth-child(odd) > td:nth-child(5) { vertical-align: middle; }
+  tr:nth-child(even) > td { vertical-align: middle; }
   tr:nth-child(odd) > td:nth-child(4) , tr:nth-child(odd) > td:nth-child(5) , 
   tr:nth-child(even) > td:nth-child(2) , tr:nth-child(even) > td:nth-child(3) { text-align: right; }
   #transaction-list-tbody > table > tbody > tr > td:nth-child(5) { border-right: 1px solid gray; }
-  tr:nth-child(4n+1) > td , tr:nth-child(4n+2) > td {background:#1a1a1a;}
+  tr:nth-child(4n+1) > td , tr:nth-child(4n+2) > td { background:#1a1a1a; }
 
   #pagination {
     width: 100%;
