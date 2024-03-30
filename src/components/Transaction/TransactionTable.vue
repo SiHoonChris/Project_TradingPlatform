@@ -31,14 +31,14 @@
         <table>
           <tbody>
             <template v-for="(e,i) in Data" :key="i">
-              <tr v-if="i >= this.RangeNo * this.numOfList && i < this.RangeNo * this.numOfList + this.numOfList">
+              <tr v-if="i >= this.pageNo * this.listCountPerPage && i < this.pageNo * this.listCountPerPage + this.listCountPerPage">
                 <td rowspan="2">{{(new Date(e.Date)).toLocaleString('ja-JP')}}</td>
                 <td>{{e.Transaction}}</td>
                 <td rowspan="2">{{e.Name}}</td>
                 <td>{{e.Transaction !== "Banking"  ?  e.Price === 0 ? e.Fx_Rate.toFixed(4) : e.Price.toFixed(4)  :  0}}</td>
                 <td>{{e.Currency}}</td>
               </tr>
-              <tr v-if="i >= this.RangeNo * this.numOfList && i < this.RangeNo * this.numOfList + this.numOfList">
+              <tr v-if="i >= this.pageNo * this.listCountPerPage && i < this.pageNo * this.listCountPerPage + this.listCountPerPage">
                 <td>{{e.Detail}}</td>
                 <td>{{e.Transaction !== 'Banking' ? Number(e.Amount).toLocaleString() : 0}}</td>
                 <td>{{Number(e.Value).toLocaleString()}}</td>
@@ -51,7 +51,22 @@
     
     <div id="pagination">
       <p>
-        <span v-for="(e, i) in Data.filter((e,i) => i % 15 === 0)" :key="i" @click="pageNum(i)">{{i+1}}</span>
+        <span v-if="this.pgnNo > 0" 
+              class="previous" 
+              @click="setPagination(this.pgnNo, 'prev')">
+          &lt;
+        </span>
+        <template v-for="(e, i) in Data.filter((el, idx) => idx % this.listCountPerPage === 0)" :key="i">
+          <span v-if="i >= this.pgnRange * this.pgnNo  &&  i < this.pgnRange * (this.pgnNo + 1) "
+                class="number" @click="pageNum(i)">
+            {{i+1}}
+          </span>
+        </template>
+        <span v-if="activeNext" 
+              class="later" 
+              @click="setPagination(this.pgnNo, 'later')">
+          &gt;
+        </span>
       </p>
       <span>[ Total : {{this.Data.length}} ]</span>
     </div>
@@ -60,38 +75,35 @@
 </template>
 
 <script>
-// import SampleTransactionList from "@/assets/SampleTransactionList.json"
-
 export default {
   data() {
     return {
       Data: null,
-      RangeNo: 0,
-      numOfList: 15,
+      pageNo: 0,
+      listCountPerPage: 15,
+      pgnRange: 10,
+      pgnNo: 0,
+      activeNext: false,
       Settlement: null,
       transaction_list: [ 
         "All", 
-        "Banking", 
-        "Exchange", 
-        "Trading",
-        "Deposit",
-        "Withdraw",
-        "Dividend",
-        "Exchange-Buy",
-        "Exchange-Sell",
-        "Buy",
-        "Sell"
+        "Banking", "Exchange", "Trading",
+        "Deposit", "Withdraw", "Dividend",
+        "Exchange-Buy", "Exchange-Sell",
+        "Buy", "Sell"
       ],
       ParamValue: "All",
       ParamInput: ''
     }
   },
   created(){
-    // this.Data = SampleTransactionList;
     this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue , this.ParamInput) ;
   },
   updated(){
-    this.onThisPage(this.RangeNo);
+    this.onThisPage(this.pageNo % this.pgnRange);
+    this.activeNext = 
+      document.querySelectorAll("#pagination span.number").length === this.pgnRange
+      ? true : false;
   },
   watch: {
     ParamValue: function(val){
@@ -104,19 +116,23 @@ export default {
     }
   },
   methods: {
-    pageNum(n) {
-      this.RangeNo = n;
-      this.onThisPage(n);
-    },
-    onThisPage(n) {
-      const PAGES = document.querySelectorAll("#pagination p span");
-      for(const e of PAGES){e.setAttribute("class", "off");}
-      PAGES[n].setAttribute("class", "on");
-    },
     getTransactionHistory(n, m){
       this.$http.get("/getTransactionHistory", {params: { Option: n , Input: m }})
         .then(res => this.Data = res.data) // res.data가 null 일 때의 처리 필요
         .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+    },
+    pageNum(n) {
+      this.pageNo = n;
+      this.onThisPage(n % this.pgnRange);
+    },
+    onThisPage(n) {
+      const PAGES = document.querySelectorAll("#pagination p span.number");
+      for(const e of PAGES) {e.classList.remove("on");}
+      PAGES[n].classList.add("on");
+    },
+    setPagination(n, cond){
+      this.pgnNo = cond === 'later' ? ++n : --n;
+      this.pageNum(this.pgnNo * this.pgnRange);
     }
   }
 }
@@ -239,8 +255,9 @@ export default {
     font-weight: bold;
     color: whitesmoke;
   }
-  #pagination > p > span:nth-child(10) {
-    content: '>';
+  #pagination > p > span.previous:hover, #pagination > p > span.later:hover {
+    color: whitesmoke;
+    font-weight: bold;
   }
   #pagination > span {
     width: 20%;

@@ -63,6 +63,10 @@ export default {
   watch: {
     date_from: function(val){
       this.config_to.minDate = val;
+      // emit으로 부모 컴포넌트에 전송
+    },
+    date_to: function(val){
+      // emit으로 부모 컴포넌트에 전송
     }
   },
   methods: {
