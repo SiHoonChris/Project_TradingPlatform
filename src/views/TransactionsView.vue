@@ -1,10 +1,10 @@
 <template>
   <main id="transaction">
     <div id="transaction-calendar-sector">
-      <TransactionCalendar/>
+      <TransactionCalendar @setDateFrom="getDateFrom" @setDateTo="getDateTo"/>
     </div>
     <div id="transaction-table-sector">
-      <TransactionTable/>
+      <TransactionTable :dateFrom="sendDateFrom" :dateTo="sendDateTo"/>
     </div>
   </main>
 </template>
@@ -14,7 +14,17 @@ import TransactionCalendar from '@/components/Transaction/TransactionCalendar.vu
 import TransactionTable from '@/components/Transaction/TransactionTable.vue'
 
 export default {
-  components: { TransactionCalendar, TransactionTable }
+  components: { TransactionCalendar, TransactionTable },
+  data() {
+    return {
+      sendDateFrom: null,
+      sendDateTo: null,
+    }
+  },
+  methods: {
+    getDateFrom(value){ this.sendDateFrom = value; },
+    getDateTo(value){ this.sendDateTo = value; }
+  }
 }
 </script>
 

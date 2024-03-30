@@ -76,6 +76,7 @@
 
 <script>
 export default {
+  props: ['dateFrom', 'dateTo'],
   data() {
     return {
       Data: null,
@@ -91,13 +92,20 @@ export default {
         "Deposit", "Withdraw", "Dividend",
         "Exchange-Buy", "Exchange-Sell",
         "Buy", "Sell"
-      ],
-      ParamValue: "All",
-      ParamInput: ''
+      ], 
+      ParamValue: "All", 
+      ParamInput: '',
+      ParamDateFrom: '',
+      ParamDateTo: ''
     }
   },
   created(){
-    this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue , this.ParamInput) ;
+    let today = new Date();   
+    let dateInit = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
+    this.getTransactionHistory(
+      this.ParamValue === "All" ? '' : this.ParamValue , 
+      this.ParamInput, dateInit, dateInit
+    );
   },
   updated(){
     this.onThisPage(this.pageNo % this.pgnRange);
@@ -105,19 +113,27 @@ export default {
       document.querySelectorAll("#pagination span.number").length === this.pgnRange
       ? true : false;
   },
-  watch: {
+  watch: { // 이거 나중에 setup - composition API였나? 그거 써서 하나로 합쳐
     ParamValue: function(val){
+      this.getTransactionHistory(val === "All" ? '' : val, this.ParamInput, this.dateFrom, this.dateTo);
       this.pageNum(0);
-      this.getTransactionHistory(val === "All" ? '' : val, this.ParamInput);
     },
     ParamInput: function(val) {
+      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue, val, this.dateFrom, this.dateTo);
       this.pageNum(0);
-      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue, val);
+    },
+    dateFrom: function(val) {
+      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue, this.ParamInput, val, this.dateTo);
+      this.pageNum(0);
+    },
+    dateTo: function(val) {
+      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue,  this.ParamInput, this.dateFrom, val);
+      this.pageNum(0);
     }
   },
   methods: {
-    getTransactionHistory(n, m){
-      this.$http.get("/getTransactionHistory", {params: { Option: n , Input: m }})
+    getTransactionHistory(pv, pi, pdf, pdt){
+      this.$http.get("/getTransactionHistory", {params: { Option: pv, Input: pi, DateFrom: pdf, DateTo: pdt }})
         .then(res => this.Data = res.data) // res.data가 null 일 때의 처리 필요
         .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
     },
