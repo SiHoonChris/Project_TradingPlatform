@@ -31,14 +31,14 @@
         <table>
           <tbody>
             <template v-for="(e,i) in Data" :key="i">
-              <tr v-if="i >= this.pageNo * this.listCountPerPage && i < this.pageNo * this.listCountPerPage + this.listCountPerPage">
+              <tr v-if="i >= pageNo * listCountPerPage && i < pageNo * listCountPerPage + listCountPerPage">
                 <td rowspan="2">{{(new Date(e.Date)).toLocaleString('ja-JP')}}</td>
                 <td>{{e.Transaction}}</td>
                 <td rowspan="2">{{e.Name}}</td>
                 <td>{{e.Transaction !== "Banking"  ?  e.Price === 0 ? e.Fx_Rate.toFixed(4) : e.Price.toFixed(4)  :  0}}</td>
                 <td>{{e.Currency}}</td>
               </tr>
-              <tr v-if="i >= this.pageNo * this.listCountPerPage && i < this.pageNo * this.listCountPerPage + this.listCountPerPage">
+              <tr v-if="i >= pageNo * listCountPerPage && i < pageNo * listCountPerPage + listCountPerPage">
                 <td>{{e.Detail}}</td>
                 <td>{{e.Transaction !== 'Banking' ? Number(e.Amount).toLocaleString() : 0}}</td>
                 <td>{{Number(e.Value).toLocaleString()}}</td>
@@ -51,105 +51,97 @@
     
     <div id="pagination">
       <p>
-        <span v-if="this.pgnNo > 0" 
+        <span v-if="pgnNo > 0" 
               class="previous" 
-              @click="setPagination(this.pgnNo, 'prev')">
+              @click="setPagination(pgnNo, 'prev')">
           &lt;
         </span>
-        <template v-for="(e, i) in Data.filter((el, idx) => idx % this.listCountPerPage === 0)" :key="i">
-          <span v-if="i >= this.pgnRange * this.pgnNo  &&  i < this.pgnRange * (this.pgnNo + 1) "
+        <template v-for="(e, i) in Data.filter((el, idx) => idx % listCountPerPage === 0)" :key="i">
+          <span v-if="i >= pgnRange * pgnNo  &&  i < pgnRange * (pgnNo + 1) "
                 class="number" @click="pageNum(i)">
             {{i+1}}
           </span>
         </template>
         <span v-if="activeNext" 
               class="later" 
-              @click="setPagination(this.pgnNo, 'later')">
+              @click="setPagination(pgnNo, 'later')">
           &gt;
         </span>
       </p>
-      <span>[ Total : {{this.Data.length}} ]</span>
+      <span>[ Total : {{Data.length}} ]</span>
     </div>
 
   </div>
 </template>
 
 <script>
+import { ref, toRefs, onUpdated, watch } from 'vue';
+import axios from 'axios';
+
 export default {
   props: ['dateFrom', 'dateTo'],
-  data() {
-    return {
-      Data: null,
-      pageNo: 0,
-      listCountPerPage: 15,
-      pgnRange: 10,
-      pgnNo: 0,
-      activeNext: false,
-      Settlement: null,
-      transaction_list: [ 
-        "All", 
-        "Banking", "Exchange", "Trading",
-        "Deposit", "Withdraw", "Dividend",
-        "Exchange-Buy", "Exchange-Sell",
-        "Buy", "Sell"
-      ], 
-      ParamValue: "All", 
-      ParamInput: '',
-      ParamDateFrom: '',
-      ParamDateTo: ''
-    }
-  },
-  created(){
-    let today = new Date();   
-    let dateInit = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`;
-    this.getTransactionHistory(
-      this.ParamValue === "All" ? '' : this.ParamValue , 
-      this.ParamInput, dateInit, dateInit
-    );
-  },
-  updated(){
-    this.onThisPage(this.pageNo % this.pgnRange);
-    this.activeNext = 
-      document.querySelectorAll("#pagination span.number").length === this.pgnRange
-      ? true : false;
-  },
-  watch: { // 이거 나중에 setup - composition API였나? 그거 써서 하나로 합쳐
-    ParamValue: function(val){
-      this.getTransactionHistory(val === "All" ? '' : val, this.ParamInput, this.dateFrom, this.dateTo);
-      this.pageNum(0);
-    },
-    ParamInput: function(val) {
-      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue, val, this.dateFrom, this.dateTo);
-      this.pageNum(0);
-    },
-    dateFrom: function(val) {
-      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue, this.ParamInput, val, this.dateTo);
-      this.pageNum(0);
-    },
-    dateTo: function(val) {
-      this.getTransactionHistory(this.ParamValue === "All" ? '' : this.ParamValue,  this.ParamInput, this.dateFrom, val);
-      this.pageNum(0);
-    }
-  },
-  methods: {
-    getTransactionHistory(pv, pi, pdf, pdt){
-      this.$http.get("/getTransactionHistory", {params: { Option: pv, Input: pi, DateFrom: pdf, DateTo: pdt }})
-        .then(res => this.Data = res.data) // res.data가 null 일 때의 처리 필요
+  setup(props) {
+    /* Define Variables */
+    const Data = ref(null);
+    const pageNo = ref(0);
+    const listCountPerPage = 15;
+    const pgnRange = 10;
+    const pgnNo = ref(0);
+    const activeNext = ref(false);
+    const transaction_list = [ 
+      "All", 
+      "Banking", "Exchange", "Trading",
+      "Deposit", "Withdraw", "Dividend",
+      "Exchange-Buy", "Exchange-Sell",
+      "Buy", "Sell"
+    ];
+    const ParamValue = ref('All');
+    const ParamInput = ref('');
+    const ParamDateFrom = toRefs(props).dateFrom;
+    const ParamDateTo = toRefs(props).dateTo;
+    
+    /* Define Functions */
+    const getTransactionHistory = (pv, pi, pdf, pdt) => {   
+      axios.get("/getTransactionHistory", {params: { Option: pv, Input: pi, DateFrom: pdf, DateTo: pdt }})
+        .then(res => Data.value = res.data)
         .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
-    },
-    pageNum(n) {
-      this.pageNo = n;
-      this.onThisPage(n % this.pgnRange);
-    },
-    onThisPage(n) {
+    }
+    const pageNum = (n) => {
+      pageNo.value = n;
+      onThisPage(n % pgnRange);
+    }
+    const onThisPage = (n) => {
       const PAGES = document.querySelectorAll("#pagination p span.number");
       for(const e of PAGES) {e.classList.remove("on");}
       PAGES[n].classList.add("on");
-    },
-    setPagination(n, cond){
-      this.pgnNo = cond === 'later' ? ++n : --n;
-      this.pageNum(this.pgnNo * this.pgnRange);
     }
+    const setPagination = (n, cond) => {
+      pgnNo.value = cond === 'later' ? ++n : --n;
+      pageNum(pgnNo.value * pgnRange);
+    }
+
+    /* LifeCycle Hook - Updated */
+    onUpdated(()=>{
+      onThisPage(pageNo.value % pgnRange);
+      activeNext.value = 
+        document.querySelectorAll("#pagination span.number").length === pgnRange
+        ? true : false;
+    });
+    /* watch */
+    watch(
+      [ ParamValue, ParamInput, ParamDateFrom, ParamDateTo ], 
+      ( [pv, pi, df, dt] ) => {
+        getTransactionHistory(pv === "All" ? '' : pv, pi, df, dt);
+        pageNum(0);
+        pgnNo.value = 0;
+      }
+    );
+
+    return {
+      Data, ParamValue, ParamInput, transaction_list, 
+      pageNo, listCountPerPage, pgnRange, pgnNo, activeNext,
+      pageNum, setPagination
+    };
   }
 }
 </script>
