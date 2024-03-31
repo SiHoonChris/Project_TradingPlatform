@@ -27,14 +27,32 @@ export default {
       config_from: {
         inline: true,
         enableTime: false,
-        maxDate: "today"
+        maxDate: "today",
+        onYearChange: function(){
+
+        },
+        onMonthChange: function(){
+
+        },
+        onChange: function(){
+
+        }
       },
       date_to: null, 
       config_to: {
         inline: true,
         enableTime: false,
         minDate: null,
-        maxDate: "today"
+        maxDate: "today",
+        onYearChange: function(){
+
+        },
+        onMonthChange: function(){
+
+        },
+        onChange: function(){
+          
+        }
       },
       WIDTH: null,
       HEIGHT: null
