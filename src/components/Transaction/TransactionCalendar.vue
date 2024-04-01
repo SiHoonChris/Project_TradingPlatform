@@ -29,13 +29,72 @@ export default {
         enableTime: false,
         maxDate: "today",
         onYearChange: function(){
-
+          for(const E of document.querySelectorAll(".flatpickr-calendar")){
+            E.style.width = window.getComputedStyle(document.querySelector("#select-from")).width;
+            E.style.height = window.getComputedStyle(document.querySelector("#select-from")).height;
+          }
+          for(const E of document.querySelectorAll(".flatpickr-months")){
+            E.style.height = '15%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-innerContainer")){
+            E.style.height = '85%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-rContainer")){
+            E.style.width = '100%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-weekdays")){
+            E.style.height = '16%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-days")){
+            E.style.width = '100%'; E.style.height = '84%';
+          }
+          for(const E of document.querySelectorAll(".dayContainer")){
+            E.style.minWidth = 'none'; E.style.maxWidth = 'none';
+            E.style.width = '100%'; E.style.height = 'calc(100% / 6)';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-day")){
+            E.style.height = '100%'; E.style.lineHeight = '180%';
+            E.style.maxWidth = 'none';
+          }
+          for(const e of document.querySelectorAll(".flatpickr-day.selected")) {
+            // e.style.color = "white";
+            e.style.background = "darkgreen";
+            e.style.borderColor = "darkgreen";
+          }
         },
         onMonthChange: function(){
-
-        },
-        onChange: function(){
-
+          for(const E of document.querySelectorAll(".flatpickr-calendar")){
+            E.style.width = window.getComputedStyle(document.querySelector("#select-from")).width;
+            E.style.height = window.getComputedStyle(document.querySelector("#select-from")).height;
+          }
+          for(const E of document.querySelectorAll(".flatpickr-months")){
+            E.style.height = '15%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-innerContainer")){
+            E.style.height = '85%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-rContainer")){
+            E.style.width = '100%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-weekdays")){
+            E.style.height = '16%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-days")){
+            E.style.width = '100%'; E.style.height = '84%';
+          }
+          for(const E of document.querySelectorAll(".dayContainer")){
+            E.style.minWidth = 'none'; E.style.maxWidth = 'none';
+            E.style.width = '100%'; E.style.height = 'calc(100% / 6)';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-day")){
+            E.style.height = '100%'; E.style.lineHeight = '180%';
+            E.style.maxWidth = 'none';
+          }
+          for(const e of document.querySelectorAll(".flatpickr-day.selected")) {
+            // e.style.color = "white";
+            e.style.background = "darkgreen";
+            e.style.borderColor = "darkgreen";
+          }
         }
       },
       date_to: null, 
@@ -45,17 +104,74 @@ export default {
         minDate: null,
         maxDate: "today",
         onYearChange: function(){
-
+          for(const E of document.querySelectorAll(".flatpickr-calendar")){
+            E.style.width = window.getComputedStyle(document.querySelector("#select-from")).width;
+            E.style.height = window.getComputedStyle(document.querySelector("#select-from")).height;
+          }
+          for(const E of document.querySelectorAll(".flatpickr-months")){
+            E.style.height = '15%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-innerContainer")){
+            E.style.height = '85%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-rContainer")){
+            E.style.width = '100%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-weekdays")){
+            E.style.height = '16%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-days")){
+            E.style.width = '100%'; E.style.height = '84%';
+          }
+          for(const E of document.querySelectorAll(".dayContainer")){
+            E.style.minWidth = 'none'; E.style.maxWidth = 'none';
+            E.style.width = '100%'; E.style.height = 'calc(100% / 6)';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-day")){
+            E.style.height = '100%'; E.style.lineHeight = '180%';
+            E.style.maxWidth = 'none';
+          }
+          for(const e of document.querySelectorAll(".flatpickr-day.selected")) {
+            // e.style.color = "white";
+            e.style.background = "darkgreen";
+            e.style.borderColor = "darkgreen";
+          }
         },
         onMonthChange: function(){
-
-        },
-        onChange: function(){
-          
+          for(const E of document.querySelectorAll(".flatpickr-calendar")){
+            E.style.width = window.getComputedStyle(document.querySelector("#select-from")).width;
+            E.style.height = window.getComputedStyle(document.querySelector("#select-from")).height;
+          }
+          for(const E of document.querySelectorAll(".flatpickr-months")){
+            E.style.height = '15%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-innerContainer")){
+            E.style.height = '85%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-rContainer")){
+            E.style.width = '100%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-weekdays")){
+            E.style.height = '16%';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-days")){
+            E.style.width = '100%'; E.style.height = '84%';
+          }
+          for(const E of document.querySelectorAll(".dayContainer")){
+            E.style.minWidth = 'none'; E.style.maxWidth = 'none';
+            E.style.width = '100%'; E.style.height = 'calc(100% / 6)';
+          }
+          for(const E of document.querySelectorAll(".flatpickr-day")){
+            E.style.height = '100%'; E.style.lineHeight = '180%';
+            E.style.maxWidth = 'none';
+          }
+          for(const e of document.querySelectorAll(".flatpickr-day.selected")) {
+            // e.style.color = "white";
+            e.style.background = "darkgreen";
+            e.style.borderColor = "darkgreen";
+          }
         }
-      },
-      WIDTH: null,
-      HEIGHT: null
+      }
     }
   },
   created(){
@@ -65,18 +181,10 @@ export default {
     this.date_to = dataInit;
   },
   mounted(){
-    this.WIDTH = window.getComputedStyle(document.querySelector("#select-from")).width.replace('px', '');
-    this.HEIGHT = window.getComputedStyle(document.querySelector("#select-from")).height.replace('px', '');
-    
-    this.setCalendarBase(this.WIDTH, this.HEIGHT);
-    this.setSizeOfDayContainer(this.WIDTH, this.HEIGHT);
-    this.setSizeOfDays(this.WIDTH);
-    this.setFontColors();
+    this.setCalendarBase();
   },
   updated(){
-    this.setSizeOfDayContainer(this.WIDTH, this.HEIGHT);
-    this.setSizeOfDays(this.WIDTH);
-    this.setFontColors();
+    this.setCalendarBase();
   },
   watch: {
     date_from: function(val){
@@ -88,45 +196,43 @@ export default {
     }
   },
   methods: {
-    setCalendarBase: function(w, h){
+    setCalendarBase: function(){
       for(const E of document.querySelectorAll(".flatpickr-calendar")){
-        E.style.width = String(w)+'px';
-        E.style.height = String(h)+'px';
-        E.style.top = '0px';
-        E.style.bottom = '0px';
-        // E.style.background= "#000";
+        E.style.width = window.getComputedStyle(document.querySelector("#select-from")).width;
+        E.style.height = window.getComputedStyle(document.querySelector("#select-from")).height;
       }
-      for(const E of document.querySelectorAll(".flatpickr-current-month")){E.style.paddingTop = '2px';}
-      for(const E of document.querySelectorAll(".flatpickr-months span")){E.style.paddingTop = '6px';}
-      for(const E of document.querySelectorAll(".flatpickr-weekdays")){E.style.width = String(w)+'px';}
-    },
-    setSizeOfDayContainer: function(w, h) {
-      const W = String(w)+'px';
-      const H = String(h - window.getComputedStyle(document.querySelectorAll(".flatpickr-weekdays")[0]).height.replace('px', '')
-                         - window.getComputedStyle(document.querySelectorAll(".flatpickr-months")[0]).height.replace('px', '')
-                )+'px';
-      for(const E of document.querySelectorAll(".flatpickr-days")){E.style.width = W;}
+      for(const E of document.querySelectorAll(".flatpickr-months")){
+        E.style.height = '15%';
+      }
+      for(const E of document.querySelectorAll(".flatpickr-innerContainer")){
+        E.style.height = '85%';
+      }
+      for(const E of document.querySelectorAll(".flatpickr-rContainer")){
+        E.style.width = '100%';
+      }
+      for(const E of document.querySelectorAll(".flatpickr-weekdays")){
+        E.style.height = '16%';
+      }
+      for(const E of document.querySelectorAll(".flatpickr-days")){
+        E.style.width = '100%'; E.style.height = '84%';
+      }
       for(const E of document.querySelectorAll(".dayContainer")){
-        E.style.height = H;
-        E.style.width = W;
-        E.style.maxWidth = W;
+        E.style.minWidth = 'none'; E.style.maxWidth = 'none';
+        E.style.width = '100%'; E.style.height = 'calc(100% / 6)';
       }
-    },
-    setSizeOfDays: function(w) {
-      const rowsNum = document.querySelectorAll(".dayContainer .flatpickr-day").length > 35 ? 6 : 5;
-      const H = String(window.getComputedStyle(document.querySelectorAll(".dayContainer")[0]).height.replace('px', '') / rowsNum)+'px';
-      const W = String(w / 7)+'px';
-      for(const E of document.querySelectorAll(".dayContainer .flatpickr-day")){
-        E.style.maxWidth = W;
-        E.style.height = H;
-        E.style.lineHeight = H;
+      for(const E of document.querySelectorAll(".flatpickr-day")){
+        E.style.height = '100%'; E.style.lineHeight = '180%';
+        E.style.maxWidth = 'none';
       }
-    },
-    setFontColors: function() {
       for(const e of document.querySelectorAll(".flatpickr-day.selected")) {
+        // e.style.color = "white";
         e.style.background = "darkgreen";
         e.style.borderColor = "darkgreen";
       }
+      // for(const e of document.querySelectorAll(".flatpickr-day")) {e.style.color = "#e8e8e8";}
+      // for(const e of document.querySelectorAll(".flatpickr-day.prevMonthDay, .flatpickr-day.nextMonthDay")) {e.style.color = "#6a6a6a";} 
+      // for(const e of document.querySelectorAll(".flatpickr-day.flatpickr-disabled")) {e.style.color = "#2a2a2a";}
+      // for(const e of document.querySelectorAll(".flatpickr-day:hover")) {e.style.color = "#1a1a1a";}
     }
   }
 }
