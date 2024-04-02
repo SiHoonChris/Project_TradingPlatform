@@ -7,6 +7,7 @@ import mixins from "./mixins";
 import CommonFunction from './plugin/CommonFunction.js'
 import CreateChart1 from './plugin/CreateChart1.js'
 import CreateChart2 from './plugin/CreateChart2.js'
+import PopupFunction from './plugin/PopupFunction'
 
 const app = createApp(App);
 app.config.globalProperties.$http = axios;
@@ -16,4 +17,5 @@ app.mixin(mixins);
 app.use(CommonFunction);
 app.use(CreateChart1);
 app.use(CreateChart2);
+app.use(PopupFunction);
 app.mount('#app');

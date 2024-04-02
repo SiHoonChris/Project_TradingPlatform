@@ -1,5 +1,10 @@
 <template>
   <div id="detail">
+    <PopupSlot>
+      <template v-slot:contents>
+        <div style="width:100%;height:200%;color:white;">Detail Contents ; Charts, Tables</div>
+      </template>
+    </PopupSlot>
     <div id="candle-chart"><CandleChart/></div>
     <div id="buy-and-sell"><BuyAndSell/></div>
     <div id="order-history"><OrderHistory/></div>
@@ -12,9 +17,10 @@ import CandleChart from "@/components/Detail/CandleChart.vue"
 import BuyAndSell from "@/components/Detail/BuyAndSell.vue"
 import OrderHistory from "@/components/Detail/OrderHistory.vue"
 import AssetMemo from "@/components/Detail/AssetMemo.vue"
+import PopupSlot from '@/components/Common/PopupSlot.vue'
 
 export default {
-  components: { CandleChart, BuyAndSell, OrderHistory, AssetMemo },
+  components: { CandleChart, BuyAndSell, OrderHistory, AssetMemo, PopupSlot },
 }
 </script>
 

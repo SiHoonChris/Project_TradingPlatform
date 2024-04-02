@@ -4,7 +4,10 @@
       <div id="asset-price">
         <span id="name">{{this.assetName}}</span>
       </div>
-      <div id="chart-tool"></div>
+      <div id="chart-tool">
+        <button @click="$Popup('on')">X</button>
+        <button>X</button>
+      </div>
     </div>
     <div id="asset-chart">
       <svg width="200%" height="100%"></svg>
@@ -25,7 +28,7 @@ export default {
   created() {
     this.$store.commit('getAssetName', this.$route.params.ticker); // 개발 중에는 주석 처리, 빌드할 때 해제
     this.assetName = this.$store.state.assetName; // 개발 중에는 주석 처리, 빌드할 때 해제
-    //this.assetName = "name" // 개발 끝나면 지우기
+    // this.assetName = "name" // 개발 끝나면 지우기
     this.datasForChart = SamplePriceData;
   },
   mounted() {
@@ -67,9 +70,15 @@ export default {
     padding-bottom: 1%;
   }
   #chart-tool {
-    width: 10%;
-    height: 100%;
-    background: lightpink;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 5%;
+    padding: 0.5%;
+  }
+  #chart-tool button {
+    width: 46%;
+    height: 50%;
   }
 
   #asset-chart {

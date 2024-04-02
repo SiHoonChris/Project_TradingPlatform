@@ -10,7 +10,7 @@
     </div>
     <div id="sub-portfolio-btns">
       <div id="btn-set">
-        <button>+</button>
+        <button @click="$Popup('on')">+</button>
         <button>-</button>
       </div>
     </div>
