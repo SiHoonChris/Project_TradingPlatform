@@ -1,11 +1,16 @@
 <template>
   <div id="detail">
-    <PopupSlot>
+    <PopupSlot v-if="popUpOnOff" @PopupSwitchOff="setPopupSwitch">
       <template v-slot:contents>
-        <div style="width:100%;height:200%;color:white;">Detail Contents ; Charts, Tables</div>
+        <div id="charts-in-popup">
+          <DebtRatio/>
+          <ProfitMargin/>
+        </div>
+        <FinancialValues/>
+        <FinancialReport/>
       </template>
     </PopupSlot>
-    <div id="candle-chart"><CandleChart/></div>
+    <div id="candle-chart"><CandleChart @PopupSwitchOn="setPopupSwitch"/></div>
     <div id="buy-and-sell"><BuyAndSell/></div>
     <div id="order-history"><OrderHistory/></div>
     <div id="asset-memo"><AssetMemo/></div>
@@ -18,9 +23,26 @@ import BuyAndSell from "@/components/Detail/BuyAndSell.vue"
 import OrderHistory from "@/components/Detail/OrderHistory.vue"
 import AssetMemo from "@/components/Detail/AssetMemo.vue"
 import PopupSlot from '@/components/Common/PopupSlot.vue'
+import DebtRatio from "@/components/Detail/InDetailPopup/DebtRatio.vue"
+import ProfitMargin from "@/components/Detail/InDetailPopup/ProfitMargin.vue"
+import FinancialValues from "@/components/Detail/InDetailPopup/FinancialValues.vue"
+import FinancialReport from "@/components/Detail/InDetailPopup/FinancialReport.vue"
 
 export default {
-  components: { CandleChart, BuyAndSell, OrderHistory, AssetMemo, PopupSlot },
+  components: { 
+    CandleChart, BuyAndSell, OrderHistory, AssetMemo, PopupSlot,
+    DebtRatio, ProfitMargin, FinancialValues, FinancialReport
+  },
+  data(){
+    return {
+      popUpOnOff: false
+    }
+  },
+  methods: {
+    setPopupSwitch: function(val){
+      this.popUpOnOff = val;
+    }
+  }
 }
 </script>
 
@@ -51,4 +73,9 @@ export default {
 #order-history { grid-area: o; }
 #asset-memo    { grid-area: m; }
 
+#charts-in-popup {
+  display: flex;
+  width:  100%;
+  height: 100%;
+}
 </style>

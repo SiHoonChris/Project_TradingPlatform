@@ -1,11 +1,11 @@
 export default {
     install(Vue) {
         Vue.config.globalProperties.$Standard_Candle = 
-            function(DATA){ 
-                let width  = window.getComputedStyle(document.querySelector("svg")).width.replace('px', '')*0.99,
-                    height = window.getComputedStyle(document.querySelector("svg")).height.replace('px', '')*0.97;
+            function(DATA, CONT){ 
+                let width  = window.getComputedStyle(document.querySelector(CONT)).width.replace('px', '')*0.99,
+                    height = window.getComputedStyle(document.querySelector(CONT)).height.replace('px', '')*0.97;
     
-                let svg    = d3.select("svg");
+                let svg    = d3.select(CONT);
                 let xScale = d3.scaleBand()
                                 .range([0, width * 0.97])
                                 .padding(0.16)

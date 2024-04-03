@@ -5,8 +5,8 @@ export default {
 
         Vue.config.globalProperties.$Donut_Chart =
             function(DATA, container) { 
-                const WIDTH  = Number(window.getComputedStyle(document.querySelector(container)).width.replace('px', '')),
-                      HEIGHT = Number(window.getComputedStyle(document.querySelector(container)).width.replace('px', '')),
+                const WIDTH  = document.querySelector(container).offsetWidth,
+                      HEIGHT = document.querySelector(container).offsetWidth,
                       MARGIN = WIDTH * 0.05,
                       RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
                       
@@ -62,8 +62,8 @@ export default {
                 document.querySelector("#main-portfolio > #portfolio-name").textContent = NAME_OF_PORTFOLIO;
                 
                 // 도넛 차트 생성
-                const WIDTH  = Number(window.getComputedStyle(document.querySelector(container)).width.replace('px', '')),
-                      HEIGHT = Number(window.getComputedStyle(document.querySelector(container)).width.replace('px', '')),
+                const WIDTH  = document.querySelector(container).offsetWidth,
+                      HEIGHT = document.querySelector(container).offsetWidth,
                       MARGIN = WIDTH * 0.05,
                       RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
                       

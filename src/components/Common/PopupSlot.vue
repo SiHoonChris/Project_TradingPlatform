@@ -1,7 +1,7 @@
 <template>
   <div id="popup-container">
     <div id="close-btn">
-      <button id="off-btn" @click="$Popup('off')">X</button>
+      <button id="off-btn" @click="PopupOff()">X</button>
     </div>
     <div id="popup-contents">
       <slot name="contents"></slot>
@@ -11,12 +11,17 @@
 
 <script>
 export default {
+  methods: {
+    PopupOff: function(){
+      this.$emit("PopupSwitchOff", false);
+    }
+  }
 }
 </script>
 
 <style scoped>
 #popup-container {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
   position: absolute;

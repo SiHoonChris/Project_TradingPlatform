@@ -5,7 +5,7 @@
         <span id="name">{{this.assetName}}</span>
       </div>
       <div id="chart-tool">
-        <button @click="$Popup('on')">X</button>
+        <button @click="PopupOn()">X</button>
         <button>X</button>
       </div>
     </div>
@@ -32,7 +32,13 @@ export default {
     this.datasForChart = SamplePriceData;
   },
   mounted() {
-    this.$Standard_Candle(this.datasForChart);
+    this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
+    document.querySelector("#asset-chart").scrollBy(document.querySelector("#asset-chart").offsetWidth, 0);
+  },
+  methods: {
+    PopupOn: function(){
+      this.$emit("PopupSwitchOn", true);
+    }
   }
 }
 </script>
