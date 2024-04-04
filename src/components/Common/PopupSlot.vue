@@ -56,6 +56,7 @@ export default {
   height: 94%;
   margin: 0.2vh auto 0.8vh;
   overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 /* Scroll-bar */

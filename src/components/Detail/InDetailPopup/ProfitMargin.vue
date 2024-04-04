@@ -3,8 +3,20 @@
 </template>
 
 <script>
+import SampleProfitMargin from "@/assets/SampleProfitMargin.json"
+
 export default {
-    
+  date(){
+    return {
+      Data: null
+    }
+  },
+  created(){
+    this.Data = SampleProfitMargin;
+  },
+  mounted(){
+    this.$Horizontal_Bar_Chart(this.Data, "#profit-margin");
+  }
 }
 </script>
 
@@ -12,6 +24,5 @@ export default {
   #profit-margin {
     width: 50%;
     height: 100%;
-    background: green;
   }
 </style>
