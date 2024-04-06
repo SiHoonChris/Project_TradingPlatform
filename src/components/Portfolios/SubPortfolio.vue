@@ -10,7 +10,7 @@
     </div>
     <div id="sub-portfolio-btns">
       <div id="btn-set">
-        <button @click="$Popup('on')">+</button>
+        <button @click="PopupOn()">+</button>
         <button>-</button>
       </div>
     </div>
@@ -41,6 +41,9 @@ export default {
       this.$Remove_Donut_Chart("#main-donut-chart > svg");
       this.$emit('portfolioData', this.Data[i]);
       this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
+    },
+    PopupOn: function(){
+      this.$emit("PopupSwitchOn", true);
     }
   }
 }

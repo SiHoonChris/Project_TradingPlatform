@@ -1,15 +1,15 @@
 <template>
   <main id="portfolios">
-    <PopupSlot>
+    <PopupSlot v-if="popUpOnOff" @PopupSwitchOff="setPopupSwitch">
       <template v-slot:contents>
-        <div style="width:100%;height:200%;color:white;">Portfolios Contents ; components to manipulate portfolio</div>
+        <NewPortfolio/>
       </template>
     </PopupSlot>
     <div id="main-portfolio-sector">
       <MainPortfolio :MainPortfolioData="MainPortfolioData" />
     </div>
     <div id="sub-portfolio-sector">
-      <SubPortfolio @portfolioData="sendDataToMain"/>
+      <SubPortfolio @portfolioData="sendDataToMain" @PopupSwitchOn="setPopupSwitch"/>
     </div>
   </main>
 </template>
@@ -18,17 +18,22 @@
 import MainPortfolio from '@/components/Portfolios/MainPortfolio.vue'
 import SubPortfolio from '@/components/Portfolios/SubPortfolio.vue'
 import PopupSlot from '@/components/Common/PopupSlot.vue'
+import NewPortfolio from '@/components/Portfolios/InPortfolioPopup/NewPortfolio.vue'
 
 export default {
-  components: { MainPortfolio, SubPortfolio, PopupSlot },
+  components: { MainPortfolio, SubPortfolio, PopupSlot, NewPortfolio },
   data(){
     return{
-      MainPortfolioData: null
+      MainPortfolioData: null,
+      popUpOnOff: false
     }
   },
   methods: {
     sendDataToMain(value){
       this.MainPortfolioData = value;
+    },
+    setPopupSwitch: function(val){
+      this.popUpOnOff = val;
     }
   }
 }

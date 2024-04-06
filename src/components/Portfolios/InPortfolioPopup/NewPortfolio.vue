@@ -1,0 +1,205 @@
+<template>
+  <div id="new-portfolio">
+    <div id="included-assets">
+      <div id="included-assets-thead">
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Name</th>
+              <th>Price</th>
+              <th>Amount</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <div id="included-assets-tbody">
+        <table>
+          <tbody>
+            <tr v-for="(e, i) in includedAssetsData" :key="i">
+              <td>{{i+1}}</td>
+              <td>{{e}}</td>
+              <td><input type="number" ></td>
+              <td><input type="number" required value="0"></td>
+              <td><button>X</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="find-assets">
+      <div id="find-assets-search">
+        <input type="text" placeholder="Name, ticker symbol, or code">
+        <ul id="find-assets-suggest">
+            <li v-for="(e,i) in findAssetsData" :key="i">
+              <p>{{e.TICKER}}</p>
+              <p>{{e.NAME}}</p>
+            </li>
+        </ul>
+      </div>
+      <div id="find-assets-btns">
+        <button>EXECUTE</button>
+        <button>CANCEL</button>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      includedAssetsData: [
+        "AAPL", "GOOGL", "SBUX", "MCD", "ELY", 
+        "TLT", "JNJ", "JPM", "XOM", "META", 
+        "MSFT", "GS", "CVX", "ADBE", "NKE",
+        "AMD"
+      ],
+      findAssetsData: null 
+    //   [
+    //     "AAPL", "GOOGL", "SBUX", "MCD", "ELY", 
+    //     "TLT", "JNJ", "JPM", "XOM", "META", 
+    //     "MSFT", "GS", "CVX"
+    //   ]
+    }
+  },
+  mounted(){
+    this.findAssetsData = this.$store.state.allAssetsData;
+  },
+  methods: {
+
+  }
+}
+</script>
+
+<style scoped>
+  #new-portfolio {
+    width: 100%;
+    height: 98%;
+    display: flex;
+  }
+  
+  #included-assets {
+    width: 70%;
+    height: 100%;
+    border: 1px solid gray;
+    color: white;
+  }
+  #included-assets-thead {
+    width: 100%;
+    height: 6%;
+    background: rgba(0, 0, 0, 0.4);
+  }
+  #included-assets-tbody {
+    width: 100%;
+    height: 94%;
+    background: rgba(0, 0, 0, 0.4);
+    overflow-y: scroll;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  th {
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid gray;
+  }
+  th:nth-child(1) { width: 10%; border-right: 1px solid gray; }
+  th:nth-child(2) { width: 40%; border-right: 1px solid gray; }
+  th:nth-child(3) { width: 20%; border-right: 1px solid gray; }
+  th:nth-child(4) { width: 20%; border-right: 1px solid gray; }
+  th:nth-child(5) { width: 10%; }
+  td {
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid gray;
+  }
+  td:nth-child(1) { width: 10%; border-right: 1px solid gray; }
+  td:nth-child(2) { width: 40%; border-right: 1px solid gray; }
+  td:nth-child(3) { width: 20%; border-right: 1px solid gray; }
+  td:nth-child(4) { width: 20%; border-right: 1px solid gray; }
+  td:nth-child(5) { width: 8.5%; border-right: 1px solid gray; }
+  td input {
+    width: 80%;
+    height: 90%;
+    text-align: right;
+    color: white;
+    background: rgba(0, 0, 0, 0.9);
+    border: none;
+  }
+  td button {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+  }
+
+  #find-assets {
+    width: 30%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #find-assets-search {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  #find-assets-search input {
+    width: 80%;
+    height: calc(100% * 0.06);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: 1px solid gray;
+  }
+  #find-assets-suggest {
+    width: 80%;
+    max-height: 82%;
+    list-style: none;
+    padding: 0 2px;
+    margin: 0;
+    border: 1px solid gray;
+    border-top: none;
+    color: white;
+    overflow-y: scroll;
+  }
+  #find-assets-suggest li {
+    padding: 0.5% 0%;
+    margin: 1% 0%;
+    vertical-align: center;
+  }
+  #find-assets-suggest li p:first-child {
+    margin: 0;
+    font-weight: bold;
+  }
+  #find-assets-suggest li p:last-child {
+    margin: 0;
+    font-size: 14px;
+  }
+  #find-assets-suggest li:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  #find-assets-btns {
+    width: 80%;
+    height: 10%;
+    padding: 0% 10%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  #find-assets-btns button {
+    width: 40%;
+    height: 80%;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    border: 1px solid gray;
+  }
+  #find-assets-btns button:hover {
+    cursor: pointer;
+    border: 1px solid white;
+  }
+</style>
