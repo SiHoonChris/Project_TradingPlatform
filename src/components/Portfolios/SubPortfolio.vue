@@ -3,15 +3,18 @@
     <div id="sub-portfolio-charts">
       <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
         <div class="sub-donuts-title">
-          <span>{{d.NAME}}</span>
+          <input v-if="Rmv" type="checkbox">
+          <input type="text" :value="d.NAME" readonly>
         </div>
         <div class="sub-donuts-chart"></div>
       </div>
     </div>
     <div id="sub-portfolio-btns">
       <div id="btn-set">
-        <button @click="PopupOn()">+</button>
-        <button>-</button>
+        <button v-if="!Rmv" @click="PopupOn()">+</button>
+        <button v-if="!Rmv" @click="RemoveMode(true)">-</button>
+        <button v-if="Rmv">REMOVE</button>
+        <button v-if="Rmv" @click="RemoveMode(false)">CANCEL</button>
       </div>
     </div>
   </div>
@@ -23,7 +26,8 @@ import SamplePortionData from "@/assets/SamplePortionData.json";
 export default {
   data() {
     return {
-      Data: null
+      Data: null,
+      Rmv: false
     }
   },
   created() {
@@ -44,6 +48,12 @@ export default {
     },
     PopupOn: function(){
       this.$emit("PopupSwitchOn", true);
+    },
+    RemoveMode: function(v){
+      this.Rmv = v;
+      for(const e of document.querySelectorAll(".sub-donuts-title")) {
+        e.style.justifyContent = v ? "left" : "center";
+      }
     }
   }
 }
@@ -82,6 +92,19 @@ export default {
     color: white;
     display: flex;
     justify-content: center;
+  }
+  .sub-donuts-title input[type="checkbox"] {
+    width: 8%;
+    margin: 0% 1%;
+  }
+  .sub-donuts-title input[type="text"] {
+    width: 80%;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    background: black;
+    border: none;
+    padding: 0;
   }
   .sub-donuts-chart {
     width: 100%;

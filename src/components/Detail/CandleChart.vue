@@ -26,9 +26,9 @@ export default {
     }
   },
   created() {
-    // this.$store.commit('getAssetName', this.$route.params.ticker); // 개발 중에는 주석 처리, 빌드할 때 해제
-    // this.assetName = this.$store.state.assetName; // 개발 중에는 주석 처리, 빌드할 때 해제
-    this.assetName = "name" // 개발 끝나면 지우기
+    this.$store.commit('getAssetName', this.$route.params.ticker); // 개발 중에는 주석 처리, 빌드할 때 해제
+    this.assetName = this.$store.state.assetName; // 개발 중에는 주석 처리, 빌드할 때 해제
+    // this.assetName = "name" // 개발 끝나면 지우기
     this.datasForChart = SamplePriceData;
   },
   mounted() {
