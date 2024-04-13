@@ -3,7 +3,7 @@
     <div id="sub-portfolio-charts">
       <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
         <div class="sub-donuts-title">
-          <input v-if="Rmv" type="checkbox">
+          <input v-if="Rmv" type="checkbox" :value="d.NAME">
           <input type="text" :value="d.NAME" readonly>
         </div>
         <div class="sub-donuts-chart"></div>
@@ -13,7 +13,7 @@
       <div id="btn-set">
         <button v-if="!Rmv" @click="PopupOn()">+</button>
         <button v-if="!Rmv" @click="RemoveMode(true)">-</button>
-        <button v-if="Rmv">REMOVE</button>
+        <button v-if="Rmv" @click="RemovePortfolio()">REMOVE</button>
         <button v-if="Rmv" @click="RemoveMode(false)">CANCEL</button>
       </div>
     </div>
@@ -21,8 +21,6 @@
 </template>
 
 <script>
-import SamplePortionData from "@/assets/SamplePortionData.json";
-
 export default {
   data() {
     return {
@@ -31,8 +29,14 @@ export default {
     }
   },
   created() {
-    this.Data = SamplePortionData;
-    this.$emit('portfolioData', this.Data[0]);
+    this.$http.get("/portfolio/getPortfolioData")
+      .then(
+        res => {
+          this.Data = res.data;
+          this.$emit('portfolioData', this.Data[0]);
+        }
+      )
+      .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
   },
   mounted(){ 
     for(let i=0 ; i < document.querySelectorAll(".sub-donuts-chart").length ; i++) {
@@ -48,6 +52,22 @@ export default {
     },
     PopupOn: function(){
       this.$emit("PopupSwitchOn", true);
+    },
+    RemovePortfolio: function(){
+      const selectedArr = [];
+      for(const e of document.querySelectorAll(".sub-donuts-title input[type='checkbox']")){
+        e.checked && selectedArr.push(e.value);
+      }
+      this.$http.post("/portfolio/removePortfolios", {params: { RemoveThem: selectedArr }})
+        .then(
+          res => {
+            this.Data = res.data;
+            this.RemoveMode(false);
+          }
+        )
+        .catch(
+          err => {if(err.message.indexOf('Network Error') > -1) alert('Error')}
+        );
     },
     RemoveMode: function(v){
       this.Rmv = v;
