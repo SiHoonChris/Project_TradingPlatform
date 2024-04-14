@@ -5,6 +5,10 @@ export default {
 
         Vue.config.globalProperties.$Donut_Chart =
             function(DATA, container) { 
+                if(document.querySelectorAll(`${container} > svg`).length !== 0){
+                    document.querySelector(`${container} > svg`).remove();
+                }
+
                 const WIDTH  = document.querySelector(container).offsetWidth,
                       HEIGHT = document.querySelector(container).offsetWidth,
                       MARGIN = WIDTH * 0.05,
@@ -54,6 +58,10 @@ export default {
 
         Vue.config.globalProperties.$Donut_Chart_With_Detail =
             function(DATA, container) {
+                if(document.querySelectorAll(`${container} > svg`).length !== 0){
+                    document.querySelector(`${container} > svg`).remove();
+                }
+
                 // 데이터 가공
                 const NAME_OF_PORTFOLIO = DATA.NAME,
                       ASSETS_IN_PORTFOLIO = DATA.ASSETS;
@@ -117,10 +125,5 @@ export default {
             }
         // $Color_Tag
 
-        Vue.config.globalProperties.$Remove_Donut_Chart = 
-            function(svg) {
-                document.querySelector(svg).remove();
-            }
-        // $Remove_Donut_Chart
     }
 }

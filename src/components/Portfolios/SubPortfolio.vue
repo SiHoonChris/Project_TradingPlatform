@@ -3,7 +3,7 @@
     <div id="sub-portfolio-charts">
       <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
         <div class="sub-donuts-title">
-          <input v-if="Rmv" type="checkbox" :value="d.NAME">
+          <input v-if="Rmv" type="checkbox" :value="d._id">
           <input type="text" :value="d.NAME" readonly>
         </div>
         <div class="sub-donuts-chart"></div>
@@ -12,9 +12,9 @@
     <div id="sub-portfolio-btns">
       <div id="btn-set">
         <button v-if="!Rmv" @click="PopupOn()">+</button>
-        <button v-if="!Rmv" @click="RemoveMode(true)">-</button>
-        <button v-if="Rmv" @click="RemovePortfolio()">REMOVE</button>
-        <button v-if="Rmv" @click="RemoveMode(false)">CANCEL</button>
+        <button v-if="!Rmv" @click="SettingMode(false, true)">-</button>
+        <button v-if="Rmv" @click="RemovePortfolio()">R</button><!-- Trash Bin -->
+        <button v-if="Rmv" @click="SettingMode(false, false)">C</button><!-- Return Logo -->
       </div>
     </div>
   </div>
@@ -25,54 +25,56 @@ export default {
   data() {
     return {
       Data: null,
+      Setting: false,
       Rmv: false
     }
   },
   created() {
-    this.$http.get("/portfolio/getPortfolioData")
-      .then(
-        res => {
-          this.Data = res.data;
-          this.$emit('portfolioData', this.Data[0]);
-        }
-      )
-      .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+    this.getPortfolios();
   },
-  mounted(){ 
-    for(let i=0 ; i < document.querySelectorAll(".sub-donuts-chart").length ; i++) {
-      if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
-      this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
+  updated() {
+    if(this.Setting) {
+      for(let i=0 ; i < document.querySelectorAll(".sub-donuts-chart").length ; i++) {
+        if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
+        this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
+      }
     }
+    this.Setting = false;
   },
   methods: {
     Change_Donut_Chart: function(i){
-      this.$Remove_Donut_Chart("#main-donut-chart > svg");
       this.$emit('portfolioData', this.Data[i]);
       this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
     },
     PopupOn: function(){
       this.$emit("PopupSwitchOn", true);
     },
+    getPortfolios: function(){
+      this.SettingMode(true, false);
+      this.$http.get("/portfolio/getPortfolioData")
+        .then(
+          res => {
+            this.Data = res.data;
+            this.$emit('portfolioData', this.Data[0]);
+          }
+        )
+        .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+    },
     RemovePortfolio: function(){
       const selectedArr = [];
       for(const e of document.querySelectorAll(".sub-donuts-title input[type='checkbox']")){
         e.checked && selectedArr.push(e.value);
       }
-      this.$http.post("/portfolio/removePortfolios", {params: { RemoveThem: selectedArr }})
-        .then(
-          res => {
-            this.Data = res.data;
-            this.RemoveMode(false);
-          }
-        )
-        .catch(
-          err => {if(err.message.indexOf('Network Error') > -1) alert('Error')}
-        );
+      if(selectedArr.length !== 0){
+        this.$http.post("/portfolio/removePortfolios", {params: selectedArr})
+          .then(res => this.getPortfolios())
+          .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+      }
     },
-    RemoveMode: function(v){
-      this.Rmv = v;
-      for(const e of document.querySelectorAll(".sub-donuts-title")) {
-        e.style.justifyContent = v ? "left" : "center";
+    SettingMode: function(Setting, Rmv){
+      [this.Setting, this.Rmv] = [Setting, Rmv];
+      for(const check of document.querySelectorAll(".sub-donuts-title")) {
+        check.style.justifyContent = this.Rmv ? "left" : "center";
       }
     }
   }
