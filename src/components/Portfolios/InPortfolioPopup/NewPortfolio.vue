@@ -39,8 +39,8 @@
         </ul>
       </div>
       <div id="find-assets-btns">
-        <button>EXECUTE</button>
-        <button>CANCEL</button>
+        <button @click="makeNewPortfolio()">EXECUTE</button>
+        <button @click="PopupOffByCancelBtn()">CANCEL</button>
       </div>
     </div>
   </div>
@@ -57,18 +57,28 @@ export default {
         "AMD"
       ],
       findAssetsData: null 
-    //   [
-    //     "AAPL", "GOOGL", "SBUX", "MCD", "ELY", 
-    //     "TLT", "JNJ", "JPM", "XOM", "META", 
-    //     "MSFT", "GS", "CVX"
-    //   ]
     }
   },
   mounted(){
     this.findAssetsData = this.$store.state.allAssetsData;
   },
   methods: {
+    makeNewPortfolio: function(){
+      const assetsToBeAdded = {
+        NAME: "New Portfolio",
+        TYPE: "Customized",
+        ASSETS: {"NVDA": 4500, "MSFT": 10000, "GOOGL": 8000, "JPM": 1500}
+      };
 
+      if(Object.keys(assetsToBeAdded['ASSETS']).length !== 0){
+        this.$http.post("/portfolio/makeNewPortfolio", {params: assetsToBeAdded})
+          .then(res => alert("completed"))
+          .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+      }
+    },
+    PopupOffByCancelBtn: function(){
+      this.$emit("PopupSwitchOff", false);
+    }
   }
 }
 </script>

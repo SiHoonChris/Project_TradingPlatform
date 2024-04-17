@@ -2,7 +2,7 @@
   <main id="portfolios">
     <PopupSlot v-if="popUpOnOff" @PopupSwitchOff="setPopupSwitch">
       <template v-slot:contents>
-        <NewPortfolio/>
+        <NewPortfolio @PopupSwitchOff="setPopupSwitch"/>
       </template>
     </PopupSlot>
     <div id="main-portfolio-sector">
