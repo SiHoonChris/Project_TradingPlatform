@@ -3,7 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     allAssetsData: null,
-    assetName: null
+    assetName: null,
+    fxRates: null
   },
   getters: {
   },
@@ -14,6 +15,9 @@ export default createStore({
     getAssetName(state, payload) {
       state.assetName = 
       state.allAssetsData[state.allAssetsData.findIndex(e => e.TICKER === payload)].NAME;
+    },
+    setFxRates(state, payload) {
+      state.fxRates = payload;
     }
   },
   actions: {

@@ -22,7 +22,10 @@ export default {
   },
   created(){
     this.$http.get("/getGlobalIndexesData")
-    .then(res => this.DATAS = res.data)
+    .then(res => {
+      this.DATAS = res.data;
+      this.$store.commit("setFxRates", this.DATAS[0]);
+    })
     .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
   },
   mounted(){

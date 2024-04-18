@@ -72,7 +72,10 @@ export default {
 
       if(Object.keys(assetsToBeAdded['ASSETS']).length !== 0){
         this.$http.post("/portfolio/makeNewPortfolio", {params: assetsToBeAdded})
-          .then(res => alert("completed"))
+          .then(res => {
+            console.log(this.$store.state.fxRates);
+            this.PopupOffByCancelBtn();
+          })
           .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
       }
     },
