@@ -5,11 +5,7 @@
         <table>
           <thead>
             <tr>
-              <th>No.</th>
-              <th>Name</th>
-              <th>Price</th>
-              <th>Amount</th>
-              <th>Delete</th>
+              <th>No.</th><th>Name</th><th>Price</th><th>Amount</th><th>Delete</th>
             </tr>
           </thead>
         </table>
@@ -17,12 +13,12 @@
       <div id="included-assets-tbody">
         <table>
           <tbody>
-            <tr v-for="(e, i) in includedAssetsData" :key="i">
+            <tr v-for="(e, i) in addAssetsData" :key="i">
               <td>{{i+1}}</td>
               <td>{{e}}</td>
-              <td><input type="number" ></td>
-              <td><input type="number" required value="0"></td>
-              <td><button>X</button></td>
+              <td><input :class="e" class="price" type="number" min="0" required value="0"></td>
+              <td><input :class="e" class="amount" type="number" min="1" required value="1"></td>
+              <td><button @click="removeAsset(e)">X</button></td>
             </tr>
           </tbody>
         </table>
@@ -30,12 +26,13 @@
     </div>
     <div id="find-assets">
       <div id="find-assets-search">
+        <input type="text" placeholder="Set portfolio-name" v-model="portfolioName">
         <input type="text" placeholder="Name, ticker symbol, or code">
         <ul id="find-assets-suggest">
-            <li v-for="(e,i) in findAssetsData" :key="i">
-              <p>{{e.TICKER}}</p>
-              <p>{{e.NAME}}</p>
-            </li>
+          <li v-for="(e,i) in findAssetsData" :key="i" @click="addAsset(e.TICKER)">
+            <p>{{e.TICKER}}</p>
+            <p>{{e.NAME}}</p>
+          </li>
         </ul>
       </div>
       <div id="find-assets-btns">
@@ -50,13 +47,9 @@
 export default {
   data() {
     return {
-      includedAssetsData: [
-        "AAPL", "GOOGL", "SBUX", "MCD", "ELY", 
-        "TLT", "JNJ", "JPM", "XOM", "META", 
-        "MSFT", "GS", "CVX", "ADBE", "NKE",
-        "AMD"
-      ],
-      findAssetsData: null 
+      addAssetsData: [],
+      findAssetsData: null, 
+      portfolioName: 'New Portfolio'
     }
   },
   mounted(){
@@ -65,11 +58,12 @@ export default {
   methods: {
     makeNewPortfolio: function(){
       const assetsToBeAdded = {
-        NAME: "New Portfolio",
+        NAME: this.portfolioName === null || this.portfolioName === '' ? 
+              "New Portfolio" : this.portfolioName,
         TYPE: "Customized",
-        ASSETS: {"NVDA": 4500, "MSFT": 10000, "GOOGL": 8000, "JPM": 1500}
+        ASSETS: this.setAssetsToBeAdded()
       };
-
+        
       if(Object.keys(assetsToBeAdded['ASSETS']).length !== 0){
         this.$http.post("/portfolio/makeNewPortfolio", {params: assetsToBeAdded})
           .then(res => {
@@ -78,6 +72,20 @@ export default {
           })
           .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
       }
+    },
+    setAssetsToBeAdded: function(){
+      const objAssets = {};
+      for(const E of this.addAssetsData) {
+        objAssets[E] = 
+          document.querySelector(`.${E}.price`).value * document.querySelector(`.${E}.amount`).value;
+      }
+      return objAssets;
+    },
+    addAsset: function(d){
+      this.addAssetsData.push(d);
+    },
+    removeAsset: function(E){
+      this.addAssetsData.splice(this.addAssetsData.findIndex(el => el === E), 1);
     },
     PopupOffByCancelBtn: function(){
       this.$emit("PopupSwitchOff", false);
@@ -167,6 +175,9 @@ export default {
     background: rgba(0, 0, 0, 0.7);
     color: white;
     border: 1px solid gray;
+  }
+  #find-assets-search input:first-child {
+    margin-bottom: 2%;
   }
   #find-assets-suggest {
     width: 80%;

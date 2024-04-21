@@ -4,7 +4,7 @@
       <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
         <div class="sub-donuts-title">
           <input v-if="Rmv" type="checkbox" :value="d._id">
-          <input type="text" :value="d.NAME" readonly>
+          <div>{{d.NAME}}</div>
         </div>
         <div class="sub-donuts-chart"></div>
       </div>
@@ -119,7 +119,7 @@ export default {
     width: 8%;
     margin: 0% 1%;
   }
-  .sub-donuts-title input[type="text"] {
+  .sub-donuts-title div {
     width: 80%;
     text-align: center;
     color: white;
