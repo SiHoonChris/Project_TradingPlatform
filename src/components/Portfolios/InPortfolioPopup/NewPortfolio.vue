@@ -68,6 +68,7 @@ export default {
         this.$http.post("/portfolio/makeNewPortfolio", {params: assetsToBeAdded})
           .then(res => {
             console.log(this.$store.state.fxRates);
+            this.$emit('emitDataAdded', 1);
             this.PopupOffByCancelBtn();
           })
           .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});

@@ -2,14 +2,17 @@
   <main id="portfolios">
     <PopupSlot v-if="popUpOnOff" @PopupSwitchOff="setPopupSwitch">
       <template v-slot:contents>
-        <NewPortfolio @PopupSwitchOff="setPopupSwitch"/>
+        <NewPortfolio @PopupSwitchOff="setPopupSwitch"
+                      @emitDataAdded="funcDataAdded"/>
       </template>
     </PopupSlot>
     <div id="main-portfolio-sector">
       <MainPortfolio :MainPortfolioData="MainPortfolioData" />
     </div>
     <div id="sub-portfolio-sector">
-      <SubPortfolio @portfolioData="sendDataToMain" @PopupSwitchOn="setPopupSwitch"/>
+      <SubPortfolio @portfolioData="sendDataToMain"
+                    @PopupSwitchOn="setPopupSwitch"
+                    :dataAdded="dataAdded" />
     </div>
   </main>
 </template>
@@ -25,7 +28,8 @@ export default {
   data(){
     return{
       MainPortfolioData: null,
-      popUpOnOff: false
+      popUpOnOff: false,
+      dataAdded: null
     }
   },
   methods: {
@@ -34,6 +38,9 @@ export default {
     },
     setPopupSwitch: function(val){
       this.popUpOnOff = val;
+    },
+    funcDataAdded: function(val) {
+      this.dataAdded += val;
     }
   }
 }

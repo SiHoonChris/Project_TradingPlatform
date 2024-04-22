@@ -22,6 +22,7 @@
 
 <script>
 export default {
+  props: ['dataAdded'],
   data() {
     return {
       Data: null,
@@ -40,6 +41,11 @@ export default {
       }
     }
     this.Setting = false;
+  },
+  watch: {
+    dataAdded: function(d){
+      this.getPortfolios();
+    }
   },
   methods: {
     Change_Donut_Chart: function(i){
