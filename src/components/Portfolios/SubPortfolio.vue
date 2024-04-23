@@ -35,7 +35,7 @@ export default {
   },
   updated() {
     if(this.Setting) {
-      for(let i=0 ; i < document.querySelectorAll(".sub-donuts-chart").length ; i++) {
+      for(let i=0 ; i <= this.Data.length ; i++) { 
         if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
         this.$Donut_Chart(this.Data[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
       }
