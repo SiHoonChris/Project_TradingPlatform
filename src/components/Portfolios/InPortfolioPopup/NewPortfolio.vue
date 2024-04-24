@@ -16,8 +16,8 @@
             <tr v-for="(e, i) in addAssetsData" :key="i">
               <td>{{i+1}}</td>
               <td>{{e}}</td>
-              <td><input :class="e" class="price" type="number" min="0" required value="0"></td>
-              <td><input :class="e" class="amount" type="number" min="1" required value="1"></td>
+              <td><input :class="'price-'+String(e)" type="number" min="0" required value="0"></td> 
+              <td><input :class="'amount-'+String(e)" type="number" min="1" required value="1"></td>
               <td><button @click="removeAsset(e)">X</button></td>
             </tr>
           </tbody>
@@ -78,7 +78,7 @@ export default {
       const objAssets = {};
       for(const E of this.addAssetsData) {
         objAssets[E] = 
-          document.querySelector(`.${E}.price`).value * document.querySelector(`.${E}.amount`).value;
+          document.querySelector(`.price-${E}`).value * document.querySelector(`.amount-${E}`).value;
       }
       return objAssets;
     },
