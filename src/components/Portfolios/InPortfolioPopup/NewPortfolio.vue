@@ -27,12 +27,14 @@
     <div id="find-assets">
       <div id="find-assets-search">
         <input type="text" placeholder="Set portfolio-name" v-model="portfolioName">
-        <input type="text" placeholder="Name, ticker symbol, or code">
+        <input type="text" placeholder="Name, ticker symbol, or code" v-model="paramForSearch">
         <ul id="find-assets-suggest">
-          <li v-for="(e,i) in findAssetsData" :key="i" @click="addAsset(e.TICKER)">
-            <p>{{e.TICKER}}</p>
-            <p>{{e.NAME}}</p>
-          </li>
+          <template v-if="suggestionResult.length != 0">
+            <li v-for="(e,i) in suggestionResult" :key="i" @click="addAsset(e.TICKER)">
+              <p>{{e.TICKER}}</p>
+              <p>{{e.NAME}}</p>
+            </li>
+          </template>
         </ul>
       </div>
       <div id="find-assets-btns">
@@ -49,11 +51,26 @@ export default {
     return {
       addAssetsData: [],
       findAssetsData: null, 
-      portfolioName: 'New Portfolio'
+      suggestionResult: [],
+      portfolioName: 'New Portfolio',
+      paramForSearch: ''
     }
   },
   mounted(){
     this.findAssetsData = this.$store.state.allAssetsData;
+  },
+  watch: {
+    paramForSearch: function(val) {
+      if(val !== "" && val !== null) {
+        this.suggestionResult = [];
+        this.suggestionResult.push(...this.findAssetsData.filter(e => e.NAME.toLowerCase().startsWith(val.toLowerCase())));
+        this.suggestionResult.push(...this.findAssetsData.filter(e => e.TICKER.toLowerCase().startsWith(val.toLowerCase())));
+        this.suggestionResult = [...new Set(this.suggestionResult)];
+      }
+      else {
+        this.suggestionResult = [];
+      }
+    }
   },
   methods: {
     makeNewPortfolio: function(){
