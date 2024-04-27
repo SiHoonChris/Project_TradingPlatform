@@ -18,15 +18,15 @@
 </template>
 
 <script>
-import CandleChart from "@/components/Detail/CandleChart.vue"
-import BuyAndSell from "@/components/Detail/BuyAndSell.vue"
-import OrderHistory from "@/components/Detail/OrderHistory.vue"
-import AssetMemo from "@/components/Detail/AssetMemo.vue"
+import CandleChart from "@/components/Trade/CandleChart.vue"
+import BuyAndSell from "@/components/Trade/BuyAndSell.vue"
+import OrderHistory from "@/components/Trade/OrderHistory.vue"
+import AssetMemo from "@/components/Trade/AssetMemo.vue"
 import PopupSlot from '@/components/Common/PopupSlot.vue'
-import DebtRatio from "@/components/Detail/InDetailPopup/DebtRatio.vue"
-import ProfitMargin from "@/components/Detail/InDetailPopup/ProfitMargin.vue"
-import FinancialValues from "@/components/Detail/InDetailPopup/FinancialValues.vue"
-import FinancialReport from "@/components/Detail/InDetailPopup/FinancialReport.vue"
+import DebtRatio from "@/components/Trade/InDetailPopup/DebtRatio.vue"
+import ProfitMargin from "@/components/Trade/InDetailPopup/ProfitMargin.vue"
+import FinancialValues from "@/components/Trade/InDetailPopup/FinancialValues.vue"
+import FinancialReport from "@/components/Trade/InDetailPopup/FinancialReport.vue"
 
 export default {
   components: { 

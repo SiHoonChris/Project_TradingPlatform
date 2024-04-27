@@ -7,7 +7,7 @@ export default {
         // function : $moveTo_1
         Vue.config.globalProperties.$moveTo_2 = 
             function(T) {
-                this.$router.push({name: 'detail', params: {ticker: T}});
+                this.$router.push({name: 'trade', params: {ticker: T}});
             }
         // function : $moveTo_2
         Vue.config.globalProperties.$moveTo_3 = 

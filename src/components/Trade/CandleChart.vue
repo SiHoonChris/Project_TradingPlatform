@@ -16,8 +16,6 @@
 </template>
 
 <script>
-import SamplePriceData from "@/assets/SamplePriceData.json"
-
 export default {
   data() {
     return {
@@ -26,16 +24,23 @@ export default {
     }
   },
   created() {
-    this.$store.commit('getAssetName', this.$route.params.ticker); // 개발 중에는 주석 처리, 빌드할 때 해제
-    this.assetName = this.$store.state.assetName; // 개발 중에는 주석 처리, 빌드할 때 해제
-    // this.assetName = "name" // 개발 끝나면 지우기
-    this.datasForChart = SamplePriceData;
+    this.$store.commit('getAssetName', this.$route.params.ticker);
+    this.assetName = this.$store.state.assetName;
+    this.getHistoricalPriceData(this.$route.params.ticker);
   },
-  mounted() {
+  updated() {
     this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
-    document.querySelector("#asset-chart").scrollBy(document.querySelector("#asset-chart").offsetWidth, 0);
   },
   methods: {
+    getHistoricalPriceData: function(t){
+      this.$http.get("/trade/getHistoricalPriceData", {params: { TICKER: t }})
+      .then(res => {
+        this.datasForChart = res.data;
+        this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
+        document.querySelector("#asset-chart").scrollBy(document.querySelector("#asset-chart").offsetWidth, 0);
+      })
+      .catch(err => console.log(err));
+    },
     PopupOn: function(){
       this.$emit("PopupSwitchOn", true);
     }
