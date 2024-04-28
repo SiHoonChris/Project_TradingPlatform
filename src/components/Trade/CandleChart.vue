@@ -20,20 +20,23 @@ export default {
   data() {
     return {
       assetName: null,
+      marketInfo: null,
       datasForChart: null
     }
   },
   created() {
     this.$store.commit('getAssetName', this.$route.params.ticker);
+    this.$store.commit('getMarketInfo', this.$route.params.ticker);
     this.assetName = this.$store.state.assetName;
-    this.getHistoricalPriceData(this.$route.params.ticker);
+    this.marketInfo = this.$store.state.marketInfo;
+    this.getHistoricalPriceData(this.$route.params.ticker, this.marketInfo);
   },
   updated() {
     this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
   },
   methods: {
-    getHistoricalPriceData: function(t){
-      this.$http.get("/trade/getHistoricalPriceData", {params: { TICKER: t }})
+    getHistoricalPriceData: function(t, m){
+      this.$http.get("/trade/getHistoricalPriceData", {params: { TICKER: t , MARKET: m}})
       .then(res => {
         this.datasForChart = res.data;
         this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
