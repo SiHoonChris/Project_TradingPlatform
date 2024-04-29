@@ -9,7 +9,7 @@ export default {
                 let xScale = d3.scaleBand()
                                 .range([0, width * 0.97])
                                 .padding(0.16)
-                                .domain(DATA.map((d) => d.Date)),
+                                .domain(DATA.map((d) => new Intl.DateTimeFormat('ja-JP').format(new Date(d.Date)))),
                     yScale = d3.scaleLinear()
                                 .range([height, 0])
                                 .domain(d3.extent([d3.max(DATA, (d) => d.High * 1.05), d3.min(DATA, (d) => d.Low * 0.95)]));
@@ -52,7 +52,7 @@ export default {
                     .enter()
                     .append("rect")
                     .attr("class", "candle")
-                    .attr("x", (d) => xScale(d.Date))
+                    .attr("x", (d) => xScale(new Intl.DateTimeFormat('ja-JP').format(new Date(d.Date))))
                     .attr("width", xScale.bandwidth())
                     .attr("y", (d) => yScale(d3.max([d.Open, d.Close])))
                     .attr("height", (d) => Math.abs(yScale(d.Close)-yScale(d.Open)))
@@ -64,9 +64,9 @@ export default {
                     .enter()
                     .append("line")
                     .attr("class", "tail")
-                    .attr("x1", (d) => xScale(d.Date)+xScale.bandwidth()/2)
+                    .attr("x1", (d) => xScale(new Intl.DateTimeFormat('ja-JP').format(new Date(d.Date)))+xScale.bandwidth() / 2)
                     .attr("y1", (d) => yScale(d.Low))
-                    .attr("x2", (d) => xScale(d.Date)+xScale.bandwidth()/2)
+                    .attr("x2", (d) => xScale(new Intl.DateTimeFormat('ja-JP').format(new Date(d.Date)))+xScale.bandwidth() / 2)
                     .attr("y2", (d) => yScale(d.High))
                     .style("stroke", (d) => d.Open >= d.Close ? "red" : "green");
             }
