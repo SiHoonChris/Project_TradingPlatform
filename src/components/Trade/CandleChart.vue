@@ -10,7 +10,11 @@
       </div>
     </div>
     <div id="asset-chart">
-      <svg width="200%" height="100%"></svg>
+      <svg id="yAxisBg" width="100%" height="100%">
+        <rect fill="black" width="3%" height="100%" transform="translate(97%, 0)"></rect>
+      </svg>
+      <svg id="yAxis" width="100%" height="100%"></svg>
+      <svg id="Chart" width="200%" height="100%"></svg>
     </div>
   </div>
 </template>
@@ -32,14 +36,14 @@ export default {
     this.getHistoricalPriceData(this.$route.params.ticker, this.marketInfo);
   },
   updated() {
-    this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
+    this.$Basic_Candle(this.datasForChart, "#asset-chart #yAxis", "#asset-chart #Chart");
   },
   methods: {
     getHistoricalPriceData: function(t, m){
       this.$http.get("/trade/getHistoricalPriceData", {params: { TICKER: t , MARKET: m}})
       .then(res => {
         this.datasForChart = res.data;
-        this.$Standard_Candle(this.datasForChart, "#asset-chart svg");
+        this.$Basic_Candle(this.datasForChart, "#asset-chart #yAxis", "#asset-chart #Chart");
         document.querySelector("#asset-chart").scrollBy(document.querySelector("#asset-chart").offsetWidth, 0);
       })
       .catch(err => console.log(err));
@@ -100,6 +104,10 @@ export default {
     height: 90%;
     overflow-x: scroll;
     overflow-y: hidden;
+    background: none;
+  }
+  #yAxisBg, #yAxis {
+    position: absolute;
   }
 
   /* Scroll-bar */

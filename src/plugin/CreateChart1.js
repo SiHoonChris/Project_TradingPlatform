@@ -1,11 +1,12 @@
 export default {
     install(Vue) {
-        Vue.config.globalProperties.$Standard_Candle = 
-            function(DATA, CONT){ 
-                let width  = window.getComputedStyle(document.querySelector(CONT)).width.replace('px', '')*0.99,
-                    height = window.getComputedStyle(document.querySelector(CONT)).height.replace('px', '')*0.97;
+        Vue.config.globalProperties.$Basic_Candle = 
+            function(DATA, yAxisCont, chartCont){ 
+                let width  = window.getComputedStyle(document.querySelector(chartCont)).width.replace('px', '')*0.99,
+                    height = window.getComputedStyle(document.querySelector(chartCont)).height.replace('px', '')*0.97;
                     
-                let svg    = d3.select(CONT);
+                let yAxisSVG  = d3.select(yAxisCont),
+                    chartSVG  = d3.select(chartCont);
                 let xScale = d3.scaleBand()
                                 .range([0, width * 0.97])
                                 .padding(0.16)
@@ -27,27 +28,19 @@ export default {
                                 .tickSizeInner(-width*.97)
                                 .tickSizeOuter(0);
                         
-                let g = svg.append("g");
+                let g1 = chartSVG.append("g");
     
                 /* x축 생성 */
-                g.append("g")
+                g1.append("g")
                     .attr("class", "x-axis")
                     .attr("color", "white")
                     .attr("stroke-width", 0.3)
                     .attr("transform", "translate(0," + height + ")")
                     .attr("color", "white")
                     .call(xAxis);
-                
-                /* y축 생성 */
-                g.append("g")
-                    .attr("class", "y-axis")
-                    .attr("color", "white")
-                    .attr("stroke-width", 0.3)
-                    .attr("transform", "translate(" + width * 0.97 + ", 0)")
-                    .call(yAxis);
-                
+                                
                 /* 캔들 몸통 */
-                g.selectAll(".candle")
+                g1.selectAll(".candle")
                     .data(DATA)
                     .enter()
                     .append("rect")
@@ -59,7 +52,7 @@ export default {
                     .attr("fill", (d) => d.Open >= d.Close ? "red" : "green");
                     
                 /* 캔들 꼬리 */
-                g.selectAll(".tail")
+                g1.selectAll(".tail")
                     .data(DATA)
                     .enter()
                     .append("line")
@@ -69,6 +62,17 @@ export default {
                     .attr("x2", (d) => xScale(new Intl.DateTimeFormat('ja-JP').format(new Date(d.Date)))+xScale.bandwidth() / 2)
                     .attr("y2", (d) => yScale(d.High))
                     .style("stroke", (d) => d.Open >= d.Close ? "red" : "green");
+
+                let g2 = yAxisSVG.append("g")
+                            .attr("transform", "translate(" + width * 0.97 + ", 0)");
+                
+                /* y축 생성 */
+                g2.append("g")
+                    .attr("class", "y-axis")
+                    .attr("color", "white")
+                    .attr("stroke-width", 0.3)
+                    .call(yAxis);
+
             }
         // $Standard_Candle
         Vue.config.globalProperties.$Bollinger_Band = 
