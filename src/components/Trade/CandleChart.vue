@@ -10,11 +10,9 @@
       </div>
     </div>
     <div id="asset-chart">
-      <svg id="yAxisBg" width="100%" height="100%">
-        <rect fill="black" width="3%" height="100%" transform="translate(97%, 0)"></rect>
-      </svg>
-      <svg id="yAxis" width="100%" height="100%"></svg>
-      <svg id="Chart" width="200%" height="100%"></svg>
+      <svg id="yAxisBg"></svg>
+      <svg id="yAxis"></svg>
+      <svg id="Chart"></svg>
     </div>
   </div>
 </template>
@@ -36,14 +34,20 @@ export default {
     this.getHistoricalPriceData(this.$route.params.ticker, this.marketInfo);
   },
   updated() {
-    this.$Basic_Candle(this.datasForChart, "#asset-chart #yAxis", "#asset-chart #Chart");
+    this.$Basic_Candle(
+      this.datasForChart, 
+      "#asset-chart", "#yAxisBg", "#yAxis", "#Chart"
+    );
   },
   methods: {
     getHistoricalPriceData: function(t, m){
       this.$http.get("/trade/getHistoricalPriceData", {params: { TICKER: t , MARKET: m}})
       .then(res => {
         this.datasForChart = res.data;
-        this.$Basic_Candle(this.datasForChart, "#asset-chart #yAxis", "#asset-chart #Chart");
+        this.$Basic_Candle(
+          this.datasForChart, 
+          "#asset-chart", "#yAxisBg", "#yAxis", "#Chart"
+        );
         document.querySelector("#asset-chart").scrollBy(document.querySelector("#asset-chart").offsetWidth, 0);
       })
       .catch(err => console.log(err));
