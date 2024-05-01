@@ -62,7 +62,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #search-and-sort {
   padding: 6.3vh 0;
   display: flex;
@@ -79,26 +79,29 @@ export default {
   background: #0a0a0a;
   color: white;
   font-weight: bold;
-}
-::placeholder {
-  color: white;
+  
+  &::placeholder {
+    color: white;
+  }
 }
 label {
   color: white;
   margin-left: 0.5vw;
   display: none;
+
+  &::before { content: '(' }
+  &::after  { content: ')' }
 }
-label::before {content: '('}
-label::after  {content: ')'}
 #sort {
   background: #1a1a1a;
   color: white;
   font-weight: bold;
   width: 6vw;
   height: 3vh;
-}
-option:hover{
-  background: pink;
+
+  option:hover{
+    background: pink;
+  }
 }
 
 </style>

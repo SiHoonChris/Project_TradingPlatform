@@ -146,20 +146,19 @@ export default {
 }
 </script>
 
-<style scoped>
-  #transaction-table {
-    width: 88%;
-    height: 90%;
-  }
+<style lang="scss" scoped>
+#transaction-table {
+  width: 88%;
+  height: 90%;
+}
+#table-sort {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: left;
+  align-items: flex-end;
 
-  #table-sort {
-    width: 100%;
-    height: 10%;
-    display: flex;
-    justify-content: left;
-    align-items: flex-end;
-  }
-  #table-sort select {
+  select {
     background: #1a1a1a;
     color: white;
     margin-right: 1%;
@@ -170,7 +169,7 @@ export default {
     width: 8vw;
     height: 3vh;
   }
-  #table-sort input {
+  input {
     width: 12vw;
     height: 3vh;
     border: 1px solid gray;
@@ -180,97 +179,122 @@ export default {
     padding-bottom: 0;
     margin-bottom: 1%;
   }
-
-  #transaction-list {
-    width: 100%;
-    height: 85%;
-  }
-  #transaction-list-thead { 
-    height: 12%; 
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    border-top: 1px solid gray;
-  }
-  #transaction-list-thead table {
-    width: 100%;
-    height: 100%;
-    border-collapse: collapse;
-    color: white;
-  }
-  #transaction-list-tbody { 
-    height: calc(88% - 0.4% * 2); 
-    border-left: 1px solid gray;
-    border-right: 1px solid gray;
-    border-bottom: 1px solid gray;
-    overflow-y: scroll;
-  }
-  #transaction-list-tbody table {
+}
+#transaction-list {
+  width: 100%;
+  height: 85%;
+}
+#transaction-list-thead { 
+  height: 12%; 
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-top: 1px solid gray;
+  
+  table {
     width: 100%;
     height: 100%;
     border-collapse: collapse;
     color: white;
+  
+    thead > tr:nth-child(2) > th:nth-child(3) { border-right: none; }
   }
-  th {
-    padding: 0.4% 1.0%;
-    border-bottom: 1px solid gray;
-  }
-  th:nth-child(1) { width: 12%; border-right: 1px solid gray; }
-  th:nth-child(2) { width: 20%; border-right: 1px solid gray; }
-  th:nth-child(3) { width: 20%; border-right: 1px solid gray; }
-  th:nth-child(4) { width: 24%; border-left: 1px solid gray; }
-  th:nth-child(5) { width: 24%; border-left: 1px solid gray; }
-  tr:nth-child(odd) > th:nth-child(1) , tr:nth-child(odd) > th:nth-child(3) { vertical-align: middle; }
-  tr:nth-child(odd) > th:nth-child(2) , tr:nth-child(odd) > th:nth-child(4) , tr:nth-child(odd) > td:nth-child(5) { vertical-align: top; }
-  tr:nth-child(even) > th { vertical-align: top; }
-  #transaction-list-thead > table > thead > tr:nth-child(2) > th:nth-child(3) { border-right: none; }
-  td {
-    padding: 0.4% 1.0%;
-    border-bottom: 1px solid gray;
-  }
-  td:nth-child(1) { width: 12%; border-right: 1px solid gray; }
-  td:nth-child(2) { width: 20%; border-right: 1px solid gray; }
-  td:nth-child(3) { width: 20%; border-right: 1px solid gray; }
-  td:nth-child(4) { width: 24%; border-left: 1px solid gray; }
-  td:nth-child(5) { width: 23.2%; border-left: 1px solid gray; }
-  tr:nth-child(odd) > td:nth-child(1) , tr:nth-child(odd) > td:nth-child(3) { vertical-align: middle; text-align: center; }
-  tr:nth-child(odd) > td:nth-child(2) , tr:nth-child(odd) > td:nth-child(4) , tr:nth-child(odd) > td:nth-child(5) { vertical-align: middle; }
-  tr:nth-child(even) > td { vertical-align: middle; }
-  tr:nth-child(odd) > td:nth-child(4) , tr:nth-child(odd) > td:nth-child(5) , 
-  tr:nth-child(even) > td:nth-child(2) , tr:nth-child(even) > td:nth-child(3) { text-align: right; }
-  #transaction-list-tbody > table > tbody > tr > td:nth-child(5) { border-right: 1px solid gray; }
-  tr:nth-child(4n+1) > td , tr:nth-child(4n+2) > td { background:#1a1a1a; }
+}
+#transaction-list-tbody { 
+  height: calc(88% - 0.4% * 2); 
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  border-bottom: 1px solid gray;
+  overflow-y: scroll;
 
-  #pagination {
+  table {
     width: 100%;
-    height: 4.6%;
-    padding-top: 0.4%;
-    display: flex;
-    justify-content: right;
-    color: gray;
+    height: 100%;
+    border-collapse: collapse;
+    color: white;
+  
+    tbody > tr > td:nth-child(5) { border-right: 1px solid gray; }
   }
-  #pagination > p {
+}
+th {
+  padding: 0.4% 1.0%;
+  border-bottom: 1px solid gray;
+
+  &:nth-child(1) { width: 12%; border-right: 1px solid gray; }
+  &:nth-child(2) { width: 20%; border-right: 1px solid gray; }
+  &:nth-child(3) { width: 20%; border-right: 1px solid gray; }
+  &:nth-child(4) { width: 24%; border-left: 1px solid gray; }
+  &:nth-child(5) { width: 24%; border-left: 1px solid gray; }
+}
+td {
+  padding: 0.4% 1.0%;
+  border-bottom: 1px solid gray;
+
+  &:nth-child(1) { width: 12%;   border-right: 1px solid gray; }
+  &:nth-child(2) { width: 20%;   border-right: 1px solid gray; }
+  &:nth-child(3) { width: 20%;   border-right: 1px solid gray; }
+  &:nth-child(4) { width: 24%;   border-left:  1px solid gray; }
+  &:nth-child(5) { width: 23.2%; border-left:  1px solid gray; }
+}
+tr {
+  &:nth-child(odd) {
+    & > th {
+      &:nth-child(1), &:nth-child(3) { vertical-align: middle; }
+      &:nth-child(2), &:nth-child(4), &:nth-child(5) { vertical-align: top; }
+    }
+    & > td {
+      vertical-align: middle;
+
+      &:nth-child(1), &:nth-child(3) { text-align: center; }
+      &:nth-child(4), &:nth-child(5) { text-align: right; }
+    }
+  }
+  &:nth-child(even) {
+    & > th { vertical-align: top; }
+    & > td { 
+      vertical-align: middle;
+      
+      &:nth-child(2), &:nth-child(3) { text-align: right; }
+    }
+  }
+  &:nth-child(4n+1) > td, &:nth-child(4n+2) > td {
+    background:#1a1a1a;
+  }
+}
+  
+#pagination {
+  width: 100%;
+  height: 4.6%;
+  padding-top: 0.4%;
+  display: flex;
+  justify-content: right;
+  color: gray;
+
+  & > p {
     width: 50%;
     height: 100%;
     margin: 0 5%;
     display: flex;
     justify-content: center;
+
+    & > span {
+      margin: 0 1.4%;
+      cursor: pointer;
+
+      &.on {
+        font-weight: bold;
+        color: whitesmoke;
+      }
+      &.previous:hover, &.later:hover {
+        color: whitesmoke;
+        font-weight: bold;
+      }
+    }
   }
-  #pagination > p > span {
-    margin: 0 1.4%;
-    cursor: pointer;
-  }
-  #pagination > p > span.on {
-    font-weight: bold;
-    color: whitesmoke;
-  }
-  #pagination > p > span.previous:hover, #pagination > p > span.later:hover {
-    color: whitesmoke;
-    font-weight: bold;
-  }
-  #pagination > span {
+  & > span {
     width: 20%;
     height: 100%;
     text-align: right;
   }
+}
 
 </style>

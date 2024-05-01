@@ -24,27 +24,29 @@
   </div>
 </template>
 
-<style scoped>
-  #OrderHistory {
-    width: 100%;
-    height: 100%;
-  }
-  #select-order-history {
-    height: 15%;
-    width: 100%;
-  }
-  #select-order-history select {
+<style lang="scss" scoped>
+#OrderHistory {
+  width: 100%;
+  height: 100%;
+}
+#select-order-history {
+  height: 15%;
+  width: 100%;
+
+  select {
     color: white;
     background: #1a1a1a;
     margin-left: 2%;
   }
-  table {
-    color: white;
-    width: 100%;
-    height: 85%;
-    border-collapse: collapse;
-  }
-  th, td {
-    border: 1px solid gray;
-  }
+}
+table {
+  color: white;
+  width: 100%;
+  height: 85%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid gray;
+}
+
 </style>

@@ -38,8 +38,7 @@ export default {
   watch: {
     urlParam: function(val) {
       if(val !== "" && val !== null) {
-        // 이전 검색 결과 지우고
-        this.Suggestions = [];
+        this.Suggestions = [];  // 이전 검색 결과 지우고
         //새로운 검색 결과 다시 생성
         this.Suggestions.push(...this.DATAS.filter(e => e.NAME.toLowerCase().startsWith(val.toLowerCase())));
         this.Suggestions.push(...this.DATAS.filter(e => e.TICKER.toLowerCase().startsWith(val.toLowerCase())));
@@ -59,7 +58,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #header-center {
   width: calc(100vw * 0.33);
   display: flex;
@@ -75,9 +74,10 @@ export default {
   background: #0a0a0a;
   border: 1px solid gray;
   color: white;
-}
-::placeholder {
-  color: gray;
+
+  &::placeholder {
+    color: gray;
+  }
 }
 label {
   display: flex;
@@ -100,20 +100,23 @@ label {
   padding: 0 1.8%;
   margin: 0.8% 0.5% 0.8% 0%;
   color: white;
+
+  &:hover {
+    background: #a9a9a938;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  p {
+    margin: 0;
+
+    &:nth-child(1){
+      font-size: 16px;
+      font-weight: 600;
+    }
+    &:nth-child(2){
+      font-size: 12px;
+    }
+  }
 }
-.list:hover {
-  background: #a9a9a938;
-  text-decoration: underline;
-  cursor: pointer;
-}
-.list p {
-  margin: 0;
-}
-.list p:nth-child(1){
-  font-size: 16px;
-  font-weight: 600;
-}
-.list p:nth-child(2){
-  font-size: 12px;
-}
+
 </style>

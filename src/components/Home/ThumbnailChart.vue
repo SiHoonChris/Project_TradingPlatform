@@ -16,7 +16,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 section {
   width: 460px;
   height: 328px;
@@ -36,10 +36,12 @@ section {
   width: 100%;
   height: 93%;
   border: 1px solid gray;
+
+  &:hover {
+    border: 1px solid whitesmoke;
+    box-shadow: 0.1px 0.1px 1.6px 1.2px whitesmoke;
+    cursor: pointer;
+  }
 }
-.thumbnail:hover {
-  border: 1px solid whitesmoke;
-  box-shadow: 0.1px 0.1px 1.6px 1.2px whitesmoke;
-  cursor: pointer;
-}
+
 </style>

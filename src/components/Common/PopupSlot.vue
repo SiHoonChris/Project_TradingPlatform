@@ -19,7 +19,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #popup-container {
   display: flex;
   flex-direction: column;
@@ -47,9 +47,8 @@ export default {
   font-weight: bold;
   color: white;
   height: 80%;
-}
-#off-btn:hover {
-  cursor: pointer;
+
+  &:hover { cursor: pointer; }
 }
 #popup-contents {
   width: 95%;
@@ -57,16 +56,16 @@ export default {
   margin: 0.2vh auto 0.8vh;
   overflow-y: scroll;
   overflow-x: hidden;
-}
 
-/* Scroll-bar */
-#popup-contents::-webkit-scrollbar {
-  	width: 0.6vw;
-}
-#popup-contents::-webkit-scrollbar-thumb {
+  /* Scroll-bar */
+  &::-webkit-scrollbar {
+    width: 0.6vw;
+  }
+  &::-webkit-scrollbar-thumb {
   	border-radius: 30px;
   	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
   	background-color: #333;
+  }
 }
 
 </style>

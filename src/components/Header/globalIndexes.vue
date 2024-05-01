@@ -74,7 +74,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #header-left {
   width: calc(100vw * 0.24);
   height: 100%;
@@ -97,23 +97,31 @@ p {
 .index-key {
   font-size: 1.3vw;
 }
-.index-values span:nth-child(1) {
-  font-size: 1.1vw;
-  margin-right: 0.5vw;
+.index-values {
+  span:nth-child(1) {
+    font-size: 1.1vw;
+    margin-right: 0.5vw;
+  }
+  span:nth-child(2) {
+    font-size: 0.8vw;
+    margin-right: 0.4vw;
+  }
+  .index-values span:nth-child(3) {
+    font-size: 0.8vw;
+  }
 }
-.index-values span:nth-child(2) {
-  font-size: 0.8vw;
-  margin-right: 0.4vw;
-}
-.index-values span:nth-child(3) {
-  font-size: 0.8vw;
-}
+.plus {
+  color: green;
 
-.plus { color: green; }
-.plus:nth-child(2)::before { content: "▲"; }
-.plus:nth-child(3)::before { content: "+"; }
-.minus { color: red; }
-.minus:nth-child(2)::before { content: "▼"; }
-.plus:nth-child(3)::after, .minus:nth-child(3)::after { content: "%"; }
+  &:nth-child(2)::before { content: "▲"; }
+  &:nth-child(3)::before { content: "+"; }
+  &:nth-child(3)::after { content: "%"; }
+}
+.minus { 
+  color: red;
+
+  &:nth-child(2)::before { content: "▼"; }
+  &:nth-child(3)::after { content: "%"; }
+}
 
 </style>

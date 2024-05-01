@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 #header-right {
   width: calc(100vw * 0.33);
   height: 100%;
@@ -26,11 +26,9 @@ span {
   color: darkgray;
   cursor: pointer;
   margin-left: 2.6vw;
+
+  &:last-child { margin-right: 1.4vw; }
+  &:hover { color: whitesmoke; }
 }
-span:last-child {
-  margin-right: 1.4vw; 
-}
-span:hover{
-  color: whitesmoke;
-}
+
 </style>
