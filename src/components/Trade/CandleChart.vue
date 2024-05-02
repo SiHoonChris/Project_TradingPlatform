@@ -10,8 +10,10 @@
       </div>
     </div>
     <div id="asset-chart">
-      <svg id="yAxisBg"></svg>
-      <svg id="yAxis"></svg>
+      <div id="forYAxis">
+        <svg id="yAxisBg"></svg>
+        <svg id="yAxis"></svg>
+      </div>
       <svg id="Chart"></svg>
     </div>
   </div>
@@ -110,8 +112,13 @@ export default {
     overflow-y: hidden;
     background: none;
   }
-  #yAxisBg, #yAxis {
+  #yAxisBg, #yAxis, #yAxisBg, #forYAxis {
     position: absolute;
+  }
+  #forYAxis {
+    width: calc(100vw * 0.8 * 0.05);
+    height: calc(92vh * 0.9 * 0.97);
+    margin-left: calc(100vw * 0.8 * 0.95);
   }
 
   /* Scroll-bar */

@@ -8,10 +8,10 @@ export default {
                                 .height.replace('px', '') - 6; /* 하단 스크롤바 높이 */
                     
                 let yAxisBgSVG = d3.select(yAxisBgSelec)
-                                    .attr("width", width)
+                                    .attr("width", width * 0.05)
                                     .attr("height", height),
                     yAxisSVG   = d3.select(yAxisSelec)
-                                    .attr("width", width)
+                                    .attr("width", width * 0.05)
                                     .attr("height", height),
                     chartSVG   = d3.select(chartSelec)
                                     .attr("width", width * 2)
@@ -36,46 +36,44 @@ export default {
                     if(i!==0 && i%40===0) return d;
                 });
     
-                let xAxis = d3.axisBottom(xScale)
-                                .tickValues(xLabels)
-                                .tickSizeInner(-height)
-                                .tickSizeOuter(0),
-                    yAxis = d3.axisRight(yScale)
-                                .ticks(5)
-                                .tickSizeInner(-width * .95)
-                                .tickSizeOuter(0);
-                
-                /* y축 생성 */
-                let g1 = yAxisBgSVG.append("g");
+                let xAxis = d3.axisBottom(xScale).tickValues(xLabels),
+                    yAxis = d3.axisRight(yScale).ticks(5);
 
-                g1.append("rect")
-                    .attr("fill", 'black')
-                    .attr("width", `${width * 0.05}`)
-                    .attr("height", height)
-                    .attr("transform", `translate(${width * 0.95}, 0)`);
-
-                let g2 = yAxisSVG
-                            .append("g")
-                            .attr("transform", `translate(${width * 0.95}, 0)`);
+                /* 고정된 y축 생성 */
+                let g1 = yAxisSVG.append("g");
                 
-                g2.append("g")
+                g1.append("g") /* y-axis */
                     .attr("class", "y-axis")
                     .attr("color", "white")
-                    .attr("stroke-width", 0.3)
-                    .call(yAxis);
+                    .attr("stroke-width", 0.2)
+                    .call(yAxis.tickSizeInner(0).tickSizeOuter(0));
 
-                /* x축, 캔들 생성 */                
+                let g2 = yAxisBgSVG.append("g");
+                
+                g2.append("rect") /* y-axis Bg */
+                    .attr("fill", 'black')
+                    .attr("width", `${width * 0.05}`)
+                    .attr("height", height);
+
+                /* x축, y축, 캔들 생성 */                
                 let g3 = chartSVG.append("g");
 
-                g3.append("g") /* x축 */
+                g3.append("g") /* x-axis */
                     .attr("class", "x-axis")
                     .attr("color", "white")
-                    .attr("stroke-width", 0.3)
+                    .attr("stroke-width", 0.2)
                     .attr("transform", `translate(0, ${height * 0.97})`)
                     .attr("color", "white")
-                    .call(xAxis);
-                                
-                g3.selectAll(".candle") /* 캔들 몸통 */
+                    .call(xAxis.tickSizeInner(-height).tickSizeOuter(0));
+
+                g3.append("g") /* y-axis with grid */
+                    .attr("class", "y-axis")
+                    .attr("color", "white")
+                    .attr("stroke-width", 0.2)
+                    .attr("transform", `translate(${width*2-width*0.05}, 0)`)
+                    .call(yAxis.tickSizeInner(-(width*2-width*0.05)).tickSizeOuter(0));
+
+                g3.selectAll(".candle") /* Candle-body */
                     .data(DATA)
                     .enter()
                     .append("rect")
@@ -87,7 +85,7 @@ export default {
                     .attr("fill", (d) => d.Open >= d.Close ? "red" : "green")
                     .raise();
                     
-                g3.selectAll(".tail") /* 캔들 꼬리 */
+                g3.selectAll(".tail") /* Candle-tail */
                     .data(DATA)
                     .enter()
                     .append("line")
