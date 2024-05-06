@@ -61,67 +61,74 @@ export default {
 }
 </script>
 
-<style scoped>
-  #CandleChart {
-    width: 100%;
-    height: 100%;
+<style lang="scss" scoped>
+#CandleChart {
+  $w: 80vw;
+  $h: 92vh;
+  @mixin setFlexDisplay($ai, $jc) {
     display: flex;
-    flex-direction: column;
-    border-right: 1px solid gray;
+    align-items: $ai;
+    justify-content: $jc;
   }
 
+  width: $w;
+  height: $h;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid gray;
+
   #chart-helper {
-    width: 100%;
-    height: 10%;
+    width: $w;
+    height: $h * 0.1;
     border-bottom: 1px solid gray;
     display: flex;
     justify-content: space-between;
-  }
-  #asset-price {
-    width: 50%; /*너비는 종목명에 따라 자유롭게 변동되어야 함*/
-    height: 100%;
-    color: white;
-    border-right: 1px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: left;
-  }
-  #name {
-    font-size: 34px;
-    font-weight: bold;
-    padding-left: 0.6vw;
-    vertical-align: middle;
-    padding-bottom: 1%;
-  }
-  #chart-tool {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    width: 5%;
-    padding: 0.5%;
-  }
-  #chart-tool button {
-    width: 46%;
-    height: 50%;
-  }
 
+    #asset-price {
+      @include setFlexDisplay(center, left);
+      height: 100%;
+      color: white;
+
+      #name {
+        font-size: 34px;
+        font-weight: bold;
+        padding-left: 0.6vw;
+        padding-bottom: 1%;
+        vertical-align: middle;
+      }
+    }
+    #chart-tool {
+      @include setFlexDisplay(flex-end, space-between);
+      width: 5%;
+      padding: 0.5%;
+
+      button {
+        width: 46%;
+        height: 50%;
+      }      
+    }
+  }
   #asset-chart {
-    width: 100%;
-    height: 90%;
+    width: $w;
+    height: $h * 0.9;
     overflow-x: scroll;
     overflow-y: hidden;
     background: none;
-  }
-  #yAxisBg, #yAxis, #yAxisBg, #forYAxis {
-    position: absolute;
-  }
-  #forYAxis {
-    width: calc(100vw * 0.8 * 0.05);
-    height: calc(92vh * 0.9 * 0.97);
-    margin-left: calc(100vw * 0.8 * 0.95);
-  }
 
-  /* Scroll-bar */
+    #forYAxis {
+      width: $w * 0.05;
+      height: $h * 0.9 * 0.97;
+      margin-left: $w * 0.95;
+      position: absolute;
+
+      #yAxisBg, #yAxis {
+        position: absolute;
+      }
+    }
+  }
+}
+
+/* Scroll-bar */
 ::-webkit-scrollbar-track {
   background-color: black;
 }
@@ -134,4 +141,5 @@ export default {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
   background-color: #333;
 }
+
 </style>
