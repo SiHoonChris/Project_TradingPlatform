@@ -111,8 +111,9 @@ export default {
   #asset-chart {
     width: $w;
     height: $h * 0.9;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: hidden;
+    // overflow-x: scroll;
+    // overflow-y: hidden;
     background: none;
 
     #forYAxis {

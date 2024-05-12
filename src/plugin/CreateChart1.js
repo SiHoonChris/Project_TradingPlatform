@@ -33,11 +33,18 @@ export default {
                                 );
     
                 let xLabels = xScale.domain().filter(function(d, i){
-                    if(i!==0 && i%40===0) return d;
+                    if(i!==0 && i%160===0) return d;
                 });
-    
+                let yLabels = [ // 한정된 범위 내에서, min-max 값 구하기 & scroll에 값 업데이트
+                    d3.min(DATA, (d) => d.Low * 0.97), 
+                    ( 3 * (d3.min(DATA, (d) => d.Low * 0.97)) + d3.max(DATA, (d) => d.High * 1.03) ) / 4,
+                    (d3.min(DATA, (d) => d.Low * 0.97) + d3.max(DATA, (d) => d.High * 1.03)) / 2,
+                    ( (d3.min(DATA, (d) => d.Low * 0.97)) + 3 * d3.max(DATA, (d) => d.High * 1.03) ) / 4,
+                    d3.max(DATA, (d) => d.High * 1.03)
+                ];
+
                 let xAxis = d3.axisBottom(xScale).tickValues(xLabels),
-                    yAxis = d3.axisRight(yScale).ticks(5);
+                    yAxis = d3.axisRight(yScale).tickValues(yLabels);
 
                 /* 고정된 y축 생성 */
                 let g1 = yAxisSVG.append("g");
@@ -62,28 +69,47 @@ export default {
                 let horizontalLine = g3.append("line")
                                         .attr("opacity", 0)
                                         .attr("x1", 0)
-                                        .attr("x2", width * 2)
+                                        .attr("x2", '100%')
                                         .attr("stroke", "white")
                                         .attr("stroke-width", .4)
                                         .attr("stroke-dasharray", "4 1")
                                         .attr("pointer-events", "none");
+                let priceValue = d3.select(".y-axis")
+                                    .append("text")
+                                    .attr("opacity", 0)
+                                    .attr("text-anchor", "start")
+                                    .attr("alignment-baseline", "middle")
+                                    .attr("x", 0)
+                                    .attr("fill", "white");
                 /* crosshair y */
                 let verticalLine = g3.append("line")
                                         .attr("opacity", 0)
                                         .attr("y1", 0)
-                                        .attr("y2", height * 0.97)
+                                        .attr("y2", '97%')
                                         .attr("stroke", "white")
                                         .attr("stroke-width", .4)
                                         .attr("stroke-dasharray", "4 1")
                                         .attr("pointer-events", "none");
+                let dateValue = d3.select(".x-axis")
+                                    .append("text")
+                                    .attr("id", "x-axis-value")
+                                    .attr("opacity", 0)
+                                    .attr("text-anchor", "middle")
+                                    .attr("alignment-baseline", "middle")
+                                    .attr("y", `${height * 0.97}`)
+                                    .attr("fill", "white");
                 /* crosshair movement */
                 let crosshairCreate = function(){
                     verticalLine.attr("x1", event.offsetX).attr("x2", event.offsetX).attr("opacity", 1);
+                    priceValue.attr("y", event.offsetY).attr("opacity", 1).text(`${yScale.invert(event.offsetY).toFixed(4)}`);
                     horizontalLine.attr("y1", event.offsetY).attr("y2", event.offsetY).attr("opacity", 1);
+                    // dateValue.attr("x", event.offsetX).attr("opacity", 1).text(`Date`);
                 }
                 let crosshairRemove = function(){
                     verticalLine.attr("opacity", 0);
+                    priceValue.attr("opacity", 0);
                     horizontalLine.attr("opacity", 0);
+                    // dateValue.attr("opacity", 0);
                 }
 
                 /* Tooltip */
@@ -138,7 +164,7 @@ export default {
                     .on("mousemove", crosshairCreate)
                     .on("mouseout", crosshairRemove);
 
-                g3.append("g") /* x-axis */
+                let gX = g3.append("g") /* x-axis */
                     .attr("class", "x-axis")
                     .attr("color", "white")
                     .attr("stroke-width", 0.2)
@@ -148,7 +174,7 @@ export default {
                     .on("mousemove", crosshairCreate)
                     .on("mouseout", crosshairRemove);
 
-                g3.append("g") /* y-axis with grid */
+                let gY = g3.append("g") /* y-axis with grid */
                     .attr("class", "y-axis")
                     .attr("color", "white")
                     .attr("stroke-width", 0.2)
@@ -157,7 +183,7 @@ export default {
                     .on("mousemove", crosshairCreate)
                     .on("mouseout", crosshairRemove);
 
-                g3.selectAll(".candle") /* Candle-body */
+                let candleBody = g3.selectAll(".candle") /* Candle-body */
                     .data(DATA)
                     .enter()
                     .append("rect")
@@ -172,7 +198,7 @@ export default {
                     .on("mouseleave", mouseleave)
                     .raise();
                     
-                g3.selectAll(".tail") /* Candle-tail */
+                let candleTail = g3.selectAll(".tail") /* Candle-tail */
                     .data(DATA)
                     .enter()
                     .append("line")
@@ -188,6 +214,32 @@ export default {
                     .on("mousemove", mousemove)
                     .on("mouseleave", mouseleave)
                     .raise();
+
+                /* zoom */
+                let zoom = d3.zoom()
+                    .scaleExtent([1, 4])
+                    .extent([[0, 0], [width*0.95, height*0.97]])
+                    .translateExtent([[-width, height*0.97], [width*0.95, height*0.97]])
+                    .on("zoom", zoomed);
+
+                g3.call(zoom);
+
+                function zoomed(event) {
+                    candleBody.attr(
+                        "transform", 
+                        `translate(${event.transform.x}, 0) scale(${event.transform.k}, 1)`
+                    );
+                    candleTail.attr(
+                        "transform", 
+                        `translate(${event.transform.x}, 0) scale(${event.transform.k}, 1)`
+                    );
+                    gX.attr(
+                        "transform", 
+                        `translate(${event.transform.x}, ${height*0.97}) scale(${event.transform.k}, 1)`
+                    );
+                    // gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
+                    // gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
+                }
             }
 
         // $Standard_Candle
