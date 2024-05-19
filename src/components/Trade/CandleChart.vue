@@ -6,7 +6,7 @@
       </div>
       <div id="chart-tool">
         <button @click="PopupOn()">X</button>
-        <button>X</button>
+        <button @click="ChartToolOn()">X</button>
       </div>
     </div>
     <div id="asset-chart">
@@ -16,16 +16,34 @@
       </div>
       <svg id="Chart"></svg>
     </div>
+    <Toolmenu v-if="chartToolMenu_On">
+      <template v-slot:timeframes>
+        <ul>
+          <li v-for="(d,i) in this.timeframes" :key="i">{{d}}</li>
+        </ul>
+      </template>
+      <template v-slot:indicators>
+        <ul>
+          <li v-for="(d,i) in this.indicators" :key="i">{{d}}</li>
+        </ul>
+      </template>
+    </ToolMenu>
   </div>
 </template>
 
 <script>
+import ToolMenu from '@/components/Common/ChartToolMenuSlot.vue'
+
 export default {
+  components: { ToolMenu },
   data() {
     return {
       assetName: null,
       marketInfo: null,
-      datasForChart: null
+      datasForChart: null,
+      chartToolMenu_On: false,
+      timeframes: ["Annual", "Month", "Week", "Day"],
+      indicators: ["Bollinger Band", "Ichimoku Cloud"]
     }
   },
   created() {
@@ -36,10 +54,13 @@ export default {
     this.getHistoricalPriceData(this.$route.params.ticker, this.marketInfo);
   },
   updated() {
-    this.$Basic_Candle(
-      this.datasForChart, 
-      "#asset-chart", "#yAxisBg", "#yAxis", "#Chart"
-    );
+    if(document.querySelectorAll("g").length === 0){
+      this.$Basic_Candle(
+        this.datasForChart, 
+        "#asset-chart", "#yAxisBg", "#yAxis", "#Chart"
+      );
+    }
+    
   },
   methods: {
     getHistoricalPriceData: function(t, m){
@@ -56,6 +77,9 @@ export default {
     },
     PopupOn: function(){
       this.$emit("PopupSwitchOn", true);
+    },
+    ChartToolOn: function(){
+      this.chartToolMenu_On = this.chartToolMenu_On ? false : true;
     }
   }
 }
@@ -105,15 +129,13 @@ export default {
       button {
         width: 46%;
         height: 50%;
-      }      
+      }
     }
   }
   #asset-chart {
     width: $w;
     height: $h * 0.9;
     overflow: hidden;
-    // overflow-x: scroll;
-    // overflow-y: hidden;
     background: none;
 
     #forYAxis {

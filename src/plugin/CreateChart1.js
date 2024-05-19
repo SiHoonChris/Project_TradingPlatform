@@ -49,7 +49,7 @@ export default {
                 /* 고정된 y축 생성 */
                 let g1 = yAxisSVG.append("g");
                 
-                g1.append("g") /* y-axis */
+                let g1Y = g1.append("g") /* y-axis */
                     .attr("class", "y-axis")
                     .attr("color", "white")
                     .attr("stroke-width", 0.2)
@@ -174,7 +174,7 @@ export default {
                     .on("mousemove", crosshairCreate)
                     .on("mouseout", crosshairRemove);
 
-                let gY = g3.append("g") /* y-axis with grid */
+                let g3Y = g3.append("g") /* y-axis with grid */
                     .attr("class", "y-axis")
                     .attr("color", "white")
                     .attr("stroke-width", 0.2)
@@ -237,10 +237,57 @@ export default {
                         "transform", 
                         `translate(${event.transform.x}, ${height*0.97}) scale(${event.transform.k}, 1)`
                     );
+                    
+                    let candle_cnt=0;
+                    for(let i of document.querySelectorAll("rect.candle")) {
+                        if(i.getAttribute("x")-event.transform.x >= 0 &&
+                             i.getAttribute("x")-event.transform.x <= width * 0.95) {
+                                candle_cnt += 1
+                            }
+                        // 780은 svgChart.append("g") 영역에서의 offsetX의 최댓값임 (여기서는, 차트너비 800 - yAxis 너비 20)
+                    }
+
+                    /* y축 업데이트 */
+                    yScale = d3.scaleLinear()
+                                .range([height * 0.97, 0])
+                                .domain(
+                                    d3.extent([
+                                        d3.max(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.High * 1.05),
+                                        d3.min(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.Low * 0.95)
+                                    ])
+                                );
+
+                    yLabels = [ 
+                        d3.min(DATA.slice(), (d) => d.Low * 0.97), 
+                        (   3 * (d3.min(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.Low * 0.97)) + 
+                            d3.max(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.High * 1.03)  ) / 4,
+                        (   d3.min(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.Low * 0.97) + 
+                            d3.max(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.High * 1.03)  ) / 2,
+                        (   d3.min(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.Low * 0.97) + 
+                            3 * d3.max(DATA.slice(Math.floor(event.transform.x), candle_cnt), (d) => d.High * 1.03) ) / 4,
+                        d3.max(DATA.slice(), (d) => d.High * 1.03)
+                    ];
+
+                    yAxis = d3.axisRight(yScale).tickValues(yLabels);
+                    g1Y.call(yAxis.tickSizeInner(0).tickSizeOuter(0));
+                    g3Y.call(yAxis.tickSizeInner(-(width*2-width*0.05)).tickSizeOuter(0));
+                    
                     // gX.call(xAxis.scale(event.transform.rescaleX(xScale)));
                     // gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
                 }
             }
+
+            // 캔들의 너비를, 차트 전체 너비에 따른 상대적인 너비(bandwidth)가 아니라, 일정한 px로 부여
+            // ( 보여지는 차트 너비 * 2 ) / ( 캔들의 너비 ) = ( 처음에 불러와져야 할 데이터의 수 )
+            // 보여지는 차트 영역 안의 캔들 수 변화에 따라 => y-axis의 tickValues로 사용될 값 재계산
+            // 보여지는 차트 영역 안의 캔들 수 변화에 따라 => x-aixs 값도 재계산
+
+            // 근데 데이터가 너무 많아지면 어떻게?
+            // 불러온 데이터는 쿠키에 저장하고(로컬 스토리지)
+            // 안보여지는 부분(svg)는 remove
+            // 다시 불러올 때는 로컬 스토리지 내용 참조
+
+            // 일단 zoom에 대한 event handler로 axis 동적으로 그릴 수 있는 거 확인
 
         // $Standard_Candle
         Vue.config.globalProperties.$Bollinger_Band = 
