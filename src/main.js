@@ -8,7 +8,7 @@ import CommonFunction from './plugin/CommonFunction.js'
 import CreateChart1 from './plugin/CreateChart1.js'
 import CreateChart2 from './plugin/CreateChart2.js'
 import CreateChart3 from './plugin/CreateChart3.js'
-
+import FinancialStatements from './plugin/FinancialStatements.js'
 
 const app = createApp(App);
 app.config.globalProperties.$http = axios;
@@ -19,4 +19,5 @@ app.use(CommonFunction);
 app.use(CreateChart1);
 app.use(CreateChart2);
 app.use(CreateChart3);
+app.use(FinancialStatements);
 app.mount('#app');

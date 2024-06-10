@@ -1,0 +1,39 @@
+@mixin defTableSet() {
+  padding: 0.4% 1.4%;
+  border: 1px solid white;
+}
+  
+p {
+  color: white;
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin: 6vh 0 3vh 0;
+}
+#balance-sheet-table, #income-statement-table {
+  display: flex;
+  justify-content: center;
+  
+  table {
+    width: 90%;
+    border-collapse: collapse;
+    color: white;
+    
+    th, td {
+      @include defTableSet();
+    }
+    th {
+      &:first-child {
+        width: 36%;
+      }
+      &.YEAR:not(:first-child) , &.QUARTER , &.MONTH:first-child {
+        cursor: pointer;
+      }
+    }    
+    td {
+      &:not(:first-child) {
+        text-align: right;
+      }
+    }
+  }
+}

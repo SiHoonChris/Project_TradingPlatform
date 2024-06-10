@@ -224,6 +224,13 @@ export default {
 
                 g3.call(zoom);
 
+                // 마우스를 스크롤 했을 때, 차트가 커지는/작아지는 정도랑 y-axis 값이 증가/감소하는 정도가 같도록 조절하면 됨
+                document.querySelector("rect.crosshair").addEventListener('mousewheel', e => {
+                    console.log(e.deltaY);
+                    if(e.deltaY > 0 ) console.log('wheel down')
+                    if(e.deltaY < 0 ) console.log('wheel up')
+                })
+
                 function zoomed(event) {
                     candleBody.attr(
                         "transform", 
@@ -244,7 +251,6 @@ export default {
                              i.getAttribute("x")-event.transform.x <= width * 0.95) {
                                 candle_cnt += 1
                             }
-                        // 780은 svgChart.append("g") 영역에서의 offsetX의 최댓값임 (여기서는, 차트너비 800 - yAxis 너비 20)
                     }
 
                     /* y축 업데이트 */
@@ -276,25 +282,14 @@ export default {
                     // gY.call(yAxis.scale(event.transform.rescaleY(yScale)));
                 }
             }
-
-            // 캔들의 너비를, 차트 전체 너비에 따른 상대적인 너비(bandwidth)가 아니라, 일정한 px로 부여
-            // ( 보여지는 차트 너비 * 2 ) / ( 캔들의 너비 ) = ( 처음에 불러와져야 할 데이터의 수 )
-            // 보여지는 차트 영역 안의 캔들 수 변화에 따라 => y-axis의 tickValues로 사용될 값 재계산
-            // 보여지는 차트 영역 안의 캔들 수 변화에 따라 => x-aixs 값도 재계산
-
-            // 근데 데이터가 너무 많아지면 어떻게?
-            // 불러온 데이터는 쿠키에 저장하고(로컬 스토리지)
-            // 안보여지는 부분(svg)는 remove
-            // 다시 불러올 때는 로컬 스토리지 내용 참조
-
-            // 일단 zoom에 대한 event handler로 axis 동적으로 그릴 수 있는 거 확인
-
         // $Standard_Candle
+
         Vue.config.globalProperties.$Bollinger_Band = 
             function(){
                 console.log('as');
             }
         // $Bollinger_Band
+        
         Vue.config.globalProperties.$Ichimoku_Cloud = 
             function(){
                 console.log('as');
