@@ -1,9 +1,9 @@
 <template>
   <main id="transaction">
-    <div id="transaction-calendar-sector">
+    <div id="calendar-sector">
       <TransactionCalendar @setDateFrom="getDateFrom" @setDateTo="getDateTo"/>
     </div>
-    <div id="transaction-table-sector">
+    <div id="table-sector">
       <TransactionTable :dateFrom="sendDateFrom" :dateTo="sendDateTo"/>
     </div>
   </main>
@@ -28,26 +28,6 @@ export default {
 }
 </script>
 
-<style scoped>
-#transaction {
-  background: black;
-  width: 100vw;
-  height: 92vh;
-  display: flex;
-  overflow: hidden;
-}
-#transaction-calendar-sector {
-  width: 30%;
-  height: 100%;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-#transaction-table-sector {
-  width: 70%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+<style lang="scss" scoped>
+  @import "@/assets/css/Transactions/View.scss";
 </style>
