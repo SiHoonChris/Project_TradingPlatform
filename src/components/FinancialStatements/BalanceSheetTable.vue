@@ -37,6 +37,7 @@
 </template>
 
 <script>
+//import { setPeriodAsc , setPeriodDesc } from '../../assets/js/FinancialStatements/DataGetter.js'
 export default {
   data() {
     return {

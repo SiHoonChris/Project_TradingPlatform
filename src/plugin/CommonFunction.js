@@ -1,4 +1,4 @@
-export default {
+export default { // 2개 이상의 Component에서 사용되는 함수는 plugin으로 정의, 아니면 assets/js에 module로 작성
     install(Vue) {
         Vue.config.globalProperties.$moveTo_1 = 
             function(where) {

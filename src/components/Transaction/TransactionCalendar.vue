@@ -18,7 +18,7 @@
 <script>
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { setCalendarBaseStyle } from '../../assets/js/TransactionCalendar.js'
+import { setCalendarBaseStyle } from '../../assets/js/Transaction/TransactionCalendar.js'
 
 export default {
   components: { flatPickr },
