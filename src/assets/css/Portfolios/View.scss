@@ -1,0 +1,27 @@
+$w: 100vw;
+$h: 92vh;
+@mixin setWidthHeight($W, $H) {
+  width: $W;
+  height: $H;
+}
+@mixin setFlexDisplay($d, $ai, $jc) {
+  display: $d;
+  align-items: $ai;
+  justify-content: $jc;
+}
+
+#portfolios {
+  @include setWidthHeight($w, $h);
+  display: flex;
+  overflow: hidden;
+  background: black;
+  
+  #main-portfolio-sector {
+    @include setWidthHeight($w * 0.38, $h);
+    @include setFlexDisplay(flex, center, right);
+  }
+  #sub-portfolio-sector {
+    @include setWidthHeight($w * 0.62, $h);
+    @include setFlexDisplay(flex, center, center);
+  }
+}

@@ -20,52 +20,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#popup-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: absolute;
-  left: 21vw;
-  top: 20vh;
-  width: 58vw;
-  height: 60vh;
-  border: 4px solid white;
-  border-radius: 16px;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 10;
-}
-#close-btn {
-  display: flex;
-  justify-content: right;
-  align-items: center;
-  width: 99%;
-  height: 6%;
-}
-#off-btn {
-  background: none;
-  border: none;
-  font-weight: bold;
-  color: white;
-  height: 80%;
-
-  &:hover { cursor: pointer; }
-}
-#popup-contents {
-  width: 95%;
-  height: 94%;
-  margin: 0.2vh auto 0.8vh;
-  overflow-y: scroll;
-  overflow-x: hidden;
-
-  /* Scroll-bar */
-  &::-webkit-scrollbar {
-    width: 0.6vw;
-  }
-  &::-webkit-scrollbar-thumb {
-  	border-radius: 30px;
-  	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  	background-color: #333;
-  }
-}
-
+  @import "@/assets/css/Common/PopupSlot.scss";
 </style>

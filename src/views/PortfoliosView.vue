@@ -46,26 +46,6 @@ export default {
 }
 </script>
 
-<style scoped>
-#portfolios {
-  background: black;
-  width: 100vw;
-  height: 92vh;
-  display: flex;
-  overflow: hidden;
-}
-#main-portfolio-sector {
-  width: 38%;
-  height: 100%;
-  display: flex;
-  justify-content: right;
-  align-items: center;
-}
-#sub-portfolio-sector {
-  width: 62%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+<style lang="scss" scoped>
+  @import "@/assets/css/Portfolios/View.scss";
 </style>
