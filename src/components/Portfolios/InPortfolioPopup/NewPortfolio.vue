@@ -16,7 +16,7 @@
             <tr v-for="(e, i) in addAssetsData" :key="i">
               <td>{{i+1}}</td>
               <td>{{e}}</td>
-              <td><input :class="'price-'+String(e)" type="number" min="0" required value="0"></td> 
+              <td><input :class="'price-'+String(e)" type="text" min="0" required value="0"></td> 
               <td><input :class="'amount-'+String(e)" type="number" min="1" required value="1"></td>
               <td><button @click="removeAsset(e)">X</button></td>
             </tr>
@@ -84,7 +84,6 @@ export default {
       if(Object.keys(assetsToBeAdded['ASSETS']).length !== 0){
         this.$http.post("/portfolio/makeNewPortfolio", {params: assetsToBeAdded})
           .then(res => {
-            console.log(this.$store.state.fxRates);
             this.$emit('emitDataAdded', 1);
             this.PopupOffByCancelBtn();
           })
@@ -100,7 +99,8 @@ export default {
       return objAssets;
     },
     addAsset: function(d){
-      this.addAssetsData.push(d);
+      let findDuplication = this.addAssetsData.find(asset => asset === d);
+      if(findDuplication === undefined) this.addAssetsData.push(d);
     },
     removeAsset: function(E){
       this.addAssetsData.splice(this.addAssetsData.findIndex(el => el === E), 1);

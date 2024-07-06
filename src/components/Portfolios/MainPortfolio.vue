@@ -10,7 +10,7 @@
         <input type="checkbox" name="color-section" disabled/>
         <div class="asset-label">
           <span>{{d}}</span>
-          <span>{{((this.Data[d]/this.Sum)*100).toFixed(4)}}%</span>
+          <span>{{((this.Data[d]/this.Sum)*100).toFixed(2)}}%</span>
         </div>
       </label>
     </div>
