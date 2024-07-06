@@ -39,7 +39,7 @@ export default {
                    .data(data_ready)
                    .enter()
                    .append('path')
-                       .attr("class", "portions")
+                       .attr("class", "SP_Portion")
                        .attr('d', arc)
                        .attr('fill', d => color(d.data[0]) )
                        .attr("stroke", "#171a1e")
@@ -91,30 +91,34 @@ export default {
                 var arc = d3.arc().innerRadius(MARGIN*4).outerRadius(RADIUS);
               
                 svg.selectAll('whatever')
-                   .data(data_ready)
-                   .enter()
-                   .append('path')
-                       .attr("class", "portions")
-                       .attr('d', arc)
-                       .attr('fill', d => color(d.data[0]))
-                       .attr("stroke", "#171a1e")
-                       .style("stroke-width", "1.0px")
-                   .on('mouseover', function(d, i) {
-                       d3.select(this)
-                         .attr("stroke", "whitesmoke")
-                         .attr("stroke-width", "3.0px")})
-                   .on('mouseout', function(d, i) {
-                       d3.select(this).transition()
-                         .attr("stroke", "#171a1e")
-                         .attr("stroke-width", "1.0px")}) 
-                   .transition()
-                         .duration(1400)
-                         .attrTween('d', function(d) {
-                             var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
-                             return function(t) {
-                                 return arc(interpolate(t));
-                             };
-                        });
+                    .data(data_ready)
+                    .enter()
+                    .append('path')
+                        .attr("class", "MP_Portion")
+                        .attr('d', arc)
+                        .attr('fill', d => color(d.data[0]))
+                        .attr("stroke", "#171a1e")
+                        .style("stroke-width", "1.0px")
+                    .transition()
+                        .duration(1400)
+                        .attrTween('d', function(d) {
+                            var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
+                            return function(t) {
+                                return arc(interpolate(t));
+                            };
+                        })
+                    .on("end", function(){
+                        svg.selectAll('.MP_Portion')
+                            .on('mouseover', function(d, i) {
+                                d3.select(this)
+                                    .attr("stroke", "whitesmoke")
+                                    .attr("stroke-width", "3.0px")})
+                            .on('mouseout', function(d, i) {
+                                d3.select(this).transition()
+                                    .attr("stroke", "#171a1e")
+                                    .attr("stroke-width", "1.0px")})
+                    });
+
             }
         // $Donut_Chart_With_Detail
 
