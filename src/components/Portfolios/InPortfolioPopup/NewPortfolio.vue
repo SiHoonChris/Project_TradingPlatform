@@ -70,6 +70,23 @@ export default {
       else {
         this.suggestionResult = [];
       }
+    },
+    addAssetsData: {
+      handler(newVal, oldVal) {
+        this.$nextTick(() => {
+          let tableBody = document.getElementById('included-assets-tbody');
+          let [scrollHeight, clientHeight] = [tableBody.scrollHeight, tableBody.clientHeight];
+        
+          if(scrollHeight > clientHeight) { 
+            for(let e of document.querySelectorAll(`#included-assets-tbody tr:last-child td`)) {
+              e.style.borderTop = "1px solid gray";
+              e.style.borderBottom = "none";
+            }
+            tableBody.scrollBy(0, scrollHeight);
+          }
+        });
+      },
+      deep: true
     }
   },
   methods: {
