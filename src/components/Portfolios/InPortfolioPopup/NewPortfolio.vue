@@ -16,7 +16,7 @@
             <tr v-for="(e, i) in addAssetsData" :key="i">
               <td>{{i+1}}</td>
               <td>{{e}}</td>
-              <td><input :class="'price-'+String(e)" type="text" min="0" required value="0"></td> 
+              <td><input :class="'price-'+String(e)" type="text"></td> 
               <td><input :class="'amount-'+String(e)" type="number" min="1" required value="1"></td>
               <td><button @click="removeAsset(e)">X</button></td>
             </tr>
@@ -49,8 +49,14 @@
 export default {
   data() {
     return {
-      addAssetsData: [],
-      findAssetsData: null, 
+      addAssetsData: [], 
+      findAssetsData: null,
+      market_fxRates: {
+        Shanghai : "CNY/KRW",
+        Hongkong : "HKD/KRW", 
+        Singapore : "SGD/KRW",
+        Us : "USD/KRW"
+      },
       suggestionResult: [],
       portfolioName: 'New Portfolio',
       paramForSearch: ''
@@ -109,15 +115,41 @@ export default {
     },
     setAssetsToBeAdded: function(){
       const objAssets = {};
+
       for(const E of this.addAssetsData) {
-        objAssets[E] = 
-          document.querySelector(`.price-${E}`).value * document.querySelector(`.amount-${E}`).value;
+        let market = this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === E)].MARKET;
+        if(market === "Korea") {
+          objAssets[E] = 
+            Number(document.querySelector(`.price-${E}`).value) * 
+            Number(document.querySelector(`.amount-${E}`).value);  
+        } else {
+          objAssets[E] = 
+            Number(document.querySelector(`.price-${E}`).value) * 
+            Number(document.querySelector(`.amount-${E}`).value) * 
+            Number(this.$store.state.fxRates[ this.market_fxRates[market] ]);
+        }
       }
+      
       return objAssets;
     },
-    addAsset: function(d){
-      let findDuplication = this.addAssetsData.find(asset => asset === d);
-      if(findDuplication === undefined) this.addAssetsData.push(d);
+    addAsset: function(ticker){
+      let findDuplication = this.addAssetsData.find(asset => asset === ticker);
+      
+      if(findDuplication === undefined) { 
+        let market = this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === ticker)].MARKET;
+        let closePrice = 0;
+
+        this.$http.get("/portfolio/addAsset", {params: {TICKER: ticker, MARKET: market}})
+          .then(res => {
+            this.addAssetsData.push(ticker);
+            closePrice = res.data.Close;
+          })
+          .then(added => {
+            closePrice = closePrice % 1 === 0 ? closePrice.toLocaleString() : closePrice.toFixed(4).toLocaleString() ;
+            document.querySelector(`.price-${ticker}`).value = closePrice;
+          })
+          .catch(err => console.log(err)); 
+      }
     },
     removeAsset: function(E){
       this.addAssetsData.splice(this.addAssetsData.findIndex(el => el === E), 1);
