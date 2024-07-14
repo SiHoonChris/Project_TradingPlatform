@@ -142,10 +142,10 @@ export default {
         this.$http.get("/portfolio/addAsset", {params: {TICKER: ticker, MARKET: market}})
           .then(res => {
             this.addAssetsData.push(ticker);
-            closePrice = res.data.Close;
+            closePrice = res.data[0].Close;
           })
           .then(added => {
-            closePrice = closePrice % 1 === 0 ? closePrice.toLocaleString() : closePrice.toFixed(4).toLocaleString() ;
+            closePrice = closePrice.toFixed(closePrice % 1 === 0 ? 0 : 4).toLocaleString();
             document.querySelector(`.price-${ticker}`).value = closePrice;
           })
           .catch(err => console.log(err)); 
