@@ -1,8 +1,8 @@
 export default {
     install(Vue) {
         // 순서대로 색상 입혀진 후, d3에서 자동으로 큰 순서대로 재배열함
-        const Colors = ["#233253", "#7fa224", "#ff1595", "#0673c5", "#c8bdb9", "#f6f5fa"];
-
+        const color_palette = ["#233253", "#7fa224", "#ff1595", "#0673c5", "#c8bdb9", "#f6f5fa"];
+        
         Vue.config.globalProperties.$Donut_Chart =
             function(DATA, container) { 
                 if(document.querySelectorAll(`${container} > svg`).length !== 0){
@@ -23,6 +23,12 @@ export default {
                               .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
                                 
                 // set the color scale
+                let Colors = color_palette;
+                if(Colors.length < Object.keys(DATA).length){ 
+                    for(let i=0; i<Math.ceil(Object.keys(DATA).length/Colors.length); i++){
+                        Colors.push(...color_palette);
+                    }
+                }
                 Colors.slice(0, Object.keys(DATA).length);
                 const color = d3.scaleOrdinal().range(Colors);
                 
@@ -81,7 +87,13 @@ export default {
                               .attr("height", HEIGHT)
                               .append("g")
                               .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
-                                
+                
+                let Colors = color_palette;
+                if(Colors.length < Object.keys(ASSETS_IN_PORTFOLIO).length){ 
+                    for(let i=0; i<Math.ceil(Object.keys(ASSETS_IN_PORTFOLIO).length/Colors.length); i++){
+                        Colors.push(...color_palette);
+                    }
+                }
                 Colors.slice(0, Object.keys(ASSETS_IN_PORTFOLIO).length);
                 const color = d3.scaleOrdinal().range(Colors);
                 
@@ -125,6 +137,14 @@ export default {
         Vue.config.globalProperties.$Color_Tag = 
             function() {
                 const ColorTags = document.querySelectorAll("input[name='color-section']");
+                
+                let Colors = color_palette;
+                if(Colors.length < ColorTags.length){ 
+                    for(let i=0; i<Math.ceil(ColorTags.length/Colors.length); i++){
+                        Colors.push(...color_palette);
+                    }
+                }
+                
                 for(let i=0 ; i < ColorTags.length ; i++) {ColorTags[i].style.backgroundColor = Colors[i];}
             }
         // $Color_Tag
