@@ -51,12 +51,6 @@ export default {
     return {
       addAssetsData: [], 
       findAssetsData: null,
-      market_fxRates: {
-        Shanghai : "CNY/KRW",
-        Hongkong : "HKD/KRW", 
-        Singapore : "SGD/KRW",
-        Us : "USD/KRW"
-      },
       suggestionResult: [],
       portfolioName: 'New Portfolio',
       paramForSearch: ''
@@ -97,11 +91,10 @@ export default {
   },
   methods: {
     makeNewPortfolio: function(){
-      const assetsToBeAdded = {
-        NAME: this.portfolioName === null || this.portfolioName === '' ? 
-              "New Portfolio" : this.portfolioName,
+      let assetsToBeAdded = {
+        NAME: [null, ''].includes(this.portfolioName) ? "New Portfolio" : this.portfolioName,
         TYPE: "Customized",
-        ASSETS: this.setAssetsToBeAdded()
+        ASSETS: this.setAssetsInPortfolio()
       };
         
       if(Object.keys(assetsToBeAdded['ASSETS']).length !== 0){
@@ -110,27 +103,21 @@ export default {
             this.$emit('emitDataAdded', 1);
             this.PopupOffByCancelBtn();
           })
-          .catch(err => {if(err.message.indexOf('Network Error') > -1) alert('Error')});
+          .catch(err => console.log(err));
       }
     },
-    setAssetsToBeAdded: function(){
-      const objAssets = {};
+    setAssetsInPortfolio: function(){
+      let portfolio = {};
 
       for(const E of this.addAssetsData) {
-        let market = this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === E)].MARKET;
-        if(market === "Korea") {
-          objAssets[E] = 
-            Number(document.querySelector(`.price-${E}`).value) * 
-            Number(document.querySelector(`.amount-${E}`).value);  
-        } else {
-          objAssets[E] = 
-            Number(document.querySelector(`.price-${E}`).value) * 
-            Number(document.querySelector(`.amount-${E}`).value) * 
-            Number(this.$store.state.fxRates[ this.market_fxRates[market] ]);
-        }
+        portfolio[E] = {
+          MARKET : this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === E)].MARKET, 
+          PRICE  : Number(document.querySelector(`.price-${E}`).value), 
+          AMOUNT : Number(document.querySelector(`.amount-${E}`).value)
+        };
       }
       
-      return objAssets;
+      return portfolio;
     },
     addAsset: function(ticker){
       let findDuplication = this.addAssetsData.find(asset => asset === ticker);
