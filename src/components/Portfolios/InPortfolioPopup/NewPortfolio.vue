@@ -53,7 +53,13 @@ export default {
       findAssetsData: null,
       suggestionResult: [],
       portfolioName: 'New Portfolio',
-      paramForSearch: ''
+      paramForSearch: '',
+      market_fxRates: {
+        Shanghai  : "CNY/KRW",
+        Hongkong  : "HKD/KRW", 
+        Singapore : "SGD/KRW",
+        Us        : "USD/KRW"
+      }
     }
   },
   mounted(){
@@ -94,10 +100,11 @@ export default {
       let assetsToBeAdded = {
         NAME: [null, ''].includes(this.portfolioName) ? "New Portfolio" : this.portfolioName,
         TYPE: "Customized",
-        ASSETS: this.setAssetsInPortfolio()
+        ASSETS: this.addAssetsData,
+        DATAS: this.setAssetsInPortfolio()
       };
         
-      if(Object.keys(assetsToBeAdded['ASSETS']).length !== 0){
+      if(Object.keys(assetsToBeAdded['DATAS']).length !== 0){
         this.$http.post("/portfolio/makeNewPortfolio", {params: assetsToBeAdded})
           .then(res => {
             this.$emit('emitDataAdded', 1);
@@ -107,17 +114,18 @@ export default {
       }
     },
     setAssetsInPortfolio: function(){
-      let portfolio = {};
+      let datas = {};
 
       for(const E of this.addAssetsData) {
-        portfolio[E] = {
-          MARKET : this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === E)].MARKET, 
+        let market = this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === E)].MARKET;
+        datas[E] = {
+          FXRATE : market === "Korea" ? 1 : Number(this.$store.state.fxRates[ this.market_fxRates[market] ]),
           PRICE  : Number(document.querySelector(`.price-${E}`).value), 
           AMOUNT : Number(document.querySelector(`.amount-${E}`).value)
         };
       }
       
-      return portfolio;
+      return datas;
     },
     addAsset: function(ticker){
       let findDuplication = this.addAssetsData.find(asset => asset === ticker);

@@ -31,7 +31,7 @@ export default {
   },
   watch: {
     MainPortfolioData: function(d){
-      this.Data = d.ASSETS;
+      this.Data = d.CHART_DATA;
       this.Sum = Object.values(this.Data).reduce((a, b)=> a + b, 0);
     }
   }

@@ -70,7 +70,7 @@ export default {
 
                 // 데이터 가공
                 const NAME_OF_PORTFOLIO = DATA.NAME,
-                      ASSETS_IN_PORTFOLIO = DATA.ASSETS;
+                      ASSETS_IN_PORTFOLIO = DATA.CHART_DATA;
 
                 // 포트폴리오 타이틀 출력
                 document.querySelector("#main-portfolio > #portfolio-name").textContent = NAME_OF_PORTFOLIO;

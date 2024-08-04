@@ -1,7 +1,7 @@
 <template>
   <div id="sub-portfolio">
     <div id="sub-portfolio-charts">
-      <div v-for="(d, i) in chartData" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
+      <div v-for="(d, i) in Data" :key="i" class="sub-donuts" @click="Change_Donut_Chart(i)">
         <div class="sub-donuts-title">
           <input v-if="Rmv" type="checkbox" :value="d._id">
           <div>{{d.NAME}}</div>
@@ -38,14 +38,7 @@ export default {
   props: ['dataAdded'],
   data() {
     return {
-      originalData: null, //Tooltip 및 Evaluation을 위한 데이터
-      chartData: null, //차트 생성을 위해 가공된 데이터
-      market_fxRates: {
-        Shanghai  : "CNY/KRW",
-        Hongkong  : "HKD/KRW", 
-        Singapore : "SGD/KRW",
-        Us        : "USD/KRW"
-      },
+      Data: null, 
       Setting: false,
       Rmv: false,
       btnSet: {
@@ -61,9 +54,9 @@ export default {
   },
   updated() {
     if(this.Setting) {
-      for(let i=0 ; i <= this.chartData.length ; i++) { 
-        if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.chartData[i], '#main-donut-chart');
-        this.$Donut_Chart(this.chartData[i].ASSETS, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
+      for(let i=0 ; i <= this.Data.length ; i++) { 
+        if(Number(i) === 0) this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
+        this.$Donut_Chart(this.Data[i].CHART_DATA, `.sub-donuts:nth-of-type(${Number(i)+1}) > .sub-donuts-chart`);
       }
     }
     this.Setting = false;
@@ -78,14 +71,12 @@ export default {
       this.SettingMode(true, false);
 
       this.$http.get("/portfolio/getPortfolioData")
-        .then(res => this.originalData = res.data)
-        .then(saved => {
-            this.chartData = this.originalData; // 가공하여 저장 필요(가공 : PRICE * AMOUNT * MARKET(=FX RATE) ) 
-            // Number(this.$store.state.fxRates[ this.market_fxRates[MARKET] ])
-            this.$emit('portfolioData', this.chartData[0]);
+        .then(res => {
+            this.Data = res.data;
+            this.$emit('portfolioData', this.Data[0]);
           }
         )
-        .catch(err => console.log(err));
+        .catch(err => console.log(err))
     }, 
     SettingMode: function(Setting, Rmv){
       [this.Setting, this.Rmv] = [Setting, Rmv];
@@ -94,8 +85,8 @@ export default {
       }
     }, 
     Change_Donut_Chart: function(i){
-      this.$emit('portfolioData', this.chartData[i]);
-      this.$Donut_Chart_With_Detail(this.chartData[i], '#main-donut-chart');
+      this.$emit('portfolioData', this.Data[i]);
+      this.$Donut_Chart_With_Detail(this.Data[i], '#main-donut-chart');
     }, 
     PopupOn: function(){
       this.$emit("PopupSwitchOn", true);
