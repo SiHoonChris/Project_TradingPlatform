@@ -74,10 +74,17 @@
       button {
         @include setWidthHeight(1.6vw, 1.6vw);
         background: none;
+        padding: 1px 0px;
         border: 1px solid gray;
         color: gray;
-        font-size: 20px;
-        &:hover { cursor: pointer; }
+        &:hover {
+          border: 1px solid white;
+          cursor: pointer;
+        }
+
+        img {
+          height: 100%;
+        }
       }
     }
   }
