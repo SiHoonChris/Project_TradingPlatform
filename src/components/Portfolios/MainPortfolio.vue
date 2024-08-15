@@ -2,7 +2,7 @@
   <div id="main-portfolio">
     <p id="portfolio-name"></p>
     <div id="main-donut">
-      <div id="main-donut-chart" style="width: 100%; height: 361px;"></div>
+      <div id="main-donut-chart" style="height: 361px;"></div>
       <p id="evalutaion">Evaluation</p>
     </div>
     <div id="assets-in-portfolio">

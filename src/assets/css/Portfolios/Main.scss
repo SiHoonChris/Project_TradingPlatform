@@ -25,6 +25,10 @@
     display: flex;
     flex-direction: column;
 
+    #main-donut-chart {
+      width: 100%;
+    }
+
     #evalutaion {
       margin: 0;
       border-bottom: 1px solid gray;

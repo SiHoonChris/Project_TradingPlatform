@@ -14,7 +14,6 @@ export default {
                       MARGIN = WIDTH * 0.05,
                       RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
                       
-                // append the svg object to the div
                 const svg = d3.select(container)
                               .append("svg")
                               .attr("width", WIDTH)
@@ -22,7 +21,6 @@ export default {
                               .append("g")
                               .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
                                 
-                // set the color scale
                 let Colors = color_palette;
                 if(Colors.length < Object.keys(DATA).length){ 
                     for(let i=0; i<Math.ceil(Object.keys(DATA).length/Colors.length); i++){
@@ -36,8 +34,8 @@ export default {
                 const pie = d3.pie().value(d => d[1]);
                 const data_ready = pie(Object.entries(DATA));
                 
-                var arc = d3.arc()
-                            .innerRadius(MARGIN*4)  // This is the size of the donut hole
+                let arc = d3.arc()
+                            .innerRadius(MARGIN*4)
                             .outerRadius(RADIUS);
               
                 // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
@@ -68,14 +66,11 @@ export default {
                     document.querySelector(`${container} > svg`).remove();
                 }
 
-                // 데이터 가공
                 const NAME_OF_PORTFOLIO = DATA.NAME,
                       ASSETS_IN_PORTFOLIO = DATA.CHART_DATA;
 
-                // 포트폴리오 타이틀 출력
                 document.querySelector("#main-portfolio > #portfolio-name").textContent = NAME_OF_PORTFOLIO;
                 
-                // 도넛 차트 생성
                 const WIDTH  = document.querySelector(container).offsetWidth,
                       HEIGHT = document.querySelector(container).offsetWidth,
                       MARGIN = WIDTH * 0.05,
@@ -102,6 +97,22 @@ export default {
                 
                 var arc = d3.arc().innerRadius(MARGIN*4).outerRadius(RADIUS);
               
+                /* Tooltip */
+                let Tooltip =
+                    d3.select(container)
+                        .append("div")
+                        .attr("id", "portfolio-tooltip")
+                        .style("position", "absolute")
+                        .style("padding", "4px")
+                        .style("border", "solid")
+                        .style("border-color", "white")
+                        .style("border-width", "2px")
+                        .style("border-radius", "5px")
+                        .style("background-color", "black")
+                        .style("opacity", 0)
+                        .style("color", "white")
+                        .style("font-size", "12px");
+
                 svg.selectAll('whatever')
                     .data(data_ready)
                     .enter()
@@ -121,14 +132,36 @@ export default {
                         })
                     .on("end", function(){
                         svg.selectAll('.MP_Portion')
-                            .on('mouseover', function(d, i) {
+                            .on('mouseover', function(evt, d) {
                                 d3.select(this)
                                     .attr("stroke", "whitesmoke")
-                                    .attr("stroke-width", "3.0px")})
-                            .on('mouseout', function(d, i) {
+                                    .attr("stroke-width", "3.0px");
+                                Tooltip.style("opacity", 0.8);
+                                }
+                            )
+                            .on('mousemove', function(evt, d) {
+                                d3.select(this)
+                                    .attr("stroke", "whitesmoke")
+                                    .attr("stroke-width", "3.0px");
+                                Tooltip /* Price(화폐표시), 한국 주식은 소수점 표시X, 전 종목 세자리 단위 쉼표 */
+                                    .html(`
+                                        <b>${d.data[0]}</b>
+                                        <br><br>
+                                        Price($): ${(1234.56).toFixed(4)}
+                                        <br>
+                                        Total(₩): ${Math.round(d.data[1]).toLocaleString()}
+                                    `)
+                                    .style("left", `${evt.pageX+5}px`)
+                                    .style("top", `${evt.pageY+3}px`);
+                                }
+                            )
+                            .on('mouseout', function(evt, d) {
                                 d3.select(this).transition()
                                     .attr("stroke", "#171a1e")
-                                    .attr("stroke-width", "1.0px")})
+                                    .attr("stroke-width", "1.0px");
+                                Tooltip.style("opacity", 0);
+                                }
+                            )
                     });
 
             }
