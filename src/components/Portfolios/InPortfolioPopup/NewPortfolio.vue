@@ -119,6 +119,7 @@ export default {
       for(const E of this.addAssetsData) {
         let market = this.findAssetsData[this.findAssetsData.findIndex(e => e.TICKER === E)].MARKET;
         datas[E] = {
+          MARKET : market,
           FXRATE : market === "Korea" ? 1 : Number(this.$store.state.fxRates[ this.market_fxRates[market] ]),
           PRICE  : Number(document.querySelector(`.price-${E}`).value), 
           AMOUNT : Number(document.querySelector(`.amount-${E}`).value)

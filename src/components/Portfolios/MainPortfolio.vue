@@ -3,10 +3,12 @@
     <p id="portfolio-name"></p>
     <div id="main-donut">
       <div id="main-donut-chart" style="height: 361px;"></div>
-      <p id="evalutaion">Evaluation</p>
+      <p id="evalutaion">
+        Evaluation
+      </p>
     </div>
     <div id="assets-in-portfolio">
-      <label v-for="(d,i) in Object.keys(this.Data)" :key="i">
+      <label v-for="(d,i) in Object.keys(this.Data)" :id="`of_${d}`" :key="i">
         <input type="checkbox" name="color-section" disabled/>
         <div class="asset-label">
           <span>{{d}}</span>

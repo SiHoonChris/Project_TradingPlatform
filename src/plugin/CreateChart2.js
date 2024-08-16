@@ -2,6 +2,13 @@ export default {
     install(Vue) {
         // 순서대로 색상 입혀진 후, d3에서 자동으로 큰 순서대로 재배열함
         const color_palette = ["#233253", "#7fa224", "#ff1595", "#0673c5", "#c8bdb9", "#f6f5fa"];
+        const currency_symbol = {
+            Shanghai  : "CN¥",
+            Hongkong  : "HK$", 
+            Singapore : "S$",
+            Us        : "$",
+            Korea     : "₩"
+        }
         
         Vue.config.globalProperties.$Donut_Chart =
             function(DATA, container) { 
@@ -43,7 +50,7 @@ export default {
                    .data(data_ready)
                    .enter()
                    .append('path')
-                       .attr("class", "SP_Portion")
+                       .attr("class", "subChart_Portion")
                        .attr('d', arc)
                        .attr('fill', d => color(d.data[0]) )
                        .attr("stroke", "#171a1e")
@@ -66,8 +73,9 @@ export default {
                     document.querySelector(`${container} > svg`).remove();
                 }
 
-                const NAME_OF_PORTFOLIO = DATA.NAME,
-                      ASSETS_IN_PORTFOLIO = DATA.CHART_DATA;
+                const NAME_OF_PORTFOLIO   = DATA.NAME,
+                      ASSETS_IN_PORTFOLIO = DATA.CHART_DATA,
+                      FOR_TOOLTIP_DATA    = DATA.DATAS;
 
                 document.querySelector("#main-portfolio > #portfolio-name").textContent = NAME_OF_PORTFOLIO;
                 
@@ -117,7 +125,7 @@ export default {
                     .data(data_ready)
                     .enter()
                     .append('path')
-                        .attr("class", "MP_Portion")
+                        .attr("class", "mainChart_Portion")
                         .attr('d', arc)
                         .attr('fill', d => color(d.data[0]))
                         .attr("stroke", "#171a1e")
@@ -131,11 +139,18 @@ export default {
                             };
                         })
                     .on("end", function(){
-                        svg.selectAll('.MP_Portion')
+                        svg.selectAll('.mainChart_Portion')
                             .on('mouseover', function(evt, d) {
                                 d3.select(this)
                                     .attr("stroke", "whitesmoke")
                                     .attr("stroke-width", "3.0px");
+                                
+                                document.querySelector(`#of_${d.data[0]} input`).style.border 
+                                    = "1.6px whitesmoke solid";
+                                for(const e of document.querySelectorAll(`#of_${d.data[0]} span`)) {
+                                    e.style.fontWeight = 'bold';
+                                }
+
                                 Tooltip.style("opacity", 0.8);
                                 }
                             )
@@ -143,11 +158,19 @@ export default {
                                 d3.select(this)
                                     .attr("stroke", "whitesmoke")
                                     .attr("stroke-width", "3.0px");
-                                Tooltip /* Price(화폐표시), 한국 주식은 소수점 표시X, 전 종목 세자리 단위 쉼표 */
+                                
+                                document.querySelector(`#of_${d.data[0]} input`).style.border 
+                                    = "1.6px whitesmoke solid";
+                                for(const e of document.querySelectorAll(`#of_${d.data[0]} span`)) {
+                                    e.style.fontWeight = 'bold';
+                                }
+
+                                Tooltip
                                     .html(`
                                         <b>${d.data[0]}</b>
                                         <br><br>
-                                        Price($): ${(1234.56).toFixed(4)}
+                                        Price(${ currency_symbol[ FOR_TOOLTIP_DATA[d.data[0]].MARKET ] }): 
+                                        ${(FOR_TOOLTIP_DATA[d.data[0]].PRICE).toLocaleString()}
                                         <br>
                                         Total(₩): ${Math.round(d.data[1]).toLocaleString()}
                                     `)
@@ -159,6 +182,13 @@ export default {
                                 d3.select(this).transition()
                                     .attr("stroke", "#171a1e")
                                     .attr("stroke-width", "1.0px");
+                                
+                                document.querySelector(`#of_${d.data[0]} input`).style.border 
+                                    = "none";
+                                for(const e of document.querySelectorAll(`#of_${d.data[0]} span`)) {
+                                    e.style.fontWeight = 'normal';
+                                }
+
                                 Tooltip.style("opacity", 0);
                                 }
                             )
