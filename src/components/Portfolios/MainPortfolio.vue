@@ -3,7 +3,9 @@
     <p id="portfolio-name"></p>
     <div id="main-donut">
       <div id="main-donut-chart" style="height: 361px;"></div>
-      <p id="evalutaion">{{Value.toLocaleString()}}%</p>
+      <p id="evalutaion">
+        {{['-0', '0'].includes(String(Value)) ? '0.00' : Value.toLocaleString()}}%
+      </p>
     </div>
     <div id="assets-in-portfolio">
       <label v-for="(d,i) in Object.keys(this.Data)" :id="`of_${d}`" :key="i">
@@ -38,27 +40,18 @@ export default {
   },
   watch: {
     MainPortfolioData: function(d){
-      let nowPrice = this.getNowPrice(d.ASSETS);
-      [this.Data, this.Sum, this.Value] = portfolioEval(d, nowPrice, this.$store.state.fxRates);
-    }
-  },
-  methods: {
-    getNowPrice: function(Arr){
-      let obj = {};
+      let paramArr = d.ASSETS.map(e => e = {
+        TICKER: e, 
+        MARKET: this.findMarket[this.findMarket.findIndex(v => v.TICKER === e)].MARKET
+      });
+      let sendObj = {array: paramArr};
 
-      for(let el of Arr) {
-        // let mrk = this.findMarket[this.findMarket.findIndex(v => v.TICKER === el)].MARKET;
-        
-        // this.$http.get("/portfolio/addAsset", {params: {TICKER: el, MARKET: mrk}})
-        //   .then(res => {obj[el] = res.data[0].Close;})
-        //   .catch(err => console.log(err));
-
-        obj[el] = 10000;
-        // 해당 종목의 가장 최근 가격(현재가)을 어떻게 가져올 것인가?
-        // 서버단에서 객체 전체를 만들어서 보내주는 것도 방법일 듯 
-      };
-
-      return obj;
+      this.$http.get("/portfolio/getCurrentPrices", {params: sendObj})
+        .then(res => {
+          [this.Data, this.Sum, this.Value] = 
+            portfolioEval(d, res.data, this.$store.state.fxRates);
+        })
+        .catch(err => console.log(err));
     }
   }
 }
