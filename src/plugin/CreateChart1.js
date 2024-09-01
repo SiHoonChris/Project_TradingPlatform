@@ -1,7 +1,20 @@
 export default {
     install(Vue) {
+        Vue.config.globalProperties.$Erase_Chart = 
+            function(svgCont, yAxisBgSelec, yAxisSelec, chartSelec){
+                /* Initialize */
+                let checkChartArea   = document.querySelector(chartSelec),
+                    checkyAxisBgArea = document.querySelector(yAxisBgSelec),
+                    checkyAxisArea   = document.querySelector(yAxisSelec),
+                    checkTooltip     = document.querySelector(`${svgCont} .tooltip`);
+                while (checkChartArea.hasChildNodes())   {checkChartArea.removeChild(checkChartArea.firstChild);}
+                while (checkyAxisBgArea.hasChildNodes()) {checkyAxisBgArea.removeChild(checkyAxisBgArea.firstChild);}
+                while (checkyAxisArea.hasChildNodes())   {checkyAxisArea.removeChild(checkyAxisArea.firstChild);}
+                checkTooltip.remove();
+            }
+        
         Vue.config.globalProperties.$Basic_Candle = 
-            function(DATA, svgCont, yAxisBgSelec, yAxisSelec, chartSelec){ 
+            function(DATA, svgCont, yAxisBgSelec, yAxisSelec, chartSelec){
                 let width  = window.getComputedStyle(document.querySelector(svgCont))
                                 .width.replace('px', ''),
                     height = window.getComputedStyle(document.querySelector(svgCont))

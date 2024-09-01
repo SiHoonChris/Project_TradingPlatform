@@ -63,45 +63,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#search-and-sort {
-  padding: 6.3vh 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-#search{
-  display: flex;
-  align-items: flex-end;
-}
-#search-input {
-  height: 3vh;
-  border: 1px solid white;
-  background: #0a0a0a;
-  color: white;
-  font-weight: bold;
-  
-  &::placeholder {
-    color: white;
-  }
-}
-label {
-  color: white;
-  margin-left: 0.5vw;
-  display: none;
-
-  &::before { content: '(' }
-  &::after  { content: ')' }
-}
-#sort {
-  background: #1a1a1a;
-  color: white;
-  font-weight: bold;
-  width: 6vw;
-  height: 3vh;
-
-  option:hover{
-    background: pink;
-  }
-}
-
+  @import "@/assets/css/Home/SearchAndSort.scss";
 </style>

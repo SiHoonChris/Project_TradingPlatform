@@ -17,31 +17,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-section {
-  width: 460px;
-  height: 328px;
-  margin-right: 2.666vw;
-  margin-bottom: 5vh;
-}
-.title {
-  width: 100%;
-  height: 6%;
-  margin-bottom: 1%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: white;
-}
-.thumbnail {
-  width: 100%;
-  height: 93%;
-  border: 1px solid gray;
-
-  &:hover {
-    border: 1px solid whitesmoke;
-    box-shadow: 0.1px 0.1px 1.6px 1.2px whitesmoke;
-    cursor: pointer;
-  }
-}
-
+  @import "@/assets/css/Home/ThumbnailChart.scss";
 </style>

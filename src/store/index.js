@@ -1,14 +1,17 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
   state: {
     allAssetsData: null,
     assetName: null,
     marketInfo: null,
-    fxRates: null
+    fxRates: null,
+    searchLog: []
   },
-  getters: {
-  },
+
+  getters: {},
+
   mutations: {
     setAllAssetsData(state, payload) {
       state.allAssetsData = payload;
@@ -23,10 +26,24 @@ export default createStore({
     },
     setFxRates(state, payload) {
       state.fxRates = payload;
+    },
+    saveSearchLog(state, payload) {
+      let duplCheck = state.searchLog.find(e => e === payload);
+      
+      if(duplCheck === undefined) { 
+        state.searchLog.push(payload);
+      }
     }
   },
-  actions: {
-  },
-  modules: {
-  }
-})
+
+  actions: {},
+
+  modules: {},
+
+  plugins: [
+    createPersistedState({
+      paths: ['searchLog']
+    })
+  ]
+
+});

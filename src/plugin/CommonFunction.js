@@ -15,6 +15,7 @@ export default { // 2개 이상의 Component에서 사용되는 함수는 plugin
                 this.$moveTo_2(T);
                 this.urlParam = null;
                 this.Suggestions = [];
+                this.$store.commit("saveSearchLog", T);
             }
         // function : $moveTo_3
     }

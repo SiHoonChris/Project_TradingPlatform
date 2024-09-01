@@ -34,37 +34,6 @@ export default {
 }
 </script>
 
-<style scoped>
-#home {
-  width: 96vw;
-  height: 92vh;
-  padding: 0 2vw;
-  margin: 0;
-  background: black;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-#home::-webkit-scrollbar-track {
-	background-color: black;
-}
-#home::-webkit-scrollbar {
-	background-color: black;
-	width: 9px;
-}
-#home::-webkit-scrollbar-thumb {
-	border-radius: 30px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-	background-color: #333;
-}
-
-#charts {
-  width: 98vw;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: left;
-}
-
+<style lang="scss" scoped>
+  @import "@/assets/css/Home/View.scss";
 </style>
