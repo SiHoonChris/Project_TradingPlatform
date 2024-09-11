@@ -60,7 +60,8 @@ export default {
 
 <style lang="scss" scoped>
 #header-center {
-  width: calc(100vw * 0.33);
+  width: calc(100% / 3);
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -68,12 +69,13 @@ export default {
 }
 #search-and-go {
   width: calc(60% - 0.4% - 2px);
-  height: calc(7.9vh * 0.5);
-  margin-top: calc(7.9vh * 0.25 - 1px);
-  padding-left: 0.4%;
-  background: #0a0a0a;
-  border: 1px solid gray;
-  color: white;
+  height: 30px;
+  padding-left: 10px;
+  margin-top: calc((40px - 30px - 1px * 2 - 0.8px * 2) / 2);
+  background: #000000;
+  border: 1px solid #232323;
+  border-radius: 30px;
+  color: #ffffff;
 
   &::placeholder {
     color: gray;

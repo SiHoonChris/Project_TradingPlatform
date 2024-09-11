@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import SampleDebtRatioData from "@/assets/SampleDebtRatioData.json"
-
 export default {
   data() {
     return{
@@ -12,7 +10,10 @@ export default {
     }
   },
   created(){
-    this.Data = SampleDebtRatioData;
+    this.Data = [{
+      "TotalLiabilities": 400,
+      "TotalEquity": 600
+    }];
   },
   mounted(){
     this.$Donut_Chart(this.Data[0], "#debt-ratio");

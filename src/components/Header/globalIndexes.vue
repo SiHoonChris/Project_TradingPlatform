@@ -76,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 #header-left {
-  width: calc(100vw * 0.24);
+  width: calc(100% / 3);
   height: 100%;
   overflow: hidden;
 }

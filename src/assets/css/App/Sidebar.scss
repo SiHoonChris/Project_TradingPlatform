@@ -1,0 +1,15 @@
+aside {
+  position: absolute;
+  top: 41px;
+  left: -50px;
+  width: 70px;
+  height: calc(100% - 41px);
+  background: none;
+
+  #sidebar {
+    width: 50px;
+    height: 100%;
+    background: #12141b;
+    border-right: 1px solid #232323;
+  }
+}

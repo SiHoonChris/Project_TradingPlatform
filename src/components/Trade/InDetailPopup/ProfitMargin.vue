@@ -3,8 +3,6 @@
 </template>
 
 <script>
-import SampleProfitMargin from "@/assets/SampleProfitMargin.json"
-
 export default {
   date(){
     return {
@@ -12,7 +10,9 @@ export default {
     }
   },
   created(){
-    this.Data = SampleProfitMargin;
+    this.Data = [ { "profit": "Rev",      "size": 282836 },
+                  { "profit": "Oper_Inc", "size": 74842  },
+                  { "profit": "Net_Inc",  "size": 59972  } ];
   },
   mounted(){
     this.$Horizontal_Bar_Chart(this.Data, "#profit-margin");

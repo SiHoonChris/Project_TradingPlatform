@@ -1,15 +1,17 @@
 <template>
   <div>
     <HeaderComponent/>
+    <SidebarComponent/>
     <router-view/>
   </div>
 </template>
 
 <script>
-import HeaderComponent from './components/HeaderComponent.vue'
+import HeaderComponent from './components/App/HeaderComponent.vue'
+import SidebarComponent from './components/App/SidebarComponent.vue'
 
 export default {
-  components: { HeaderComponent }
+  components: { HeaderComponent, SidebarComponent }
 }
 </script>
 
@@ -19,7 +21,7 @@ body {
   padding: 0;
   overflow: hidden;
 }
-/* Scroll-bar */
+
 ::-webkit-scrollbar-track {
   background-color: black;
 }
@@ -32,5 +34,4 @@ body {
   -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
   background-color: #333;
 }
-
 </style>
