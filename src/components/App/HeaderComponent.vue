@@ -2,17 +2,17 @@
   <header>
     <div id="header">
       <GlobalIndexes/>
-      <SearchAndGo/>
+      <SearchAndMove/>
     </div>
   </header>
 </template>
 
 <script>
 import GlobalIndexes from "@/components/Header/globalIndexes.vue"
-import SearchAndGo from "@/components/Header/searchAndGo.vue"
+import SearchAndMove from "@/components/Header/searchAndMove.vue"
 
 export default {
-  components: { GlobalIndexes, SearchAndGo },
+  components: { GlobalIndexes, SearchAndMove },
 }
 </script>
 

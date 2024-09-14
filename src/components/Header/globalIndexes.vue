@@ -1,13 +1,17 @@
 <template>
   <div id="header-left">
     <div v-if="DATAS !== null" id="global-indexes">
-      <div v-for="(d, i) in Object.keys(DATAS[0])" :key="i" class="result">
-        <p class="index-key">{{d}}</p>
-        <p class="index-values">
-          <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
-          <span>{{Number((DATAS[0][d] - DATAS[1][d]).toFixed(2)).toLocaleString()}}</span>
-          <span>{{Number(((DATAS[0][d] - DATAS[1][d]) / DATAS[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
-        </p>
+      <div v-for="(d, i) in Object.keys(DATAS[0])" :key="i" class="g_idx">
+        <div class="idx_name">{{d}}</div>
+        <div class="idx_value">
+          <p>
+            <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
+          </p>
+          <p>
+            <span>{{Number((DATAS[0][d] - DATAS[1][d]).toFixed(2)).toLocaleString()}}</span>
+            <span class="calculated">{{Number(((DATAS[0][d] - DATAS[1][d]) / DATAS[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -37,7 +41,7 @@ export default {
     );
   },
   updated(){
-    for(const I of document.querySelectorAll(".index-values > span:nth-child(3)")) {
+    for(const I of document.querySelectorAll(".calculated")) {
       if (Number(I.textContent) === 0) {
         I.className = "zero";
         I.previousSibling.className = "zero";
@@ -47,15 +51,15 @@ export default {
         I.className = "plus";
         I.previousSibling.className = "plus";
       } else {
-        I.className = "minus"
+        I.className = "minus";
         I.previousSibling.className = "minus";
       };
     }
   },
   methods: {
     slider(){
-      const result = document.querySelectorAll('.result');
-      const clone = document.querySelector('.result:first-child').cloneNode(true);
+      const result = document.querySelectorAll('.g_idx');
+      const clone = document.querySelector('.g_idx:first-child').cloneNode(true);
       setTimeout(()=>{
         for(const e of result){
           e.style.transform="translateY(-100%)";
@@ -75,53 +79,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#header-left {
-  width: calc(100% / 3);
-  height: 100%;
-  overflow: hidden;
-}
-#global-indexes {
-  height: calc(7.9vh * 10);
-  width: 58%;
-  padding-left: 4%;
-}
-.result {
-  height: 7.9vh;
-}
-p {
-  height: 50%;
-  margin: 0;
-  color: white;
-  font-weight: bold;
-}
-.index-key {
-  font-size: 1.3vw;
-}
-.index-values {
-  span:nth-child(1) {
-    font-size: 1.1vw;
-    margin-right: 0.5vw;
-  }
-  span:nth-child(2) {
-    font-size: 0.8vw;
-    margin-right: 0.4vw;
-  }
-  .index-values span:nth-child(3) {
-    font-size: 0.8vw;
-  }
-}
-.plus {
-  color: green;
-
-  &:nth-child(2)::before { content: "▲"; }
-  &:nth-child(3)::before { content: "+"; }
-  &:nth-child(3)::after { content: "%"; }
-}
-.minus { 
-  color: red;
-
-  &:nth-child(2)::before { content: "▼"; }
-  &:nth-child(3)::after { content: "%"; }
-}
-
+  @import "@/assets/css/App/Header/GlobalIndexes.scss";
 </style>

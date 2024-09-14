@@ -1,6 +1,5 @@
 <template>
   <main id="home" @scroll="scroller">
-    <SearchAndSort @datas="setData"/>
     <div id="charts">
       <ThumbnailChart v-for="(e, i) in datasOnPage.slice(0, this.N)" :key="i"
                       :name="e.NAME" :ticker="e.TICKER" :trend="e.TREND" :hold="e.HOLD"/>
@@ -9,11 +8,10 @@
 </template>
 
 <script>
-import SearchAndSort from "@/components/Home/SearchAndSort.vue"
 import ThumbnailChart from "@/components/Home/ThumbnailChart.vue"
 
 export default {
-  components: { SearchAndSort, ThumbnailChart },
+  components: { ThumbnailChart },
   data() {
     return {
       datasOnPage: [], 
