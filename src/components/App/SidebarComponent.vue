@@ -1,5 +1,5 @@
 <template>
-  <aside @mouseover="moveSidebar(50, .3)" @mouseleave="moveSidebar(0, .4)">
+  <aside @mouseover="moveSidebar(50, .2)" @mouseleave="moveSidebar(0, .3)">
     <div id="sidebar">
       <button v-for="(btn, n) in btns" :key="n" 
         @click="$moveTo_1(btn.page)"
