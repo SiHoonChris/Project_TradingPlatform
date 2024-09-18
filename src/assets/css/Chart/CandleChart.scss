@@ -37,11 +37,6 @@
       @include setFlexDisplay(flex-end, space-between);
       width: 5%;
       padding: 0.5%;
-
-      button {
-        width: 46%;
-        height: 50%;
-      }
     }
   }
   #asset-chart {

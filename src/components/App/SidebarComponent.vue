@@ -1,5 +1,5 @@
 <template>
-  <aside @mouseover="moveSidebar(50, .2)" @mouseleave="moveSidebar(0, .3)">
+  <aside @mouseover="moveSidebar(50, .1)" @mouseleave="moveSidebar(0, .2)">
     <div id="sidebar">
       <button v-for="(btn, n) in btns" :key="n" 
         @click="$moveTo_1(btn.page)"
@@ -17,9 +17,9 @@ export default {
   data(){
     return {
       btns: [
-        { page:'transactions', img:require("@/assets/img/btnImg/transactions_gray.png") },
-        { page:'portfolios',   img:require("@/assets/img/btnImg/portfolios_gray.png")   },
-        { page:'home',         img:require("@/assets/img/btnImg/home_gray.png")         }
+        { page:'transactions', img:require("@/assets/img/btnImg/SidebarComponent/transactions_gray.png") },
+        { page:'portfolios',   img:require("@/assets/img/btnImg/SidebarComponent/portfolios_gray.png")   },
+        { page:'home',         img:require("@/assets/img/btnImg/SidebarComponent/home_gray.png")         }
       ]
     }
   },
@@ -30,7 +30,7 @@ export default {
       sidebar.style.transition=`${s}s linear`;
     },
     changeColor: function(page, idx, color){
-      this.btns[idx].img = require(`@/assets/img/btnImg/${page}_${color}.png`);
+      this.btns[idx].img = require(`@/assets/img/btnImg/SidebarComponent/${page}_${color}.png`);
     }
   }
 }

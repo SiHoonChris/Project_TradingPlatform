@@ -42,10 +42,10 @@ export default {
       Setting: false,
       Rmv: false,
       btnSet: {
-        plus   : require("@/assets/img/btnImg/plus_gray.png"),
-        minus  : require("@/assets/img/btnImg/minus_gray.png"),
-        delete : require("@/assets/img/btnImg/delete_gray.png"),
-        cancel : require("@/assets/img/btnImg/cancel_gray.png")
+        plus   : require("@/assets/img/btnImg/SubPortfolio/plus_gray.png"),
+        minus  : require("@/assets/img/btnImg/SubPortfolio/minus_gray.png"),
+        delete : require("@/assets/img/btnImg/SubPortfolio/delete_gray.png"),
+        cancel : require("@/assets/img/btnImg/SubPortfolio/cancel_gray.png")
       }
     }
   },
@@ -105,7 +105,7 @@ export default {
     ChangeColor: function(action, color){
       this.Setting = false; //차트 다시 그려지는 현상 막기 위함
       let fileName = `${action}_${color}`;
-      this.btnSet[action] = require(`@/assets/img/btnImg/${fileName}.png`)
+      this.btnSet[action] = require(`@/assets/img/btnImg/SubPortfolio/${fileName}.png`)
     }
   }
 }

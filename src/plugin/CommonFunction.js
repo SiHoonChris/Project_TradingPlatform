@@ -7,15 +7,10 @@ export default { // 2개 이상의 Component에서 사용되는 함수는 plugin
         // function : $moveTo_1
         Vue.config.globalProperties.$moveTo_2 = 
             function(T) {
-                this.$router.push({name: 'trade', params: {ticker: T}});
-            }
-        // function : $moveTo_2
-        Vue.config.globalProperties.$moveTo_3 = 
-            function(T) {
-                this.$moveTo_2(T);
+                this.$router.push({name: 'chart', params: {ticker: T}});
                 this.urlParam = null;
                 this.$store.commit("saveSearchLog", T);
             }
-        // function : $moveTo_3
+        // function : $moveTo_2
     }
 }

@@ -4,10 +4,7 @@
       <div id="asset-price">
         <span id="name">{{this.assetName}}</span>
       </div>
-      <div id="chart-tool">
-        <button @click="PopupOn()">X</button>
-        <button @click="ChartToolOn()">X</button>
-      </div>
+      <div id="chart-tool"></div>
     </div>
     <div id="asset-chart">
       <div id="forYAxis">
@@ -16,26 +13,11 @@
       </div>
       <svg id="Chart"></svg>
     </div>
-    <Toolmenu v-if="chartToolMenu_On">
-      <template v-slot:timeframes>
-        <ul>
-          <li v-for="(d,i) in this.timeframes" :key="i">{{d}}</li>
-        </ul>
-      </template>
-      <template v-slot:indicators>
-        <ul>
-          <li v-for="(d,i) in this.indicators" :key="i">{{d}}</li>
-        </ul>
-      </template>
-    </ToolMenu>
   </div>
 </template>
 
 <script>
-import ToolMenu from '@/components/Common/ChartToolMenuSlot.vue'
-
 export default {
-  components: { ToolMenu },
   data() {
     return {
       assetName: null,
@@ -77,17 +59,11 @@ export default {
         document.querySelector("#asset-chart").scrollBy(document.querySelector("#asset-chart").offsetWidth, 0);
       })
       .catch(err => console.log(err));
-    },
-    PopupOn: function(){
-      this.$emit("PopupSwitchOn", true);
-    },
-    ChartToolOn: function(){
-      this.chartToolMenu_On = this.chartToolMenu_On ? false : true;
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Trade/CandleChart.scss";
+  @import "@/assets/css/Chart/CandleChart.scss";
 </style>

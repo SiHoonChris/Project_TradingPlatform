@@ -23,9 +23,9 @@ const routes = [
     component: () => import('../views/FinancialStatementsView.vue')
   },
   {
-    path: '/trade/:ticker',
-    name: 'trade',
-    component: () => import('../views/TradeView.vue')
+    path: '/chart/:ticker',
+    name: 'chart',
+    component: () => import('../views/ChartView.vue')
   }
 ]
 

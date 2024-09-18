@@ -7,7 +7,7 @@
       <ul v-if="Suggestions.length !== 0 && focus" id="suggestion"
         @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <li v-for="(data, i) in Suggestions" :key="i" class="list"
-          @click="$moveTo_3(Suggestions[i].TICKER)">
+          @click="$moveTo_2(Suggestions[i].TICKER)">
           <p>{{Suggestions[i].NAME}}</p>
           <p>&#40;{{Suggestions[i].TICKER}}&#41;</p>
         </li>
