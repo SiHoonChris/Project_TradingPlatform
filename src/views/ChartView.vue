@@ -1,5 +1,5 @@
 <template>
-  <div id="chart">
+  <main id="chart">
     <div id="chart-main">
       <div id="candle-chart"><CandleChart/></div>
       <div id="trade-history"><TradeHistory/></div>
@@ -8,7 +8,7 @@
     <div id="chart-sub">
       <FinancialReport/>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>

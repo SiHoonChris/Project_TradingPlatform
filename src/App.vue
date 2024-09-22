@@ -1,8 +1,10 @@
 <template>
   <div>
     <HeaderComponent/>
-    <SidebarComponent/>
-    <router-view/>
+    <div id="main">
+      <SidebarComponent/>
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -21,17 +23,7 @@ body {
   padding: 0;
   overflow: hidden;
 }
-
-::-webkit-scrollbar-track {
-  background-color: black;
-}
-::-webkit-scrollbar {
-  background-color: black;
-  width: 0.55vw;
-}
-::-webkit-scrollbar-thumb {
-  border-radius: 30px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-  background-color: #333;
+#main {
+  display: flex;
 }
 </style>

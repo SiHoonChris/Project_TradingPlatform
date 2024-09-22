@@ -26,20 +26,19 @@ export default {
   },
   methods: {
     open(){
-      if(this.open){
-        document.getElementById('chart-sub').style.right = '0px';
-        this.btn = require("@/assets/img/btnImg/FinancialReport/financial_report_open_gray.png");
-      } else {
-        document.getElementById('chart-sub').style.right = 'calc(100vw - 70px)';
-        this.btn = require("@/assets/img/btnImg/FinancialReport/financial_report_close_gray.png");
-      }
+      document.getElementById('chart-sub').style.right =
+        this.open ? '0px' : 'calc(100vw - 20px)';
+      document.getElementById('FinancialReport').style.paddingLeft =
+        this.open ? '0px' : 'calc(20vw - 20px)';
+      
+      this.btn = 
+        require(`@/assets/img/btnImg/FinancialReport/financial_report_${this.open ? 'open' : 'close'}_gray.png`);
       
       this.open = !this.open;
     },
     changeColor(color){
-      this.btn = this.open ? 
-        require(`@/assets/img/btnImg/FinancialReport/financial_report_close_${color}.png`) : 
-        require(`@/assets/img/btnImg/FinancialReport/financial_report_open_${color}.png`);
+      this.btn =  
+        require(`@/assets/img/btnImg/FinancialReport/financial_report_${this.open ? 'close' : 'open'}_${color}.png`);
     }
   }
 }
@@ -50,6 +49,7 @@ export default {
     display: flex;
     width: 100vw;
     height: calc(100vh - 40px);
+    background: rgba(0, 0, 0, .64);
 
     #slide-btn {
       display: flex;
