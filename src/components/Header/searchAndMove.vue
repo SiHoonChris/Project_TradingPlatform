@@ -1,5 +1,5 @@
 <template>
-  <div id="header-center">
+  <div id="header-upper">
     <input id="search-n-move" name="search-n-move" type="text" placeholder="Name, ticker symbol, or code" 
       v-model="urlParam" 
       @focus="focusIn" @blur="focusOut"/>

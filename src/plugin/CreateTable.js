@@ -1,23 +1,31 @@
-// import { canvasDatagrid } from 'canvas-datagrid'
 export default {
     install(Vue) {
         Vue.config.globalProperties.$Create_Table = 
-            function(data, id, w, h){
+            function(data, id, w, h, rowHeader){
                 const app = document.getElementById(id);
                 const gridElement = document.createElement('div');
                 const grid = canvasDatagrid({
                     parentNode: gridElement,
                     data,
+                    showRowHeaders: rowHeader,
+                    showRowNumbers: rowHeader,
+                    hoverMode: 'row',
+                    selectionMode: 'row',
                     style: {
-                        /* 0. Size */
-                        // height : '260px',
+                        /* 0. Grid */
+                        gridBackgroundColor: "#000000",
+                        gridBorderColor: "#bbbbbb",
+                        gridBorderWidth: 0,
                         /* 1. Column Header */
                         cornerCellBackgroundColor: '#000000', // numbering-side
                         cornerCellBorderColor: "#bbbbbb",
                         columnHeaderCellBackgroundColor : '#000000',
                         columnHeaderCellColor : '#bbbbbb',
+                        columnHeaderCellBorderWidth: 0,
                         columnHeaderCellHorizontalAlignment : "center",
+                        columnHeaderCellVerticalAlignment : "center",
                         columnHeaderCellCapBackgroundColor : "#000000", // scroll-bar-side
+                        columnHeaderCellCapBorderWidth: 0,
                         columnHeaderCellCapBorderColor : "#bbbbbb",
                         /* mouse-event */
                             columnHeaderCellHoverBackgroundColor : '#000000',
@@ -42,23 +50,23 @@ export default {
                         cellBorderColor: '#000000',
                         cellBackgroundColor : '#000000',
                         cellColor : '#bbbbbb',
-                        cellHorizontalAlignment : "center",
+                        cellHorizontalAlignment : "right",
+                        cellVerticalAlignment : "center", 
                         /* mouse-event */
-                            cellSelectedBackgroundColor : "#000000",
-                            selectionOverlayBorderColor : '#bbbbbb',
+                            cellSelectedBackgroundColor : "#082c45",
+                            selectionOverlayBorderColor : '#082c45',
                             cellSelectedColor : "#bbbbbb",
-                            cellHoverBackgroundColor : "#000000",    
+                            cellHoverBackgroundColor : "#082c45",
                             cellHoverColor : "#bbbbbb",
-                            activeCellBackgroundColor : "#000000",
+                            activeCellBackgroundColor : "#082c45",
                             activeCellSelectedColor : "#bbbbbb",
                             activeCellColor : "#bbbbbb",
-                            activeCellSelectedBackgroundColor : "#000000",
+                            activeCellSelectedBackgroundColor : "#082c45",
                             activeCellBorderColor : "#bbbbbb",
                             activeCellHoverColor : "#000000",
                             activeCellOverlayBorderColor: "#bbbbbb"
                     }
                 });
-
 
                 app.append(gridElement);
 
@@ -66,23 +74,10 @@ export default {
                 grid.style.height = h;
 
                 grid.addEventListener('rendercell', function (e) {
-                    if(e.cell.columnIndex % 2 === 0 && e.cell.rowIndex !== -1) e.ctx.fillStyle = "#595959";
-                    if(e.cell.columnIndex % 2 === 0 && e.cell.rowIndex === 0) e.cell.horizontalAlignment = "center";
-                    if(e.cell.columnIndex % 2 === 0 && e.cell.rowIndex === 1) e.cell.horizontalAlignment = "left";
-                    if(e.cell.columnIndex % 2 === 0 && e.cell.rowIndex === 3) e.cell.horizontalAlignment = "right";
-                    // 마우스 클릭으로 셀 선택해도 정렬 내용 바뀌지 않음
+                    if(e.cell.rowIndex !== -1 && e.cell.columnIndex === 0) {
+                        // e.ctx.fillStyle = "gray"; // 가운데 정렬
+                    }
                  });
-        
-                // grid2.addEventListener('rendercell', function (e) {
-                //     if (e.cell.header.name === 'col1' && e.cell.value !== 'col1') {
-                //         console.log(e.cell.value);
-                //     }
-                // });
-
-                // grid2.addEventListener('rendercell', function (e) {
-                //     if(e.cell.rowIndex % 2 === 0 && e.cell.columnIndex !== -1) e.ctx.fillStyle = "#595959";
-                //     if(e.cell.rowIndex === 0 && e.cell.columnIndex === 0){console.log(e.cell)}
-                // });
         }
     }
 }

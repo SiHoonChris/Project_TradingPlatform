@@ -1,8 +1,8 @@
 <template>
   <header>
     <div id="header">
-      <GlobalIndexes/>
       <SearchAndMove/>
+      <GlobalIndexes/>
     </div>
   </header>
 </template>

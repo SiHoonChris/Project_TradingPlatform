@@ -1,17 +1,11 @@
 <template>
   <main id="home" @scroll="scroller">
-    <div id="charts">
-      <ThumbnailChart v-for="(e, i) in datasOnPage.slice(0, this.N)" :key="i"
-                      :name="e.NAME" :ticker="e.TICKER" :trend="e.TREND" :hold="e.HOLD"/>
-    </div>
+    <div id="charts"></div>
   </main>
 </template>
 
 <script>
-import ThumbnailChart from "@/components/Home/ThumbnailChart.vue"
-
 export default {
-  components: { ThumbnailChart },
   data() {
     return {
       datasOnPage: [], 
