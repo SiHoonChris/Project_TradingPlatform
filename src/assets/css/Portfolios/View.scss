@@ -1,5 +1,5 @@
 $w: 100vw;
-$h: 92vh;
+$h: calc(100vh - 60px);
 @mixin setWidthHeight($W, $H) {
   width: $W;
   height: $H;
@@ -14,7 +14,7 @@ $h: 92vh;
   @include setWidthHeight($w, $h);
   display: flex;
   overflow: hidden;
-  background: black;
+  background: #151516;
   
   #main-portfolio-sector {
     @include setWidthHeight($w * 0.38, $h);

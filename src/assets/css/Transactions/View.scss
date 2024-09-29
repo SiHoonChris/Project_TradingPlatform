@@ -1,5 +1,5 @@
 $w: 100vw;
-$h: 92vh;
+$h: calc(100vh - 60px);
 @mixin setFlexDisplay($d, $ai, $jc) {
   display: $d;
   align-items: $ai;
@@ -10,7 +10,7 @@ $h: 92vh;
   display: flex;
   width: $w;
   height: $h;
-  background: black;
+  background: #151516;
   overflow: hidden;
 
   #calendar-sector {

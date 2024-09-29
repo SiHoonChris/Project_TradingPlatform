@@ -4,25 +4,26 @@
       <p><span>{{this.$route.params.ticker}}</span></p>
       <div id="chart-container">
         <ul id="analytics">
-          <li>
-            <span @click="this.flowAnalyticsDisp=true">
+          <li id="flow-analytics-menu">
+            <span @click="menuSelectBtn(true)">
               Flow
             </span>
           </li>
-          <li>
-            <span @click="this.flowAnalyticsDisp=false">
+          <li id="static-analytics-menu">
+            <span @click="menuSelectBtn(false)">
               Static
             </span>
           </li>
         </ul>
-        <ul v-if="flowAnalyticsDisp" id="flow-analytics">
-          <li><span>Earnings 1</span></li>
-          <li><span>Earnings 2</span></li>
+        <ul v-if="flowAnalyticsDisp" id="flow-analytics-sub-menu">
+          <li v-for="(d, i) in flowAnalyticsSubMenu" :key="i">
+            <span @click="subMenuSelectBtn('flow', i)">{{d}}</span>
+          </li>
         </ul>
-        <ul v-else id="static-analytics">
-          <li><span>Composition</span></li>
-          <li><span>Quality</span></li>
-          <li><span>Capital</span></li>
+        <ul v-else id="static-analytics-sub-menu">
+          <li v-for="(d, i) in staticAnalyticsSubMenu" :key="i">
+            <span @click="subMenuSelectBtn('static', i)">{{d}}</span>
+          </li>
         </ul>
         <div id="ct-content"></div>
       </div>
@@ -40,6 +41,8 @@ export default {
   data(){
     return {
       flowAnalyticsDisp: true,
+      flowAnalyticsSubMenu: ['Earnings 1', 'Earnings 2'],
+      staticAnalyticsSubMenu: ['Composition', 'Quality', 'Capital'],
       ctStaticData: [
         // 1) Compos.1 절대량 비교(커런트, 논커런트 전부) & Compos.2 상대량 비교(커런트, 논커런트 전부) - 막대그래프
         // 2) TL/TE , CA/CL , CL/NCL - 라인 그래프
@@ -73,9 +76,22 @@ export default {
       false
     );
     document.getElementById('table-container').nextSibling.style.position='absolute';
+    this.menuSelectBtn(true);
   },
   beforeUnmount(){
     document.getElementById('table-container').nextSibling.remove();
+  },
+  methods: {
+    menuSelectBtn(bool){
+      this.flowAnalyticsDisp=bool;
+      document.getElementById(`${bool?'flow':'static'}-analytics-menu`).style.background = '#00c38e';
+      document.getElementById(`${!bool?'flow':'static'}-analytics-menu`).style.background = 'none';
+    },
+    subMenuSelectBtn(type, idx){
+      let subMenus = document.getElementById(`${type}-analytics-sub-menu`).querySelectorAll('li');
+      for(let e of subMenus) { e.style.borderBottomColor = '#595959'; }
+      subMenus[idx].style.borderBottomColor = '#00c38e';
+    }
   }
 }
 </script>

@@ -1,41 +1,41 @@
 <template>
   <div id="header-lower">
-    <div v-if="DATAS !== null" id="global-indexes">
-      <div v-for="(d, i) in Object.keys(DATAS[0])" :key="i" class="g_idx">
+    <div v-if="data !== null" id="global-indexes">
+      <div v-for="(d, i) in Object.keys(data[0])" :key="i" class="g_idx">
         <div class="idx_name">
           <p>
-            <span>{{d}}</span>
+            <span v-for="(e, n) in d.split(' ')" :key="n">{{e}}</span>
           </p>
         </div>
         <div class="idx_value">
-          <p class="value" v-if="Number(DATAS[0][d] - DATAS[1][d]) != 0">
-            <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
+          <p class="value" v-if="Number(data[0][d] - data[1][d]) != 0">
+            <span>{{Number(data[0][d]).toLocaleString()}}</span>
           </p>
           <p class="value" v-else>
-            <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
+            <span>{{Number(data[0][d]).toLocaleString()}}</span>
           </p>
-          <p class="change" v-if="Number(DATAS[0][d] - DATAS[1][d]) != 0">
-            <span>{{Number((DATAS[0][d] - DATAS[1][d]).toFixed(2)).toLocaleString()}}</span>
-            <span class="calculated">{{Number(((DATAS[0][d] - DATAS[1][d]) / DATAS[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
+          <p class="change" v-if="Number(data[0][d] - data[1][d]) != 0">
+            <span>{{Number((data[0][d] - data[1][d]).toFixed(2)).toLocaleString()}}</span>
+            <span class="calculated">{{Number(((data[0][d] - data[1][d]) / data[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
           </p>
         </div>
       </div>
-      <div v-for="(d, i) in Object.keys(DATAS[0])" :key="i" class="g_idx">
+      <div v-for="(d, i) in Object.keys(data[0])" :key="i" class="g_idx">
         <div class="idx_name">
           <p>
-            <span>{{d}}</span>
+            <span v-for="(e, n) in d.split(' ')" :key="n">{{e}}</span>
           </p>
         </div>
         <div class="idx_value">
-          <p class="value" v-if="Number(DATAS[0][d] - DATAS[1][d]) != 0">
-            <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
+          <p class="value" v-if="Number(data[0][d] - data[1][d]) != 0">
+            <span>{{Number(data[0][d]).toLocaleString()}}</span>
           </p>
           <p class="value" v-else>
-            <span>{{Number(DATAS[0][d]).toLocaleString()}}</span>
+            <span>{{Number(data[0][d]).toLocaleString()}}</span>
           </p>
-          <p class="change" v-if="Number(DATAS[0][d] - DATAS[1][d]) != 0">
-            <span>{{Number((DATAS[0][d] - DATAS[1][d]).toFixed(2)).toLocaleString()}}</span>
-            <span class="calculated">{{Number(((DATAS[0][d] - DATAS[1][d]) / DATAS[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
+          <p class="change" v-if="Number(data[0][d] - data[1][d]) != 0">
+            <span>{{Number((data[0][d] - data[1][d]).toFixed(2)).toLocaleString()}}</span>
+            <span class="calculated">{{Number(((data[0][d] - data[1][d]) / data[1][d] * 100).toFixed(2)).toLocaleString()}}</span>
           </p>
         </div>
       </div>
@@ -47,15 +47,15 @@
 export default {
   data () {
     return {
-      DATAS: null,
+      data: null,
       fn_slider: null,
     }
   },
   created(){
     this.$http.get("/getGlobalIndexesData")
     .then(res => {
-      this.DATAS = res.data;
-      this.$store.commit("setFxRates", this.DATAS[0]);
+      this.data = res.data;
+      this.$store.commit("setFxRates", this.data[0]);
     })
     .catch(err => console.log(err));
   },

@@ -32,7 +32,6 @@ export default {
       getComputedStyle(document.getElementById('buy-n-sell')).height,
       true
     );
-    document.getElementById('buy-n-sell').nextSibling.style.position='absolute';
   }
 }
 </script>
