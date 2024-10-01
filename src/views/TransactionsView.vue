@@ -1,20 +1,24 @@
 <template>
   <main id="transaction">
-    <div id="calendar-sector">
-      <TransactionCalendar @setDateFrom="getDateFrom" @setDateTo="getDateTo"/>
+    <div id="transaction-ct">
+      <div id="transaction-ct-container">
+        <TransactionChart/>
+      </div>
     </div>
-    <div id="table-sector">
-      <TransactionTable :dateFrom="sendDateFrom" :dateTo="sendDateTo"/>
+    <div id="transaction-tbl">
+      <div id="transaction-tbl-container">
+        <TransactionTable :dateFrom="sendDateFrom" :dateTo="sendDateTo"/>
+      </div>
     </div>
   </main>
 </template>
 
 <script>
-import TransactionCalendar from '@/components/Transaction/TransactionCalendar.vue'
+import TransactionChart from '@/components/Transaction/TransactionChart.vue'
 import TransactionTable from '@/components/Transaction/TransactionTable.vue'
 
 export default {
-  components: { TransactionCalendar, TransactionTable },
+  components: { TransactionChart, TransactionTable },
   data() {
     return {
       sendDateFrom: null,

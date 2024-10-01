@@ -1,26 +1,50 @@
 $w: 100vw;
 $h: calc(100vh - 60px);
-@mixin setFlexDisplay($d, $ai, $jc) {
-  display: $d;
-  align-items: $ai;
+@mixin setFlexDisplay($jc, $ai) {
+  display: flex;
   justify-content: $jc;
+  align-items: $ai;
 }
 
 #transaction {
   display: flex;
+  flex-direction: column;
   width: $w;
   height: $h;
   background: #151516;
   overflow: hidden;
 
-  #calendar-sector {
-    width: $w * 0.3;
-    height: $h;
-    @include setFlexDisplay(flex, center, right);
+  #transaction-ct {
+    width: 100%;
+    height: 55%;
+    @include setFlexDisplay(center, flex-end);
+
+    #transaction-ct-container {
+      width: calc(100% - 15px * 2);
+      height: calc(100% - 20px);
+      background: #171a1e;
+    }
   }
-  #table-sector {
-    width: $w * 0.7;
-    height: $h;
-    @include setFlexDisplay(flex, center, center);
+  #transaction-tbl {
+    width: 100%;
+    height: 45%;
+    @include setFlexDisplay(center, flex-start);
+
+    #transaction-tbl-container {
+      width: calc(100% - 15px * 2);
+      height: calc(100% - 20px);
+      background: #171a1e;
+    }
   }
+
+  // #calendar-sector {
+  //   width: $w * 0.3;
+  //   height: $h;
+  //   @include setFlexDisplay(flex, center, right);
+  // }
+  // #table-sector {
+  //   width: $w * 0.7;
+  //   height: $h;
+  //   @include setFlexDisplay(flex, center, center);
+  // }
 }

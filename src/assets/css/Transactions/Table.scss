@@ -1,149 +1,77 @@
 #transaction-table {
-  width: 88%;
-  height: 90%;
-}
-#table-sort {
   width: 100%;
-  height: 10%;
+  height: 100%;
   display: flex;
-  justify-content: left;
-  align-items: flex-end;
+  flex-direction: column;
 
-  select {
-    width: 8vw;
-    height: 3vh;
-    padding-top: 1px;
-    padding-bottom: 1px;
-    margin-right: 1%;
-    margin-bottom: 1%;
-    background: #1a1a1a;
-    color: white;
-    font-weight: bold;
-  }
-  input {
-    width: 12vw;
-    height: 3vh;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 1%;
-    border: 1px solid gray;
-    background: #0a0a0a;
-    color: white;
-  }
-}
-#transaction-list {
-  width: 100%;
-  height: 85%;
-}
-#transaction-list-thead { 
-  height: 12%; 
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
-  border-top: 1px solid gray;
-  
-  table {
-    width: 100%;
-    height: 100%;
-    border-collapse: collapse;
-    color: white;
-  
-    thead > tr:nth-child(2) > th:nth-child(3) { border-right: none; }
-  }
-}
-#transaction-list-tbody { 
-  height: calc(88% - 0.4% * 2); 
-  border-left: 1px solid gray;
-  border-right: 1px solid gray;
-  border-bottom: 1px solid gray;
-  overflow-y: scroll;
+  #table-info {
+    width: calc(100% - 10px * 2);
+    height: 40px;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    padding: 0 10px;
+    margin-top:  2px;
 
-  table {
-    width: 100%;
-    height: 100%;
-    border-collapse: collapse;
-    color: white;
-  
-    tbody > tr > td:nth-child(5) { border-right: 1px solid gray; }
-  }
-}
-th {
-  padding: 0.4% 1.0%;
-  border-bottom: 1px solid gray;
-
-  &:nth-child(1) { width: 12%; border-right: 1px solid gray; }
-  &:nth-child(2) { width: 20%; border-right: 1px solid gray; }
-  &:nth-child(3) { width: 20%; border-right: 1px solid gray; }
-  &:nth-child(4) { width: 24%; border-left: 1px solid gray; }
-  &:nth-child(5) { width: 24%; border-left: 1px solid gray; }
-}
-td {
-  padding: 0.4% 1.0%;
-  border-bottom: 1px solid gray;
-
-  &:nth-child(1) { width: 12%;   border-right: 1px solid gray; }
-  &:nth-child(2) { width: 20%;   border-right: 1px solid gray; }
-  &:nth-child(3) { width: 20%;   border-right: 1px solid gray; }
-  &:nth-child(4) { width: 24%;   border-left:  1px solid gray; }
-  &:nth-child(5) { width: 23.2%; border-left:  1px solid gray; }
-}
-tr {
-  &:nth-child(odd) {
-    & > th {
-      &:nth-child(1), &:nth-child(3) { vertical-align: middle; }
-      &:nth-child(2), &:nth-child(4), &:nth-child(5) { vertical-align: top; }
-    }
-    & > td {
-      vertical-align: middle;
-
-      &:nth-child(1), &:nth-child(3) { text-align: center; }
-      &:nth-child(4), &:nth-child(5) { text-align: right; }
-    }
-  }
-  &:nth-child(even) {
-    & > th { vertical-align: top; }
-    & > td { 
-      vertical-align: middle;
+    #tbl-period {
+      display: flex;
+      align-items: flex-end;
+      margin-right: 20px;
       
-      &:nth-child(2), &:nth-child(3) { text-align: right; }
+      /* .label */
+      #period-result {
+        input {
+          width: 160px;
+          height: 20px;
+          background: #121212;
+          border-radius: 2px;
+          border: 1px solid #555555;
+          text-align: center;
+          color: #b9b9b9;
+          &:focus { outline: none; }
+        }
+      }
+    }
+    #tbl-result {
+      display: flex;
+      align-items: flex-end;
+      
+      /* .label */
+      #expense-result {
+        display: flex;
+        align-items: flex-end;
+
+        input {
+          width: 120px;
+          height: 20px;
+          padding-right: 8px;
+          background: #121212;
+          border: 1px solid #555555;
+          border-radius: 2px;
+          text-align: right;
+          color: #b9b9b9;
+          &:focus { outline: none; }
+        }
+      }
+    }
+
+    .label {
+      color: #ffffff;
+      margin-right: 8px;
+      font-size: 13px;
     }
   }
-  &:nth-child(4n+1) > td, &:nth-child(4n+2) > td {
-    background:#1a1a1a;
-  }
-}
-  
-#pagination {
-  width: 100%;
-  height: 4.6%;
-  padding-top: 0.4%;
-  display: flex;
-  justify-content: right;
-  color: gray;
 
-  & > p {
-    width: 50%;
-    height: 100%;
-    margin: 0 5%;
+  #table-result {
+    width: 100%;
+    height: calc(100% - 40px);
     display: flex;
     justify-content: center;
 
-    & > span {
-      margin: 0 1.4%;
-      cursor: pointer;
-
-      &.on {
-        font-weight: bold;
-        color: whitesmoke;
-      }
-      &.previous:hover, &.later:hover {
-        font-weight: bold;
-        color: whitesmoke;
-      }
+    #table-canvas {
+      width: calc(100% - 10px * 2);
+      height: 96%;
+      background: #000000;
     }
-  }
-  & > span {
-    width: 20%;
-    height: 100%;
-    text-align: right;
   }
 }
