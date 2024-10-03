@@ -10,6 +10,7 @@ import CreateChart2 from './plugin/CreateChart2.js'
 import CreateChart3 from './plugin/CreateChart3.js'
 import CreateTable from './plugin/CreateTable.js'
 import FinancialStatements from './plugin/FinancialStatements.js'
+import ScatterplotChart from './plugin/ScatterplotChart.js'
 
 const app = createApp(App);
 app.config.globalProperties.$http = axios;
@@ -22,4 +23,5 @@ app.use(CreateChart2);
 app.use(CreateChart3);
 app.use(CreateTable);
 app.use(FinancialStatements);
+app.use(ScatterplotChart);
 app.mount('#app');

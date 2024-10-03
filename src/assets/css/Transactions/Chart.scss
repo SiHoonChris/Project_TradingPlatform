@@ -40,6 +40,7 @@
       #set-transaction {
         display: flex;
         align-items: center;
+        margin-right: 20px;
 
         /* .label */
         select {
@@ -50,6 +51,28 @@
           border-radius: 2px;
           color: #b9b9b9;
           font-size: 13px;
+        }
+      }
+      #set-button {
+        display: flex;
+        align-items: center;
+
+        button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 26px;
+          height: 26px;
+          padding: 0;
+          border: 1px solid #18754d;
+          border-radius: 3px;
+          background: #34f2a1;
+          cursor: pointer;
+
+          img {
+            width: 98%;
+            height: 99%;
+          }
         }
       }
 
