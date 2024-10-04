@@ -18,6 +18,7 @@
       </div>
     </div>
     <div id="table-result">
+      <button id="createTblButton" style="display: none;" @click="getTransactionHistoryDataForTable()"></button>
       <div id="table-canvas"></div>
     </div>
   </div>
@@ -32,6 +33,11 @@ export default {
       expenseTotal: 0
     }
   },
+  // mounted(){
+  //   document.getElementById('createTblButton').addEventListener('click', function(){
+  //     alert('CLICKED');
+  //   });
+  // },
   methods: {
     getTransactionHistoryDataForTable : 
     function(){

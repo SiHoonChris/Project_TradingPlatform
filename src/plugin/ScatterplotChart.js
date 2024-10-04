@@ -76,14 +76,16 @@ export default {
                                     dateTo     = 
                                         new Date(xScale.invert(selectedArea[1][0])).toLocaleString('ja-JP'),
                                     expenseMin = 
-                                        yScale.invert(selectedArea[0][1]),
+                                        yScale.invert(selectedArea[1][1]),
                                     expenseMax = 
-                                        yScale.invert(selectedArea[1][1]);
+                                        yScale.invert(selectedArea[0][1]);
                             
                                 document.getElementById('period-date-from').value = dateFrom.replaceAll('/', '.');
                                 document.getElementById('period-date-to').value   = dateTo.replaceAll('/', '.');
                                 setExpense['expenseMin'] = expenseMin;
                                 setExpense['expenseMax'] = expenseMax;
+
+                                setTimeout(() => document.getElementById('createTblButton').click(), 100);
                             }
                         })
                 );
