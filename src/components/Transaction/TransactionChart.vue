@@ -4,11 +4,7 @@
       <div id="setting-input">
         <div id="set-period">
           <span class="label">Period</span>
-          <div id="period-select">
-            <span id="dateFrom">2023.05.01</span> <!-- flatpickr -->
-            <span>~</span>
-            <span id="dateTo">2023.06.01</span> <!-- flatpickr -->
-          </div>
+          <TransactionCalendar/>
         </div>
         <div id="set-transaction">
           <span class="label">Transaction</span>
@@ -31,12 +27,6 @@
     </div>
   </div>
 </template>
-<!-- <div id="calendar-sector">
-      <TransactionCalendar @setDateFrom="getDateFrom" @setDateTo="getDateTo"/>
-    </div>
-    <div id="table-sector">
-      <TransactionTable :dateFrom="sendDateFrom" :dateTo="sendDateTo"/>
-    </div> -->
 
 <script>
 import TransactionCalendar from '@/components/Transaction/TransactionCalendar.vue'
@@ -64,24 +54,25 @@ export default {
           df = document.getElementById("dateFrom").textContent.replaceAll(".", "-"),
           dt = document.getElementById("dateTo").textContent.replaceAll(".", "-");
 
-      this.$http.get("/getTransactionHistoryDataForChart", 
-        {
+      this.$http.get("/getTransactionHistoryDataForChart", {
           params: { 
             Transaction: tD,
             DateFrom   : df,
             DateTo     : dt
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.data = [];
           
           if(res.data.length !== 0) {
             this.data = res.data;
             this.$Scatter_Plot(res.data, 'chart-svg');
-            // TransactionTable.vue에 transaction 정보 전송되어야 함
+            
+            this.$emit('sendTransaction', tD); // TransactionsView.vue
           }
-        })
-        .catch(err => console.log(err));
+        }).catch(err => console.log(err));
+
+      document.getElementById('period-date-from').value = '';
+      document.getElementById('period-date-to').value = '';
     }
   }
 }

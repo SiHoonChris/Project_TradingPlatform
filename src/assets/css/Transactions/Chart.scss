@@ -21,21 +21,12 @@
       #set-period {
         display: flex;
         align-items: center;
+        justify-content: left;
         margin-right: 20px;
+        width: 228px;
         
         /* .label */
-        #period-select {
-          width: 180px;
-          height: 25px;
-          background: #0b1a2d;
-          border: 1px solid #0e4260;
-          border-radius: 2px;
-          display: flex;
-          justify-content: space-evenly;
-          align-items: center;
-          color: #2a90cb;
-          font-size: 13px;
-        }
+        .label { width: 38px; }
       }
       #set-transaction {
         display: flex;

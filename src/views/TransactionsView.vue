@@ -2,12 +2,12 @@
   <main id="transaction">
     <div id="transaction-ct">
       <div id="transaction-ct-container">
-        <TransactionChart/>
+        <TransactionChart @sendTransaction="defineTransaction"/>
       </div>
     </div>
     <div id="transaction-tbl">
       <div id="transaction-tbl-container">
-        <TransactionTable :dateFrom="sendDateFrom" :dateTo="sendDateTo"/>
+        <TransactionTable :transactionFromChart="transactionToSet"/>
       </div>
     </div>
   </main>
@@ -21,13 +21,13 @@ export default {
   components: { TransactionChart, TransactionTable },
   data() {
     return {
-      sendDateFrom: null,
-      sendDateTo: null,
+      transactionToSet: ''
     }
   },
   methods: {
-    getDateFrom(value){ this.sendDateFrom = value; },
-    getDateTo(value){ this.sendDateTo = value; }
+    defineTransaction(val) {
+      this.transactionToSet = val;
+    }
   }
 }
 </script>

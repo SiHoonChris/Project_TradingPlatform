@@ -1,5 +1,5 @@
 <template>
-  <div id="buy-n-sell" style="width:100%; height:100%"></div>
+  <div id="TradeHistory" style="width:100%; height:100%"></div>
 </template>
 
 <script>
@@ -27,9 +27,9 @@ export default {
   mounted(){
     this.$Create_Table (
       this.tradeHistData, 
-      "buy-n-sell", 
-      getComputedStyle(document.getElementById('buy-n-sell')).width,
-      getComputedStyle(document.getElementById('buy-n-sell')).height,
+      "TradeHistory", 
+      getComputedStyle(document.getElementById('TradeHistory')).width,
+      getComputedStyle(document.getElementById('TradeHistory')).height,
       true
     );
   }

@@ -1,5 +1,10 @@
 <template>
-  <div id="transaction-calendar">
+  <div id="period-select" @click="activation()">
+    <span id="dateFrom">2023.05.01</span>
+    <span>~</span>
+    <span id="dateTo">2023.06.01</span>
+  </div>
+  <!-- <div id="transaction-calendar">
     <div id="from-calendar">
       <p>FROM</p>
       <div id="select-from">
@@ -12,7 +17,7 @@
         <flat-pickr v-model="date_to" :config="config_to"></flat-pickr>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -24,6 +29,7 @@ export default {
   components: { flatPickr },
   data() {
     return {
+      expansion: false,
       date_from: null, 
       config_from: {
         inline: true,
@@ -61,6 +67,14 @@ export default {
     },
     date_to: function(val){
       this.$emit('setDateTo', val);
+    }
+  },
+  methods: {
+    activation: function(){
+      this.expansion = !this.expansion;
+      document.getElementById('period-select').style.position = this.expansion ? 'absolute' : 'relative';
+      document.getElementById('period-select').style.marginLeft = this.expansion ? '46px' : '0px';
+      document.getElementById('period-select').style.width = this.expansion ? '400px' : '180px';
     }
   }
 }

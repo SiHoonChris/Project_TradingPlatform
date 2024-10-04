@@ -4,19 +4,15 @@
       <div id="tbl-period">
         <span class="label">Period in detail</span>
         <div id="period-result">
-          <input v-if="data.length !== 0" type="text" readonly :value="
-            new Date(data[0].Date).toLocaleString('ja-JP').replaceAll('/', '.')
-          "/> <input v-else type="text" readonly value=""/>
+          <input type="text" readonly id="period-date-from" value=""/>
           <span style="color:#ffffff; margin:0 4px; font-size:13px;">~</span>
-          <input v-if="data.length !== 0" type="text" readonly :value="
-            new Date(data[data.length-1].Date).toLocaleString('ja-JP').replaceAll('/', '.')
-          "/> <input v-else type="text" readonly value=""/>
+          <input type="text" readonly id="period-date-to" value=""/>
         </div>
       </div>
       <div id="tbl-result">
         <span class="label">Expense in total</span>
         <div id="expense-result">
-          <input type="text" readonly :value="(expenseTotal).toLocaleString()" @click="getTransactionHistoryDataForTable()"/> <!-- 서버 단에서 계산해서 결과 전송 -->
+          <input type="text" readonly :value="(expenseTotal).toLocaleString()"/>
           <span style="color:#ffffff; margin-left:2px; font-size:13px;">(\)</span>
         </div>
       </div>
@@ -29,6 +25,7 @@
 
 <script>
 export default {
+  props: ["transactionFromChart"],
   data() {
     return {
       data : [],
@@ -38,14 +35,13 @@ export default {
   methods: {
     getTransactionHistoryDataForTable : 
     function(){
-      // let tD = this.setTransaction === 'All' ? '' : this.setTransaction,
-      //     df = document.getElementById("dateFrom").textContent.replaceAll(".", "-"),
-      //     dt = document.getElementById("dateTo").textContent.replaceAll(".", "-");
-      // TransactionChart.vue에서 정보 전송받기
-      let tD = '', eMin = 0, eMax = 10000, df = "2023-05-01", dt = "2023-06-01";
+      let tD   = this.transactionFromChart, 
+          eMin = this.$setExpense['expenseMin'], 
+          eMax = this.$setExpense['expenseMax'], 
+          df   = document.getElementById('period-date-from').value.replaceAll('.', '-'), 
+          dt   = document.getElementById('period-date-to').value.replaceAll('.', '-');
 
-      this.$http.get("/getTransactionHistoryDataForTable", 
-        {
+      this.$http.get("/getTransactionHistoryDataForTable", {
           params: { 
             Transaction: tD,
             ExpenseMin : eMin,
@@ -53,10 +49,9 @@ export default {
             DateFrom   : df,
             DateTo     : dt
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.data = [];
-          
+
           if(res.data.length !== 0) {
             // 테이블 생성
             this.data = res.data;
@@ -68,10 +63,24 @@ export default {
               false
             );
             document.getElementById('table-canvas').nextSibling.style.position='absolute';
+            
             // Expense 총계
-            this.expenseTotal = 10000;
+            this.getExpenseSumForTable(tD, eMin, eMax, df, dt);
+          }
+        }).catch(err => console.log(err));
+    },
+    getExpenseSumForTable : 
+    function(tD, eMin, eMax, df, dt){
+      this.$http.get("/getExpenseSumForTable", {
+          params: { 
+            Transaction: tD,
+            ExpenseMin : eMin,
+            ExepnseMax : eMax,
+            DateFrom   : df,
+            DateTo     : dt
           }
         })
+        .then(res => this.expenseTotal = res.data[0].expense_sum)
         .catch(err => console.log(err));
     }
   }

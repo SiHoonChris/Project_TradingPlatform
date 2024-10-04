@@ -76,6 +76,7 @@ export default {
       false
     );
     document.getElementById('table-container').nextSibling.style.position='absolute';
+    
     this.menuSelectBtn(true);
   },
   beforeUnmount(){

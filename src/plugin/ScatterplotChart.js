@@ -1,5 +1,11 @@
 export default {
     install(Vue) {
+        const setExpense = {
+            expenseMin: 0,
+            expenseMax: 0
+        };
+        Vue.config.globalProperties.$setExpense = setExpense;
+
         Vue.config.globalProperties.$Scatter_Plot = 
             function(data, elementId){
                 // Before Creating
@@ -63,15 +69,22 @@ export default {
                         .extent([[margin.Left, margin.Top], [Width-(margin.Right+margin.Left), Height-margin.Bottom]])
                         .on("end", function(){
                             let selectedArea = d3.brushSelection(this);
-                            console.log(selectedArea);
-
-                            let dateFrom   = xScale.invert(selectedArea[0][0]);
-                            let dateTo     = xScale.invert(selectedArea[0][0]);
-                            let expenseMin = yScale.invert(selectedArea[1][1]);
-                            let expenseMax = yScale.invert(selectedArea[1][1]);
-                        
-                            console.log(`${dateFrom} , ${dateTo} , ${expenseMin} , ${expenseMax}`);
-                            // parameter : dateFrom, dateTo, expenseMin, expenseTo 전송하여 쿼리 조회 (테이블 생성용)
+                            
+                            if(selectedArea !== null) {
+                                let dateFrom   = 
+                                        new Date(xScale.invert(selectedArea[0][0])).toLocaleString('ja-JP'),
+                                    dateTo     = 
+                                        new Date(xScale.invert(selectedArea[1][0])).toLocaleString('ja-JP'),
+                                    expenseMin = 
+                                        yScale.invert(selectedArea[0][1]),
+                                    expenseMax = 
+                                        yScale.invert(selectedArea[1][1]);
+                            
+                                document.getElementById('period-date-from').value = dateFrom.replaceAll('/', '.');
+                                document.getElementById('period-date-to').value   = dateTo.replaceAll('/', '.');
+                                setExpense['expenseMin'] = expenseMin;
+                                setExpense['expenseMax'] = expenseMax;
+                            }
                         })
                 );
 
