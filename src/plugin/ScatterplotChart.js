@@ -28,7 +28,7 @@ export default {
                             .attr("transform", `translate(${margin.Left}, ${margin.Top})`);
 
                 // Add X axis
-                const xScale = 
+                const xScale = /* x축의 tick 개수는 6개로 고정*/
                     d3.scaleUtc()
                         .domain([d3.min(data, d => new Date(d["Date"])), d3.max(data, d => new Date(d["Date"]))])
                         .range([margin.Left, Width - (margin.Left + margin.Right)]);
@@ -40,7 +40,7 @@ export default {
                     .call(d3.axisBottom(xScale).ticks(6).tickSizeInner(0).tickSizeOuter(0));
 
                 // Add Y axis
-                const yScale = 
+                const yScale = /* y축의 tick 개수는 5개로 고정(data가 없을 시 yMax=1, yMin=0) */
                     d3.scaleLinear()
                         .domain([0, d3.max(data, d => d["Expense"])])
                         .range([Height - margin.Bottom, margin.Top]);

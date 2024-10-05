@@ -33,11 +33,6 @@ export default {
       expenseTotal: 0
     }
   },
-  // mounted(){
-  //   document.getElementById('createTblButton').addEventListener('click', function(){
-  //     alert('CLICKED');
-  //   });
-  // },
   methods: {
     getTransactionHistoryDataForTable : 
     function(){
@@ -51,7 +46,7 @@ export default {
           params: { 
             Transaction: tD,
             ExpenseMin : eMin,
-            ExepnseMax : eMax,
+            ExpenseMax : eMax,
             DateFrom   : df,
             DateTo     : dt
           }
@@ -61,6 +56,10 @@ export default {
           if(res.data.length !== 0) {
             // 테이블 생성
             this.data = res.data;
+            
+            if(document.getElementById('table-canvas').nextSibling){
+              document.getElementById('table-canvas').nextSibling.remove();
+            }
             this.$Create_Table (
               this.data, 
               "table-result", 
@@ -81,7 +80,7 @@ export default {
           params: { 
             Transaction: tD,
             ExpenseMin : eMin,
-            ExepnseMax : eMax,
+            ExpenseMax : eMax,
             DateFrom   : df,
             DateTo     : dt
           }

@@ -63,7 +63,7 @@ export default {
         }).then(res => {
           this.data = [];
           
-          if(res.data.length !== 0) {
+          if(res.data.length !== 0) { /* 이 부분 수정 필요 : 전송된 data가 없더라고 차트는 그려져야 함 */
             this.data = res.data;
             this.$Scatter_Plot(res.data, 'chart-svg');
             
