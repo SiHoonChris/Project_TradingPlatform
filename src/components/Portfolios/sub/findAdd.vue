@@ -1,5 +1,9 @@
 <template>
-  <div id="new-portfolio">
+  <div id="find-add">
+
+    <div id="find"></div>
+
+
     <div id="included-assets">
       <div id="included-assets-thead">
         <table>
@@ -42,6 +46,7 @@
         <button @click="PopupOffByCancelBtn()">CANCEL</button>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -158,5 +163,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Portfolios/New.scss";
+  @import "@/assets/css/Portfolios/sub/findAdd.scss";
 </style>

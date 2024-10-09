@@ -1,34 +1,34 @@
 <template>
-  <div id="FinancialReport">
+  <div id="new-portfolio">
     <div id="slide-btn">
       <button 
         @click="open(open)"
         @mouseover="changeColor('white')"
         @mouseleave="changeColor('gray')"
       >
-        <img :src="btn" alt="financial_report">
+        <img :src="btn" alt="new_portfolio">
       </button>
     </div>
-    <ChartTable/>
+    <FindAdd/>
   </div>
 </template>
 
 <script>
-import ChartTable from "@/components/Chart/sub/ChartTable.vue"
+import FindAdd from "@/components/Portfolios/sub/findAdd.vue"
 
 export default {
-  components: { ChartTable },
-  data(){
+  components: { FindAdd },
+  data() {
     return {
       open: false,
-      btn: require("@/assets/img/btnImg/Common/side_sub_menu_open_gray.png")
+      btn: require("@/assets/img/btnImg/Common/side_sub_menu_open_gray.png"),
     }
-  },
+  }, 
   methods: {
     open(){
-      document.getElementById('chart-sub').style.right =
+      document.getElementById('portfolios-sub').style.right =
         this.open ? '0px' : 'calc(100vw - 20px)';
-      document.getElementById('FinancialReport').style.paddingLeft =
+      document.getElementById('new-portfolio').style.paddingLeft =
         this.open ? '0px' : 'calc(20vw - 20px)';
       
       this.btn = 
@@ -45,5 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Chart/sub/FinancialReport.scss";
+  @import "@/assets/css/Portfolios/sub/NewPortfolio.scss";
 </style>

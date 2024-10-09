@@ -6,7 +6,7 @@ import axios  from 'axios'
 import mixins from "./mixins";
 import PageMoving from './plugin/PageMoving.js'
 import CreateChart1      from './plugin/CreateChart1.js'
-import CreateChart2      from './plugin/CreateChart2.js'
+import DonutChart        from './plugin/DonutChart.js'
 import CreateChart3      from './plugin/CreateChart3.js'
 import ScatterplotChart  from './plugin/ScatterplotChart.js'
 import CreateTable       from './plugin/CreateTable.js'
@@ -19,7 +19,7 @@ app.use(router);
 app.mixin(mixins);
 app.use(PageMoving);
 app.use(CreateChart1);
-app.use(CreateChart2);
+app.use(DonutChart);
 app.use(CreateChart3);
 app.use(ScatterplotChart);
 app.use(CreateTable);
