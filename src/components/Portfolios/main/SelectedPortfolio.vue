@@ -38,7 +38,7 @@
             </div>
           </div>
           <div class="tbl-modify">
-            <button>New / Other</button>
+            <button @click="openSubPage()">New / Other</button>
           </div>
         </div>
         <div id="table"></div>
@@ -99,6 +99,12 @@ export default {
             portfolioEval(d, res.data, this.$store.state.fxRates);
         })
         .catch(err => console.log(err));
+    }
+  },
+  methods: {
+    openSubPage(){
+      document.getElementById('portfolios-sub').style.right = '100vw';
+      document.getElementById('new-portfolio').style.paddingLeft = '20vw';
     }
   }
 }

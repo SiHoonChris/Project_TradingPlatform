@@ -4,18 +4,12 @@
 }
   
 #find-add {
-  width: calc(100vw - 20vw - 20px);
+  width: calc(100vw - 20vw - 0px);
   height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
   background: #151516;
-  
-  #find {
-    width: calc(40%);
-    height: calc(100% - 20px);
-    background: #1c1c1c;
-  }
   
   #included-assets {
       @include setWidthHeight(70%, 100%);

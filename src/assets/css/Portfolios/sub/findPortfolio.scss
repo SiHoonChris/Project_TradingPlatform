@@ -1,0 +1,109 @@
+$w: 80vw;
+$h: 100%;
+@mixin setWidthHeight($W, $H) {
+  width: $W;
+  height: $H;
+}
+    
+#find-portfolio {
+  @include setWidthHeight($w*0.3, $h);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  #title {
+    @include setWidthHeight(100%, 30px);
+    margin-top: 25px;
+
+    span {
+      color: white;
+      font-size: 18px;
+      margin-left: 18px;
+    }
+  }
+  #main {
+    @include setWidthHeight(100%, calc(100% - (30px + 25px + 16px) - 20px));
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;;
+    align-items: center;
+
+    #search-portfolio-list {
+      @include setWidthHeight(calc(100% - 15px * 2 - 2px * 2), 24px);
+      background: #121212;
+      border-radius: 2px;
+      border: 1px solid #555;
+      text-align: left;
+      color: #b9b9b9;
+    }
+    #portfolio-list {
+      @include setWidthHeight(
+        calc(100% - 15px * 2), 
+        calc(100% - 24px - 1px * 2 - 6px - 40px)
+      );
+      margin-top: 6px;
+      background: #1c1c1c;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+
+      #select-list {
+        width: 100%;
+        height: calc(100% - 80px);
+        padding: 0px;
+        list-style: none;
+        margin: 0;
+        margin-bottom: 6px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        &::-webkit-scrollbar-track { 
+          background-color: black;
+        }
+        &::-webkit-scrollbar {
+          background-color: black;
+          width: 9px;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 30px;
+          -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+          background-color: #333;
+        }
+        
+        li {
+          display: flex;
+          align-items: center;
+          height: 30px;
+          &:hover {
+            background-color: #082c45;
+          }
+
+          span {
+            color: #ffffff;
+            font-size: 15px;
+            margin-left: 10px;
+          }
+        }
+      }
+      #portfolio-info {
+        width: calc(100% - 20px);
+        height: 80px;
+        border: 1px solid #515151;
+        margin: 0;
+        margin-bottom: 8px;
+        padding-left: 6px;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-evenly;
+
+        li {
+          color: #ffffff;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}

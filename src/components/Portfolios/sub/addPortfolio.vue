@@ -157,11 +157,16 @@ export default {
     },
     PopupOffByCancelBtn: function(){
       this.$emit("PopupSwitchOff", false);
+      this.closeSubPage();
+    },
+    closeSubPage: function(){
+      document.getElementById('portfolios-sub').style.right = '0px';
+      document.getElementById('new-portfolio').style.paddingLeft = '0px';
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Portfolios/sub/findAdd.scss";
+  @import "@/assets/css/Portfolios/sub/addPortfolio.scss";
 </style>

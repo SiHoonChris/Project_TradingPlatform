@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    width: calc(100vw - 46px - 20px);
+    width: calc(100vw - 46px - 0px);
     height: calc(100vh - (60px + 1px));
     background: #151516;
 
@@ -22,7 +22,7 @@
     }
   }
   #portfolios-sub {
-    width: 20px;
+    width: 0px;
     height: calc(100vh - 40px);
     position: absolute;
     right: 0px;
