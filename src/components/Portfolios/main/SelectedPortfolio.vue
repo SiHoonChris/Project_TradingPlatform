@@ -1,5 +1,6 @@
 <template>
   <div id="selected-portfolio">
+    <p id="portfolio-name"><span>Portfolio_name</span></p>
     <div id="portfolio-content">
       <div id="chart">
         <!-- <p id="portfolio-name"></p>
@@ -58,6 +59,7 @@ export default {
       Sum: 1,
       Value: 0,
       findMarket: null,
+      ctData: [],
       tblData: [
         {"Name": 'AAPL',  "FX":'USD', "Price": 100.1234, "Amount": 1000, "Total(KRW)":13000, "Proportion(%)": 15},
         {"Name": 'XOM',   "FX":'USD', "Price": 100.1234, "Amount": 500,  "Total(KRW)":13000, "Proportion(%)": 15},
@@ -67,6 +69,9 @@ export default {
         {"Name": 'MSFT',  "FX":'USD', "Price": 100.1234, "Amount": 320,  "Total(KRW)":13000, "Proportion(%)": 15}
       ]
     }
+  },
+  created(){
+    this.getPortfolios();
   },
   mounted(){
     this.findMarket = this.$store.state.allAssetsData;
@@ -102,6 +107,15 @@ export default {
     }
   },
   methods: {
+    getPortfolios: function(){
+      this.$http.get("/portfolio/getPortfolioData")
+        .then(res => {
+            this.data = res.data;
+            // this.$emit('portfolioData', this.Data[0]);
+          }
+        )
+        .catch(err => console.log(err))
+    },
     openSubPage(){
       document.getElementById('portfolios-sub').style.right = '100vw';
       document.getElementById('new-portfolio').style.paddingLeft = '20vw';

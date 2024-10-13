@@ -2,24 +2,9 @@
   display: flex;
   
   #portfolio-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
     width: calc(100vw - 46px - 0px);
     height: calc(100vh - (60px + 1px));
     background: #151516;
-
-    #portfolio-name {
-      width: calc(100% - 30px);
-      height: 30px;
-      margin: 0;
-      margin-top: 10px;
-      display: flex;
-      justify-content: left;
-      color: #ffffff;
-      font-size: 20px;
-    }
   }
   #portfolios-sub {
     width: 0px;

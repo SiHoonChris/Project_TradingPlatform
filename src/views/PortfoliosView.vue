@@ -1,12 +1,10 @@
 <template>
   <main id="portfolios">
     <div id="portfolio-main">
-      <p id="portfolio-name"><span>Portfolio_name</span></p>
       <SelectedPortfolio :MainPortfolioData="MainPortfolioData" />
     </div>
     <div id="portfolios-sub">
       <NewPortfolio @emitDataAdded="funcDataAdded"/>
-      <!-- <SubPortfolio @portfolioData="sendDataToMain" :dataAdded="dataAdded" /> -->
     </div>
   </main>
 </template>
