@@ -1,29 +1,29 @@
 <template>
   <div>
     <HeaderComponent/>
-    <div id="main">
-      <SidebarComponent/>
+    <div id="main-view">
       <router-view/>
     </div>
   </div>
 </template>
 
 <script>
-import HeaderComponent from './components/App/HeaderComponent.vue'
-import SidebarComponent from './components/App/SidebarComponent.vue'
+  import HeaderComponent from './components/App/HeaderComponent.vue'
 
-export default {
-  components: { HeaderComponent, SidebarComponent }
-}
+  export default {
+    components: {
+      HeaderComponent
+    }
+  }
 </script>
 
 <style>
-body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-#main {
-  display: flex;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  #main-view {
+    display: flex;
+  }
 </style>

@@ -1,0 +1,44 @@
+$H: 28px;
+
+#page-element {
+  z-index: 2;
+  width: 134px;
+  height: $H;
+  margin-right: 10px;
+  background: #000000;
+  border: 1px solid #0d431c;
+  font-size: 14px;
+
+  #selected-page {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    height: $H;
+
+    span {
+      color: #e2e2e2;
+      padding: 0 0 3px 6px;
+    }
+  }
+  #option-pages {
+    margin-top: 4px;
+    background: #000000;
+    border: 1px solid #0d431c;
+
+    .option-page {
+      display: flex;
+      justify-content: left;
+      align-items: center;
+      height: $H;
+      
+      &:hover {
+        background-color: #2c2c2c;
+      }
+
+      span {
+        color: #ffffff76;
+        padding: 0 0 3px 6px;
+      }
+    }
+  }
+}

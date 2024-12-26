@@ -1,19 +1,20 @@
 <template>
   <header>
-    <div id="header">
-      <SearchAndMove/>
-      <GlobalIndexes/>
-    </div>
+    <SearchElement/>
+    <PageElement/>
   </header>
 </template>
 
 <script>
-import GlobalIndexes from "@/components/Header/globalIndexes.vue"
-import SearchAndMove from "@/components/Header/searchAndMove.vue"
+  import SearchElement from "@/components/Header/SearchElement.vue"
+  import PageElement from "@/components/Header/PageElement.vue"
 
-export default {
-  components: { GlobalIndexes, SearchAndMove },
-}
+  export default {
+    components: {
+      SearchElement, 
+      PageElement
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

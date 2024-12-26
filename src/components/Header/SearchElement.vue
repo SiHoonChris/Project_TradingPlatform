@@ -1,6 +1,6 @@
 <template>
-  <div id="header-upper">
-    <input id="search-n-move" name="search-n-move" type="text" placeholder="Name, ticker symbol, or code" 
+  <div id="search-element">
+    <input id="search-n-move" name="search-n-move" type="text" placeholder="Name, ticker symbol, or code number" 
       v-model="urlParam" 
       @focus="focusIn" @blur="focusOut"/>
     <label for="search-n-move">
@@ -75,5 +75,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/App/Header/SearchAndMove.scss";
+  @import "@/assets/css/App/Header/SearchElement.scss";
 </style>
