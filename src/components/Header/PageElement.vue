@@ -2,6 +2,7 @@
   <div id="page-element">
     <div id="selected-page" @click="dropdown = !dropdown">
       <span>{{selectedPage}}</span>
+      <img :src="dropdownImg" id="dropdown-img" alt="dropdown" :class="{rotated: dropdown}" />
     </div>
     <div v-if="dropdown" id="option-pages">
       <div v-for="(d, i) in optionPages" :key="i" class="option-page"
@@ -16,6 +17,7 @@
   export default {
     data () {
       return {
+        dropdownImg: require('@/assets/img/btnImg/Common/dropdown_arrow.png'),
         selectedPage : 'Home',
         optionPages : [
           {

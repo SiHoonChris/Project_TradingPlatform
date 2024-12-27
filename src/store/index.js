@@ -24,9 +24,6 @@ export default createStore({
       state.marketInfo = 
       state.allAssetsData[state.allAssetsData.findIndex(e => e.TICKER === payload)].MARKET;
     },
-    setFxRates(state, payload) {
-      state.fxRates = payload;
-    },
     saveSearchLog(state, payload) {
       let duplCheck = state.searchLog.find(e => e === payload);
       

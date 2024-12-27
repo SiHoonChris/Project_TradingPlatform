@@ -1,4 +1,9 @@
 $H: 28px;
+@mixin setFlex ($ai, $jc) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+}
 
 #page-element {
   z-index: 2;
@@ -6,18 +11,26 @@ $H: 28px;
   height: $H;
   margin-right: 10px;
   background: #000000;
-  border: 1px solid #0d431c;
   font-size: 14px;
 
   #selected-page {
-    display: flex;
-    justify-content: left;
-    align-items: center;
+    @include setFlex(center, space-between);
     height: $H;
+    border: 1px solid #0d431c;
 
     span {
       color: #e2e2e2;
       padding: 0 0 3px 6px;
+    }
+
+    #dropdown-img {
+      height: 50%;
+      margin-right: 8px;
+      transition: transform 0.3s ease;
+
+      &.rotated {
+        transform: rotate(-180deg); /* Counterclockwise rotation */
+      }
     }
   }
   #option-pages {
@@ -26,9 +39,7 @@ $H: 28px;
     border: 1px solid #0d431c;
 
     .option-page {
-      display: flex;
-      justify-content: left;
-      align-items: center;
+      @include setFlex(center, left);
       height: $H;
       
       &:hover {
