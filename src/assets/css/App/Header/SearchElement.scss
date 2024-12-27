@@ -1,26 +1,78 @@
-#search-element {
-  width: 340px;
-  height: 40px;
-}
-#search-n-move {
-  width: 320px;
-  height: 30px;
-  padding-left: 10px;
-  margin-top: calc((40px - 30px - 1px * 2 - 0.8px * 2) / 2);
-  margin-left: calc(100% / 2 - 320px / 2 - 1px - 6px); 
-  background: #000000;
-  border: 1px solid #232323;
-  border-radius: 30px;
-  color: #ffffff;
-  &::placeholder {color: gray;}
-}
-label {
+$W: 340px;
+$H: 28px;
+@mixin setFlex ($ai, $jc) {
   display: flex;
-  justify-content: center;
-  width: 100%;
+  align-items: $ai;
+  justify-content: $jc;
 }
+
+#search-element {
+  @include setFlex(center, right);
+  width: $W;
+  height: $H - 1px;
+  padding-top: 1px;
+  margin-right: 5px;
+  
+  #search-cont {
+    @include setFlex(center, left);
+    width: $H;
+    height: $H;  
+    border: 1px solid #232323;
+    border-radius: $H;
+    background: #000000;
+    overflow: hidden;
+    transition: box-shadow 0.34s ease;
+    
+    &.open {
+      width: $W;
+    }
+    &:not(.open) {
+      width: $H;
+      transition: width 0.9s ease;
+
+      &:hover {
+        box-shadow: 0 0 5px #f5f5f5;
+      }
+    }
+  
+    #search-img {
+      height: 66%;
+      margin: 0 8px 0 5px;
+      
+      &.open {
+        margin: 0 8px 0 6px;
+      }
+    }
+  
+    #search-input {
+      width: 280px;
+      height: $H - 2px;
+      margin-left: 2px;
+      background: #000000;
+      border: none;
+      color: #e2e2e2;
+      
+      &:focus {
+        outline: none;
+      }
+      &::placeholder {
+        color: #ffffff76;
+      }
+    }
+  }
+  
+  label {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+
+
+
 #suggestion {
-  z-index: 10;
+  z-index: 3;
   position: relative;
   display: block;
   width: 300px;

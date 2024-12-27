@@ -1,9 +1,16 @@
 <template>
   <div id="search-element">
-    <input id="search-n-move" name="search-n-move" type="text" placeholder="Name, ticker symbol, or code number" 
-      v-model="urlParam" 
-      @focus="focusIn" @blur="focusOut"/>
-    <label for="search-n-move">
+
+    <div id="search-cont" :class="{open: searchOpen}">
+      <img :src="searchImg" id="search-img" :class="{open: searchOpen}" alt="search"
+        @click="fn_searchOpen()"/>
+      <input type="text" id="search-input" name="search-input" placeholder="Name, ticker symbol, or code number" 
+        v-model="urlParam" 
+        @focus="focusIn" @blur="focusOut"/>
+    </div>
+    
+    <div id="suggest-cont">
+<!-- <label for="search-input">
       <ul v-if="Suggestions.length !== 0 && focus" id="suggestion"
         @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <li v-for="(data, i) in Suggestions" :key="i" class="list"
@@ -12,7 +19,9 @@
           <p>&#40;{{Suggestions[i].TICKER}}&#41;</p>
         </li>
       </ul>
-    </label>
+    </label> -->
+    </div>
+    
   </div>
 </template>
 
@@ -20,9 +29,12 @@
 export default {
   data() {
     return {
+      searchImg: require('@/assets/img/btnImg/Common/magnify_glass.png'),
+      urlParam: null, 
+      searchOpen: false,
+
       DATAS: null, 
       Suggestions: [], 
-      urlParam: null, 
       focus: false, 
       hover: false, 
       where: null 
@@ -66,10 +78,22 @@ export default {
     }
   },
   methods: {
-    focusIn :   function(){ this.focus = true;                  },
-    focusOut:   function(){ if(!this.hover) this.focus = false; },
-    mouseEnter: function(){ this.hover = true;  },
-    mouseLeave: function(){ this.hover = false; }
+    // focusIn :   function(){ this.focus = true;                  },
+    // focusOut:   function(){ if(!this.hover) this.focus = false; },
+    // mouseEnter: function(){ this.hover = true;  },
+    // mouseLeave: function(){ this.hover = false; }
+    fn_searchOpen: function () {
+      this.searchOpen = !this.searchOpen;
+      let searchInputElem = document.getElementById("search-input");
+
+      if (this.searchOpen) {
+        searchInputElem.placeholder = 'Name, ticker symbol, or code number';
+        searchInputElem.focus();
+      } else {
+        searchInputElem.placeholder = '';
+        searchInputElem.blur();
+      }
+    }
   }
 }
 </script>
