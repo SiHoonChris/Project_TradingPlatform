@@ -1,4 +1,4 @@
-$W: 340px;
+$W: 320px;
 $H: 28px;
 @mixin setFlex ($ai, $jc) {
   display: flex;
@@ -7,28 +7,31 @@ $H: 28px;
 }
 
 #search-element {
-  @include setFlex(center, right);
+  flex-direction: column;
+  @include setFlex(flex-end, right);
   width: $W;
-  height: $H - 1px;
+  height: 240px;
   padding-top: 1px;
-  margin-right: 5px;
+  margin: 9.5px 5px 0 0;
   
   #search-cont {
     @include setFlex(center, left);
     width: $H;
-    height: $H;  
+    height: $H; 
     border: 1px solid #232323;
     border-radius: $H;
     background: #000000;
     overflow: hidden;
-    transition: box-shadow 0.34s ease;
     
     &.open {
       width: $W;
-    }
+      margin-right: $W - ( $H + 2px );
+      transform: translateX($W - $H);
+      transition: margin-right 1.1s ease, width 0.9s ease 1.3s, transform 0.9s ease 1.3s;
+    }    
     &:not(.open) {
       width: $H;
-      transition: width 0.9s ease;
+      transition: box-shadow 0.34s ease, width 0.9s ease;
 
       &:hover {
         box-shadow: 0 0 5px #f5f5f5;
@@ -45,7 +48,7 @@ $H: 28px;
     }
   
     #search-input {
-      width: 280px;
+      width: 260px;
       height: $H - 2px;
       margin-left: 2px;
       background: #000000;
@@ -61,62 +64,60 @@ $H: 28px;
     }
   }
   
-  label {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-}
+  #suggest-cont {
+    width: $W - ( 14px + 28px + 2px );
+    max-height: 200px;
+    margin: 4px 14px 0 28px;
+    z-index: 2;
 
+    #suggestion {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background: #000000;
+      border: 1px solid #232323;
+      border-radius: 0 0 5px 5px;
+      list-style-type: none;
+      overflow-x: hidden;
+      overflow-y: auto;
 
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: #000000;
+        border-radius: 0 0 10px 10px;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color: #333;
+      }
+    
+      .in-suggestion {
+        padding: 1.25px 0 4.75px 5px;
+        margin-right: 2px;
+        color: #e2e2e2;
 
+        &:hover {
+          background: #2c2c2c;
+          color: #ffffff;
+          cursor: pointer;
+        }
 
-#suggestion {
-  z-index: 3;
-  position: relative;
-  display: block;
-  width: 300px;
-  max-height: 220px;
-  margin: 0;
-  padding: 0;
-  background: #0a0a0a;
-  border: 1px solid gray;
-  border-top: none;
-  top: 1px;
-  list-style-type: none;
-  overflow-y: scroll;
-  &::-webkit-scrollbar-track {
-    background-color: black;
-  }
-  &::-webkit-scrollbar {
-    background-color: black;
-    width: 8px;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 30px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
-    background-color: #333;
-  }
-}
-.list {
-  padding: 0 1.8%;
-  margin: 0.8% 0.5% 0.8% 0%;
-  color: white;
-
-  &:hover {
-    background: #a9a9a938;
-    text-decoration: underline;
-    cursor: pointer;
-  }
-  p {
-    margin: 0;
-
-    &:nth-child(1){
-      font-size: 16px;
-      font-weight: 600;
+        p {
+          margin: 0;
+      
+          &:nth-child(1){
+            font-size: 14px;
+            font-weight: 600;
+          }
+          &:nth-child(2){
+            font-size: 10px;
+          }
+        }
+      }
     }
-    &:nth-child(2){
-      font-size: 12px;
-    }
-  }
+  }  
 }
