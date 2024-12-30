@@ -6,14 +6,14 @@
         @click="fn_searchOpen()"/>
       <input type="text" id="search-input" name="search-input" placeholder="" 
         v-model="urlParam" 
-        @focus="focusIn" @blur="focusOut"/>
+        @focus="fn_focus(true)" @blur="fn_focus(false)"/>
     </div>
     
     <div id="suggest-cont">
       <ul v-if="suggestion.length !== 0 && focused" id="suggestion" 
-          @mouseenter="mouseEnter" @mouseleave="mouseLeave">
+          @mouseenter="fn_hover(true)" @mouseleave="fn_hover(false)">
         <li v-for="(data, i) in suggestion" :key="i" class="in-suggestion"
-            @click="$moveTo_2(suggestion[i].TICKER)">
+            @click="fn_moveTo(suggestion[i].TICKER)">
           <p>{{suggestion[i].NAME}}</p>
           <p>{{`(${suggestion[i].TICKER})`}}</p>
         </li>
@@ -74,17 +74,15 @@
       }
     },
     methods: {
-      focusIn: function () { 
-        this.focused = true;
+      fn_focus: function (bool) {
+        if (bool) {
+          this.focused = bool;
+        } else {
+          if(!this.hover) this.focused = bool;
+        }
       },
-      focusOut: function () {
-        if(!this.hover) this.focused = false;
-      },
-      mouseEnter: function () {
-        this.hover = true;
-      },
-      mouseLeave: function(){
-        this.hover = false;
+      fn_hover: function (bool) {
+        this.hover = bool;
       },
       fn_searchOpen: function () {
         let searchInputElem = document.getElementById("search-input");
@@ -95,11 +93,15 @@
           setTimeout(() => {
             searchInputElem.placeholder = 'Name, ticker symbol, or code number';
             searchInputElem.focus();
-          }, 2200);
+          }, 2000);
         } else {
           searchInputElem.placeholder = '';
           searchInputElem.blur();
         }
+      },
+      fn_moveTo: function (ticker) {
+        this.$moveTo_2(ticker);
+        this.focused = !this.focused;
       }
     }
   }
