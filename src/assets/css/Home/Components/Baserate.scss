@@ -1,0 +1,15 @@
+#component-base-rate {
+  display: flex;
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  border: 1px solid #333333;
+
+  #base-rate-list {
+    width: 35%;
+    height: 100%;
+  }
+  #base-rate-chart {
+    width: 65%;
+    height: 100%;
+  }
+}
