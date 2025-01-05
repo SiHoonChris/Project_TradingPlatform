@@ -150,7 +150,7 @@
         // 3. Create New Chart
         const  Width  = document.getElementById(this.chartPart).offsetWidth,
                Height = document.getElementById(this.chartPart).offsetHeight,
-               Margin = { top: 20, right: 30, bottom: 40, left: 40 };
+               Margin = { top: 34, right: 30, bottom: 40, left: 54 };
 
         const svg = d3.select('#'+this.chartPart)
                       .append("svg")
@@ -165,43 +165,56 @@
                     .padding(0.1);
 
         const yAxis = d3.scaleLinear()
-                    .domain([0, d3.max(ChartData, d => d.y)])
+                    .domain([0, d3.max(ChartData, d => d.y * 1.2)])
                     .nice()
                     .range([Height - Margin.bottom, Margin.top]);
 
         svg.selectAll(".bar") // Draw the bars
             .data(ChartData)
             .join("rect")
-            .attr("fill", "#0d431c")
+            .attr("fill", d => 
+              d.x === "Last" && LastRate > PrevRate ? "#de1c1c" : 
+                d.x === "Prev" && PrevRate > LastRate ? "#de1c1c" : "#0d431c"
+            )
             .attr("class", "bar")
             .attr("x", d => xAxis(d.x))
             .attr("y", d => yAxis(d.y))
-            .attr("width", xAxis.bandwidth())
-            .attr("height", d => yAxis(0) - yAxis(d.y));
+            .attr("width", xAxis.bandwidth()*0.75)
+            .attr("height", d => yAxis(0) - yAxis(d.y))
+            .attr("transform", `translate(${xAxis.bandwidth()*0.125},0)`);
 
         svg.append("g") // Add the x-axis
-            .attr("transform", `translate(0,${Height - Margin.bottom})`)
-            .call(d3.axisBottom(xAxis))
-            .selectAll("text")
-            .attr("class", "axis-label")
-            .attr("stroke", "white");
+           .attr("transform", `translate(0,${Height - Margin.bottom})`)
+           .call(d3.axisBottom(xAxis))
+           .attr("class", "x-axis")
+           .selectAll("text")
+           .attr("fill", "#e2e2e2")
+           .attr("opacity", 0.9);
 
         svg.append("g") // Add the y-axis
-            .attr("transform", `translate(${Margin.left},0)`)
-            .call(d3.axisLeft(yAxis))
-            .selectAll("text")
-            .attr("class", "axis-label")
-            .attr("stroke", "white");
+           .attr("transform", `translate(${Margin.left},0)`)
+           .call(d3.axisLeft(yAxis).ticks(3))
+           .attr("class", "y-axis")
+           .selectAll("text")
+           .attr("fill", "#e2e2e2")
+           .attr("opacity", 0.9);
+
+        // Change axis lines and tick colors to white
+        svg.selectAll(".x-axis path, .x-axis .tick line, .y-axis path, .y-axis .tick line")
+           .attr("stroke", "#e2e2e2")
+           .attr("opacity", 0.6);
 
         svg.selectAll(".label") // Add labels on the bars
-            .data(ChartData)
-            .join("text")
-            .attr("class", "label")
-            .attr("x", d => xAxis(d.x) + xAxis.bandwidth() / 2)
-            .attr("y", d => yAxis(d.y) - 5)
-            .attr("text-anchor", "middle")
-            .attr("stroke", "white")
-            .text(d => d.y);
+           .data(ChartData)
+           .join("text")
+           .attr("class", "label")
+           .attr("x", d => xAxis(d.x) + xAxis.bandwidth() / 2)
+           .attr("y", d => yAxis(d.y) - 6)
+           .attr("text-anchor", "middle")
+           .style("fill", "white") 
+           .style("font-weight", "400")
+           .style("font-size", "13px")
+           .text(d => d.y);
       }
     }
   }
