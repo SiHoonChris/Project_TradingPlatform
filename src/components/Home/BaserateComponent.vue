@@ -9,8 +9,9 @@
   export default {
     data () {
       return {
-        listPart: "base-rate-list",
-        chartPart: "base-rate-chart",
+        listPart: 'base-rate-list',
+        chartPart: 'base-rate-chart',
+        defaultSelectedCountry: 'South Korea',
         dummyLastBaseRate: [
           {Country:"Japan", Rate: 0.25},
           {Country:"Switzerland", Rate: 0.5},	
@@ -57,7 +58,7 @@
     },
     mounted(){        
       this.setBaseRateList(this.dummyLastBaseRate, this.dummyPreviousBaseRate);
-      this.setBaseRateChart('South Korea', this.dummyLastBaseRate, this.dummyPreviousBaseRate)
+      this.setBaseRateChart(this.defaultSelectedCountry, this.dummyLastBaseRate, this.dummyPreviousBaseRate)
     },
     methods: {
       setBaseRateList: function (lastData, prevData) {
@@ -77,32 +78,34 @@
           selectionMode: 'row',
           style: {
             /* 0. Grid */
-            gridBackgroundColor: "#000000",
-            gridBorderColor: "#bbbbbb",
-            gridBorderWidth: 0,
+            gridBackgroundColor: "#111111",
+            gridBorderColor: "#333333",
+            gridBorderWidth: 1,
             /* 1. Column Header */
-            cornerCellBackgroundColor: '#000000', // numbering-side
-            cornerCellBorderColor: "#bbbbbb",
-            columnHeaderCellBackgroundColor : '#000000',
+            cornerCellBackgroundColor: '#111111', // numbering-side
+            cornerCellBorderColor: "#333333",
+            columnHeaderCellBackgroundColor : '#111111',
+            columnHeaderCellFont : '15px Tahoma',
             columnHeaderCellColor : '#bbbbbb',
-            columnHeaderCellBorderWidth: 0,
+            columnHeaderCellBorderWidth: 1,
             columnHeaderCellHorizontalAlignment : "center",
             columnHeaderCellVerticalAlignment : "center",
-            columnHeaderCellCapBackgroundColor : "#000000", // scroll-bar-side
-            columnHeaderCellCapBorderWidth: 0,
-            columnHeaderCellCapBorderColor : "#bbbbbb",
+            columnHeaderCellCapBackgroundColor : "#111111", // scroll-bar-side
+            columnHeaderCellCapBorderWidth: 1,
+            columnHeaderCellCapBorderColor : "#333333",
               /* mouse-event */
-              columnHeaderCellHoverBackgroundColor : '#000000',
+              columnHeaderCellHoverBackgroundColor : '#111111',
               columnHeaderCellHoverColor : '#bbbbbb',
               activeColumnHeaderCellColor : "#bbbbbb",
-              activeColumnHeaderCellBackgroundColor : "#000000",
+              activeColumnHeaderCellBackgroundColor : "#111111",
             /* 3. Scroll-Bar */
-            scrollBarCornerBackgroundColor : "#000000",
-            scrollBarBackgroundColor : "#000000",
+            scrollBarCornerBackgroundColor : "#111111",
+            scrollBarBackgroundColor : "#111111",
             /* 4. Cell */
             cellBorderWidth: 0,
-            cellBorderColor: '#000000',
-            cellBackgroundColor : '#000000',
+            cellBorderColor: '#111111',
+            cellBackgroundColor : '#111111',
+            cellFont : '14px Tahoma',
             cellColor : '#bbbbbb',
             cellHorizontalAlignment : "left",
             cellVerticalAlignment : "center", 
@@ -114,6 +117,7 @@
               cellHoverColor : "#bbbbbb",
               activeCellBackgroundColor : "#0d431c",
               activeCellSelectedColor : "#bbbbbb",
+              activeCellFont : '14px Tahoma',
               activeCellColor : "#bbbbbb",
               activeCellSelectedBackgroundColor : "#0d431c",
               activeCellBorderColor : "#bbbbbb",
@@ -129,9 +133,24 @@
         grid.setColumnWidth(0, getComputedStyle(document.getElementById(this.listPart)).width.replace('px',''));
         grid.style.overflowX = 'hidden';
 
+        const defaultSelectedCountryIndex = lastData.findIndex(item => item.Country === this.defaultSelectedCountry);
+        grid.selectArea({
+          top: defaultSelectedCountryIndex,
+          bottom: defaultSelectedCountryIndex,
+          left: 0,
+          right: 0
+        });
+        grid.scrollIntoView(0, defaultSelectedCountryIndex - 2 >= 0 ? defaultSelectedCountryIndex - 2 : 0);
+
         grid.addEventListener('click', (event) => {
           const cell = event.cell;
           if (cell) {this.setBaseRateChart(cell.value, lastData, prevData);}
+        });
+        grid.addEventListener('contextmenu', (event) => {
+          event.preventDefault();
+        });
+        grid.addEventListener('dblclick', (event) => {
+          event.preventDefault();
         });
       },
       setBaseRateChart: function (country, lastData, prevData) {
