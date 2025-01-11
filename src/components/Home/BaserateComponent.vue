@@ -78,33 +78,33 @@
           selectionMode: 'row',
           style: {
             /* 0. Grid */
-            gridBackgroundColor: "#111111",
+            gridBackgroundColor: "#181818",
             gridBorderColor: "#333333",
             gridBorderWidth: 1,
             /* 1. Column Header */
-            cornerCellBackgroundColor: '#111111', // numbering-side
+            cornerCellBackgroundColor: '#181818', // numbering-side
             cornerCellBorderColor: "#333333",
-            columnHeaderCellBackgroundColor : '#111111',
+            columnHeaderCellBackgroundColor : '#181818',
             columnHeaderCellFont : '15px Tahoma',
             columnHeaderCellColor : '#bbbbbb',
             columnHeaderCellBorderWidth: 1,
             columnHeaderCellHorizontalAlignment : "center",
             columnHeaderCellVerticalAlignment : "center",
-            columnHeaderCellCapBackgroundColor : "#111111", // scroll-bar-side
+            columnHeaderCellCapBackgroundColor : "#181818", // scroll-bar-side
             columnHeaderCellCapBorderWidth: 1,
             columnHeaderCellCapBorderColor : "#333333",
               /* mouse-event */
-              columnHeaderCellHoverBackgroundColor : '#111111',
+              columnHeaderCellHoverBackgroundColor : '#181818',
               columnHeaderCellHoverColor : '#bbbbbb',
               activeColumnHeaderCellColor : "#bbbbbb",
-              activeColumnHeaderCellBackgroundColor : "#111111",
+              activeColumnHeaderCellBackgroundColor : "#1818181",
             /* 3. Scroll-Bar */
-            scrollBarCornerBackgroundColor : "#111111",
-            scrollBarBackgroundColor : "#111111",
+            scrollBarCornerBackgroundColor : "#181818",
+            scrollBarBackgroundColor : "#181818",
             /* 4. Cell */
             cellBorderWidth: 0,
             cellBorderColor: '#111111',
-            cellBackgroundColor : '#111111',
+            cellBackgroundColor : '#181818',
             cellFont : '14px Tahoma',
             cellColor : '#bbbbbb',
             cellHorizontalAlignment : "left",

@@ -11,8 +11,8 @@
       return {
         symbol: "NASDAQ:AAPL",
         interval: "D",
-        listPart: "watch-list",
-        chartPart: "tradingview-widget" 
+        listPart: "watch-list-stock",
+        chartPart: "tradingview-widget-stock" 
       }
     },
     mounted () {
@@ -37,7 +37,9 @@
             studies: [
               "BB@tv-basicstudies", 
               "IchimokuCloud@tv-basicstudies"
-            ]
+              // assets/note/tradingview_widget_chart.txt
+            ],
+            hide_volume: true
           });
         }
       });

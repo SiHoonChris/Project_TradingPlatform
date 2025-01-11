@@ -4,12 +4,13 @@
   height: calc(100% - 10px);
   border: 1px solid #333333;
 
-  #watch-list {
-    width: 20%;
+  #watch-list-stock {
+    width: 16%;
     height: 100%;
+    background: #181818;
   }
-  #tradingview-widget {
-    width: 80%;
+  #tradingview-widget-stock {
+    width: 84%;
     height: 100%;
   }
 }

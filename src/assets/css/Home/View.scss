@@ -1,19 +1,24 @@
 #main-home {
   width: 100%;
   height: calc(100vh - ( 49px + 1px ));
-  background: #171718;
+  background: #111111;
   overflow: hidden;
 
   display: grid;
-  grid-template-rows: repeat(5, 20%);
+  grid-template-rows: repeat(10, 10%);
   grid-template-columns: repeat(10, 10%);
   gap: 0;
   grid-template-areas:
-    "a a a a a a b b b b"
-    "a a a a a a b b b b"
-    "a a a a a a b b b b"
-    "c c c c c d d e e e"
-    "c c c c c d d e e e";
+    "a a a a a a a b b b"
+    "a a a a a a a b b b"
+    "a a a a a a a b b b"
+    "a a a a a a a b b b"
+    "a a a a a a a b b b"
+    "c c c c c c c d d d"
+    "c c c c c c c d d d"
+    "c c c c c c c d d d"
+    "c c c c c c c e e e"
+    "c c c c c c c e e e";
 
   .home-components {
     display: flex;
@@ -26,10 +31,10 @@
     &#home-portfolio {
       grid-area: b;
     }
-    &#home-calendar {
+    &#home-fx-rate {
       grid-area: c;
     }
-    &#home-fx-rate {
+    &#home-calendar {
       grid-area: d;
     }
     &#home-base-rate {
