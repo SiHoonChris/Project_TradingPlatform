@@ -19,6 +19,8 @@
   export default {
     data () {
       return {
+        listPart: "watch-list-fxrate",
+        chartPart: "tradingview-widget-fxrate",
         defaultFxRateSymbol: "USDKRW",
         fxrate_list: [
           'USD/KRW',
@@ -29,9 +31,7 @@
           'EUR/KRW',
           'GBP/KRW'
         ],
-        interval: "D",
-        listPart: "watch-list-fxrate",
-        chartPart: "tradingview-widget-fxrate",
+        interval: "D"
       }
     },
     mounted () {

@@ -1,11 +1,26 @@
 <template>
-  <div id="component-calendar"></div>
+  <div id="component-calendar">
+    <flatPickr v-model="date_set" :config="config_set"></flatPickr>
+  </div>
 </template>
 
 <script>
-  export default {
-    data () {
+  import flatPickr from 'vue-flatpickr-component';
+  import 'flatpickr/dist/flatpickr.css';
 
+  export default {
+    components: { flatPickr },
+    data () {
+      return {
+        date_set: '',
+        config_set: {
+          inline: true,
+          enableTime: false,
+          maxDate: "today", 
+          onYearChange: function(){  },
+          onMonthChange: function(){  }
+        }
+      }
     },
     methods: {
 
