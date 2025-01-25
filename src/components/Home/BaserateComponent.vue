@@ -1,6 +1,17 @@
 <template>
   <div id="component-base-rate">
-    <div :id="listPart"></div>
+    <div :id="listPart" style="border-right: 1px solid #333333;">
+      <div id="base-rate-title" style="border-bottom: 1px solid #333333;">
+        <p>Base Rate</p>
+      </div>
+      <ul id="base-rate-list">
+        <li v-for="(data, idx) in dummyLastBaseRate" :key="idx"
+            @click="selectCountry(data.Country)"
+            :class="{'selected': selectedCountry === data.Country}">
+          <p>{{data.Country}}</p>
+        </li>
+      </ul>
+    </div>
     <div :id="chartPart"></div>
   </div>
 </template>
@@ -11,7 +22,7 @@
       return {
         listPart: 'base-rate-list',
         chartPart: 'base-rate-chart',
-        defaultSelectedCountry: 'South Korea',
+        selectedCountry: 'South Korea',
         dummyLastBaseRate: [
           {Country:"Japan", Rate: 0.25},
           {Country:"Switzerland", Rate: 0.5},	
@@ -57,106 +68,17 @@
       }
     },
     mounted(){        
-      this.setBaseRateList(this.dummyLastBaseRate, this.dummyPreviousBaseRate);
-      this.setBaseRateChart(this.defaultSelectedCountry, this.dummyLastBaseRate, this.dummyPreviousBaseRate)
+      this.selectCountry(this.selectedCountry)
     },
     methods: {
-      setBaseRateList: function (lastData, prevData) {
-        const countryList = lastData.map((e) => {
-          const { Country } = e;
-          return { Country };
-        });
-        
-        const app = document.getElementById(this.listPart);
-        const gridElement = document.createElement('div');
-        const grid = canvasDatagrid({
-          parentNode: gridElement,
-          data: countryList,
-          showRowHeaders: false,
-          showRowNumbers: false,
-          hoverMode: 'row',
-          selectionMode: 'row',
-          style: {
-            /* 0. Grid */
-            gridBackgroundColor: "#181818",
-            gridBorderColor: "#333333",
-            gridBorderWidth: 1,
-            /* 1. Column Header */
-            cornerCellBackgroundColor: '#181818', // numbering-side
-            cornerCellBorderColor: "#333333",
-            columnHeaderCellBackgroundColor : '#181818',
-            columnHeaderCellFont : '15px Tahoma',
-            columnHeaderCellColor : '#bbbbbb',
-            columnHeaderCellBorderWidth: 1,
-            columnHeaderCellHorizontalAlignment : "center",
-            columnHeaderCellVerticalAlignment : "center",
-            columnHeaderCellCapBackgroundColor : "#181818", // scroll-bar-side
-            columnHeaderCellCapBorderWidth: 1,
-            columnHeaderCellCapBorderColor : "#333333",
-              /* mouse-event */
-              columnHeaderCellHoverBackgroundColor : '#181818',
-              columnHeaderCellHoverColor : '#bbbbbb',
-              activeColumnHeaderCellColor : "#bbbbbb",
-              activeColumnHeaderCellBackgroundColor : "#1818181",
-            /* 3. Scroll-Bar */
-            scrollBarCornerBackgroundColor : "#181818",
-            scrollBarBackgroundColor : "#181818",
-            /* 4. Cell */
-            cellBorderWidth: 0,
-            cellBorderColor: '#111111',
-            cellBackgroundColor : '#181818',
-            cellFont : '14px Tahoma',
-            cellColor : '#bbbbbb',
-            cellHorizontalAlignment : "left",
-            cellVerticalAlignment : "center", 
-            /* mouse-event */
-              cellSelectedBackgroundColor : "#0d431c",
-              selectionOverlayBorderColor : '#0d431c',
-              cellSelectedColor : "#bbbbbb",
-              cellHoverBackgroundColor : "#0d431c",
-              cellHoverColor : "#bbbbbb",
-              activeCellBackgroundColor : "#0d431c",
-              activeCellSelectedColor : "#bbbbbb",
-              activeCellFont : '14px Tahoma',
-              activeCellColor : "#bbbbbb",
-              activeCellSelectedBackgroundColor : "#0d431c",
-              activeCellBorderColor : "#bbbbbb",
-              activeCellHoverColor : "#000000",
-              activeCellOverlayBorderColor: "#bbbbbb",
-          }
-        });
-
-        app.append(gridElement);
-
-        grid.style.width = getComputedStyle(document.getElementById(this.listPart)).width;
-        grid.style.height = getComputedStyle(document.getElementById(this.listPart)).height;
-        grid.setColumnWidth(0, getComputedStyle(document.getElementById(this.listPart)).width.replace('px',''));
-        grid.style.overflowX = 'hidden';
-
-        const defaultSelectedCountryIndex = lastData.findIndex(item => item.Country === this.defaultSelectedCountry);
-        grid.selectArea({
-          top: defaultSelectedCountryIndex,
-          bottom: defaultSelectedCountryIndex,
-          left: 0,
-          right: 0
-        });
-        grid.scrollIntoView(0, defaultSelectedCountryIndex - 2 >= 0 ? defaultSelectedCountryIndex - 2 : 0);
-
-        grid.addEventListener('click', (event) => {
-          const cell = event.cell;
-          if (cell) {this.setBaseRateChart(cell.value, lastData, prevData);}
-        });
-        grid.addEventListener('contextmenu', (event) => {
-          event.preventDefault();
-        });
-        grid.addEventListener('dblclick', (event) => {
-          event.preventDefault();
-        });
+      selectCountry(country) {
+        this.selectedCountry = country; // Update selected country
+        this.setBaseRateChart(country); // Update the chart
       },
-      setBaseRateChart: function (country, lastData, prevData) {
+      setBaseRateChart: function (country) {
         // 1. Data-setting
-        const LastRate = lastData.find(item => item.Country === country)?.Rate;
-        const PrevRate = prevData.find(item => item.Country === country)?.Rate;
+        const LastRate = this.dummyLastBaseRate.find(item => item.Country === country)?.Rate;
+        const PrevRate = this.dummyPreviousBaseRate.find(item => item.Country === country)?.Rate;
         const ChartData = [
           {x:'Last', y: LastRate},
           {x:'Prev', y: PrevRate}
@@ -169,7 +91,7 @@
         // 3. Create New Chart
         const  Width  = document.getElementById(this.chartPart).offsetWidth,
                Height = document.getElementById(this.chartPart).offsetHeight,
-               Margin = { top: 34, right: 30, bottom: 40, left: 54 };
+               Margin = { top: 24, right: 20, bottom: 30, left: 44 };
 
         const svg = d3.select('#'+this.chartPart)
                       .append("svg")

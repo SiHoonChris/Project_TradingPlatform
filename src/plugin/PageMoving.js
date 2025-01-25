@@ -5,7 +5,13 @@ export default { // 2개 이상의 Component에서 사용되는 함수는 plugin
                 this.$router.push({name: where});
             } 
         // function : $moveTo_1
-        Vue.config.globalProperties.$moveTo_2 = 
+
+        Vue.config.globalProperties.$moveToChartPage_Click = 
+            function(T) {
+                this.$router.push({name: 'chart', params: {ticker: T}});
+            } 
+        // function : $moveToChartPage_Click
+        Vue.config.globalProperties.$moveTo_2 = /* $moveToChartPage_Search */
             function(T) {
                 this.$router.push({name: 'chart', params: {ticker: T}});
                 this.urlParam = null;

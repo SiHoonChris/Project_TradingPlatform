@@ -1,6 +1,16 @@
 <template>
   <div id="component-calendar">
     <flatPickr v-model="date_set" :config="config_set"></flatPickr>
+    <div :id="dividendPart">
+      <div id="dividend-title" style="border-bottom: 1px solid #333333;">
+        <p>Dividend Payment</p>
+      </div>
+      <ul id="dividend-list">
+        <li v-for="(dividend_name, idx) in dividend_list" :key="idx">
+          <p @click="this.$moveToChartPage_Click(dividend_name)">{{dividend_name}}</p> <!-- 종목명 클릭하면 페이지 넘어가도록 클릭 이벤트랑 함수 추가 -->
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -12,11 +22,24 @@
     components: { flatPickr },
     data () {
       return {
+        dividendPart: 'list-dividend-payment',
+        dividend_list: [
+          'AAPL',
+          'TSLA',
+          'CRM',
+          'LLY',
+          'NVDA',
+          'MSFT',
+          'GOOGL',
+          'PG',
+          'XOM',
+          'META',
+          '005930'
+        ],
         date_set: '',
         config_set: {
           inline: true,
           enableTime: false,
-          maxDate: "today", 
           onYearChange: function(){  },
           onMonthChange: function(){  }
         }
