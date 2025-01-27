@@ -7,7 +7,7 @@
       </div>
       <ul id="dividend-list">
         <li v-for="(dividend_name, idx) in dividend_list" :key="idx">
-          <p @click="this.$moveToChartPage_Click(dividend_name)">{{dividend_name}}</p> <!-- 종목명 클릭하면 페이지 넘어가도록 클릭 이벤트랑 함수 추가 -->
+          <p @click="this.$moveToChartPage_Click(dividend_name)">{{dividend_name}}</p>
         </li>
       </ul>
     </div>

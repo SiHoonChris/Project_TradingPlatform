@@ -2,7 +2,7 @@
   <div id="component-fx-rate" class="tradingview-widget-container">
     <div :id="listPart">
       <div id="fx-title">
-        <p>Currencies</p>
+        <p>Currencies / FX</p>
       </div>
       <ul id="fx-list">
         <li v-for="(currency_name, idx) in fxrate_list" :key="idx"
@@ -49,8 +49,8 @@
           new window.TradingView.widget({
             symbol: symbol,
             container_id: this.chartPart,
-            width: chartWidth,
-            height: chartHeight,
+            width: chartWidth + 6,
+            height: chartHeight + 4,
             theme: "dark",
             interval: this.interval,
             timezone: "Etc/UTC",

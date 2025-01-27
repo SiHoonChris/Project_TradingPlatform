@@ -49,8 +49,8 @@
           new window.TradingView.widget({
             symbol: symbol,
             container_id: this.chartPart,
-            width: chartWidth,
-            height: chartHeight,
+            width: chartWidth + 6,
+            height: chartHeight + 4,
             theme: "dark",
             interval: this.interval,
             timezone: "Etc/UTC",

@@ -4,9 +4,98 @@
   border: 1px solid #333333;
   display: flex;
 
+  /* 좌측 캘린더 */
   .flatpickr-input {
     display: none !important;
   }
+  ::v-deep(.flatpickr-calendar) {
+    height: auto;
+    background-color: #111111 !important;
+    color: #ebebeb;
+    border: none;
+    border-radius: 0px;
+    top: 0;
+    bottom: 0;
+
+    &.arrowTop:before,
+    &.arrowTop:after {
+      content: none;
+      border: none;
+      bottom: 0%;
+    }
+
+    .flatpickr-months {
+      .flatpickr-prev-month,
+      .flatpickr-next-month {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 10px;
+
+        svg {
+          fill: #ebebeb;
+        }
+      }
+      .flatpickr-month {
+        .flatpickr-current-month {
+          .flatpickr-monthDropdown-months {
+            background: #eaeaea;
+            font-family: Tahoma;
+          }
+        }
+        .numInputWrapper {
+          font-family: Tahoma;
+          color: #ebebeb;
+          
+          .arrowUp::after, .arrowDown::after {
+            color: #ebebeb;
+          }
+        }
+      }
+    }
+    .flatpickr-innerContainer {
+      .flatpickr-rContainer {
+        .flatpickr-weekdays {
+          .flatpickr-weekdaycontainer {
+            .flatpickr-weekday {
+              font-family: Tahoma;
+              color: #ebebeb;
+            }
+          }
+        }
+        .flatpickr-days {
+          .dayContainer {
+            .flatpickr-day {
+              font-family: Tahoma;
+              color: #aaaaaa;
+              &:nth-child(n+36) { /* Media Query 필요! */
+                display: none !important;
+              }
+              &:hover {
+                color: #111111;
+              }
+              &.selected {
+                background: #e6e6e6;
+                border: 1px solid #e6e6e6;
+                color: #111111;
+              }
+
+              &.today:hover {
+                background: #e6e6e6;
+                border: 1px solid #e6e6e6;
+                color: #111111;
+              }
+              &.nextMonthDay, 
+              &.prevMonthDay {
+                color: #1f1f1f;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  /* 우측 리스트 */
   #list-dividend-payment {
     width: 40%;
     height: 100%;
@@ -70,50 +159,4 @@
       }
     }
   }
-}
-
-::v-deep .arrowTop:before,
-::v-deep .arrowTop:after
- {
-  content: none;
-  border: none;
-  bottom: 0%;
-}
-#component-calendar ::v-deep .flatpickr-calendar {
-  height: auto;
-  background-color: #1f1f1f !important; /* Change calendar background color */
-  color: #ebebeb; /* Change text color */
-  border: 1px solid #333; /* Change calendar border color */
-}
-
-#component-calendar .flatpickr-day {
-  color: #333; /* Change day text color */
-}
-
-#component-calendar .flatpickr-day:hover {
-  background-color: #87ceeb; /* Change hover background color for days */
-  color: #fff; /* Change hover text color for days */
-}
-
-#component-calendar .flatpickr-day.selected,
-#component-calendar .flatpickr-day.startRange,
-#component-calendar .flatpickr-day.endRange {
-  background-color: #4682b4; /* Change selected day background color */
-  color: #fff; /* Change selected day text color */
-  border-radius: 50%; /* Make selected days circular */
-}
-
-#component-calendar .flatpickr-month {
-  background-color: #4682b4; /* Change header background color */
-  color: #fff; /* Change header text color */
-}
-
-#component-calendar .flatpickr-weekday {
-  background-color: #d3d3d3; /* Change weekday header background color */
-  color: #333; /* Change weekday header text color */
-}
-
-#component-calendar .flatpickr-prev-month,
-#component-calendar .flatpickr-next-month {
-  color: #4682b4; /* Change arrow color */
 }
