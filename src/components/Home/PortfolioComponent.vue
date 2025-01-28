@@ -1,6 +1,30 @@
 <template>
   <div id="component-portfolio">
-    <div :id="portfolioPart"></div>
+    <div :id="portfolioPart">
+      <div id="chart-display"></div>
+      <div id="chart-detail">
+        <table>
+          <tbody>
+            <tr>
+              <td>Total Invested, KRW</td>
+              <td id="total-invested">{{(123224563).toLocaleString()}}</td>
+            </tr>
+            <tr>
+              <td>Number of assets</td>
+              <td id="number-of-assets">{{this.data.length}}</td>
+            </tr>
+            <tr>
+              <td>Yield Rate, %</td>
+              <td id="yield-rate">{{(123.123426).toFixed(4)}}</td>
+            </tr>
+            <tr>
+              <td>Expected Dividend Rate, %</td>
+              <td id="expected-divident-rate">{{(123.123426).toFixed(4)}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
     <div :id="informationPart">
       <div id="portfolio-title" style="border-bottom: 1px solid #333333;">
         <p>In-portfolio</p>
@@ -53,132 +77,68 @@
         {name:'005930a', price:40, amount:23}
       ];
       this.totalValue = this.data.reduce((sum, element) => sum + element.price * element.amount, 0);
-      // this.setPortfolioChart(this.data, this.portfolioPart);
+      this.setPortfolioChart(this.data, `#${this.portfolioPart} > #chart-display`);
     },
     methods: {
-      // setPortfolioChart: function(data, container){
-      //   if(document.querySelectorAll(`#${container} > svg`).length !== 0) {
-      //     document.querySelector(`#${container} > svg`).remove();
-      //   }
+      setPortfolioChart: function(data, container) {
+        const WIDTH = document.querySelector(container).offsetWidth;
+        const HEIGHT = document.querySelector(container).offsetWidth;
+        const MARGIN = WIDTH * 0.05;
+        const RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
 
-      //   const ASSETS_IN_PORTFOLIO = DATA.CHART_DATA,
-      //         FOR_TOOLTIP_DATA    = DATA.DATAS;
-                
-      //   const WIDTH  = document.querySelector(container).offsetWidth,
-      //         HEIGHT = document.querySelector(container).offsetWidth,
-      //         MARGIN = WIDTH * 0.05,
-      //         RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
-                      
-      //   const svg = d3.select(container)
-      //                 .append("svg")
-      //                 .attr("width", WIDTH)
-      //                 .attr("height", HEIGHT)
-      //                 .append("g")
-      //                 .attr("transform", "translate(" + WIDTH / 2 + "," + HEIGHT / 2 + ")");
-        
-      //   let Colors = color_palette;
-      //   if(Colors.length < Object.keys(ASSETS_IN_PORTFOLIO).length){ 
-      //       for(let i=0; i<Math.ceil(Object.keys(ASSETS_IN_PORTFOLIO).length/Colors.length); i++){
-      //           Colors.push(...color_palette);
-      //       }
-      //   }
-      //   Colors.slice(0, Object.keys(ASSETS_IN_PORTFOLIO).length);
-      //   const color = d3.scaleOrdinal().range(Colors);
-        
-      //   const pie = d3.pie().value(d => d[1]);
-      //   const data_ready = pie(Object.entries(ASSETS_IN_PORTFOLIO));
-        
-      //   var arc = d3.arc().innerRadius(MARGIN*4).outerRadius(RADIUS);
-      
-      //   /* Tooltip */
-      //   let Tooltip =
-      //       d3.select(container)
-      //           .append("div")
-      //           .attr("id", "portfolio-tooltip")
-      //           .style("position", "absolute")
-      //           .style("padding", "4px")
-      //           .style("border", "solid")
-      //           .style("border-color", "white")
-      //           .style("border-width", "2px")
-      //           .style("border-radius", "5px")
-      //           .style("background-color", "black")
-      //           .style("opacity", 0)
-      //           .style("color", "white")
-      //           .style("font-size", "12px");
+        const Color_Palette = ["#233253", "#7fa224", "#ff1595", "#0673c5", "#c8bdb9", "#f6f5fa"];
 
-      //   svg.selectAll('whatever')
-      //       .data(data_ready)
-      //       .enter()
-      //       .append('path')
-      //           .attr("class", "mainChart_Portion")
-      //           .attr('d', arc)
-      //           .attr('fill', d => color(d.data[0]))
-      //           .attr("stroke", "#171a1e")
-      //           .style("stroke-width", "1.0px")
-      //       .transition()
-      //           .duration(1400)
-      //           .attrTween('d', function(d) {
-      //               var interpolate = d3.interpolate({startAngle: 0, endAngle: 0}, d);
-      //               return function(t) {
-      //                   return arc(interpolate(t));
-      //               };
-      //           })
-      //       .on("end", function(){
-      //           svg.selectAll('.mainChart_Portion')
-      //               .on('mouseover', function(evt, d) {
-      //                   d3.select(this)
-      //                       .attr("stroke", "whitesmoke")
-      //                       .attr("stroke-width", "3.0px");
-                        
-      //                   document.querySelector(`#of_${d.data[0]} input`).style.border 
-      //                       = "1.6px whitesmoke solid";
-      //                   for(const e of document.querySelectorAll(`#of_${d.data[0]} span`)) {
-      //                       e.style.fontWeight = 'bold';
-      //                   }
+        // Transform the data
+        const transformedData = data.map(item => ({
+          name: item.name,
+          total: item.price * item.amount
+        }));
 
-      //                   Tooltip.style("opacity", 0.8);
-      //                   }
-      //               )
-      //               .on('mousemove', function(evt, d) {
-      //                   d3.select(this)
-      //                       .attr("stroke", "whitesmoke")
-      //                       .attr("stroke-width", "3.0px");
-                        
-      //                   document.querySelector(`#of_${d.data[0]} input`).style.border 
-      //                       = "1.6px whitesmoke solid";
-      //                   for(const e of document.querySelectorAll(`#of_${d.data[0]} span`)) {
-      //                       e.style.fontWeight = 'bold';
-      //                   }
+        // Extend the color palette if needed
+        while (Color_Palette.length < transformedData.length) {
+          Color_Palette.push(...Color_Palette);
+        }
 
-      //                   Tooltip
-      //                       .html(`
-      //                           <b>${d.data[0]}</b>
-      //                           <br><br>
-      //                           Price(${ currency_symbol[ FOR_TOOLTIP_DATA[d.data[0]].MARKET ] }): 
-      //                           ${(FOR_TOOLTIP_DATA[d.data[0]].PRICE).toLocaleString()}
-      //                           <br>
-      //                           Total(₩): ${Math.round(d.data[1]).toLocaleString()}
-      //                       `)
-      //                       .style("left", `${evt.pageX+5}px`)
-      //                       .style("top", `${evt.pageY+3}px`);
-      //                   }
-      //               )
-      //               .on('mouseout', function(evt, d) {
-      //                   d3.select(this).transition()
-      //                       .attr("stroke", "#171a1e")
-      //                       .attr("stroke-width", "1.0px");
-                        
-      //                   document.querySelector(`#of_${d.data[0]} input`).style.border 
-      //                       = "none";
-      //                   for(const e of document.querySelectorAll(`#of_${d.data[0]} span`)) {
-      //                       e.style.fontWeight = 'normal';
-      //                   }
+        const color = d3.scaleOrdinal().domain(transformedData.map(d => d.name)).range(Color_Palette);
 
-      //                   Tooltip.style("opacity", 0);
-      //                   }
-      //               )
-      //       });
-      // }
+        // Remove previous chart if it exists
+        if (document.querySelector(`${container} > svg`)) {
+          document.querySelector(`${container} > svg`).remove();
+        }
+
+        const svg = d3
+          .select(container)
+          .append("svg")
+          .attr("width", WIDTH)
+          .attr("height", HEIGHT)
+          .append("g")
+          .attr("transform", `translate(${WIDTH / 2}, ${HEIGHT / 2})`);
+
+        const pie = d3.pie().value(d => d.total); // Use the `total` field for pie slices
+        const dataReady = pie(transformedData);
+
+        const arc = d3.arc().innerRadius(MARGIN * 4).outerRadius(RADIUS);
+
+        // Draw the chart
+        svg
+          .selectAll("path")
+          .data(dataReady)
+          .enter()
+          .append("path")
+          .attr("class", "mainChart_Portion")
+          .attr("d", arc)
+          .attr("fill", d => color(d.data.name)) // Use `d.data.name` for color
+          .attr("stroke", "#171a1e")
+          .style("stroke-width", "1px")
+          .transition()
+          .duration(1400)
+          .attrTween("d", function(d) {
+            const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
+            return function(t) {
+              return arc(interpolate(t));
+            };
+          });
+      }
     }
   }
 </script>

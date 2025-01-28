@@ -93,7 +93,7 @@
           setTimeout(() => {
             searchInputElem.placeholder = 'Name, ticker symbol, or code number';
             searchInputElem.focus();
-          }, 2000);
+          }, 800);
         } else {
           searchInputElem.placeholder = '';
           searchInputElem.blur();

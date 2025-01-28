@@ -153,6 +153,7 @@
            .attr("y", d => yAxis(d.y) - 6)
            .attr("text-anchor", "middle")
            .style("fill", "white") 
+           .style("font-family", "Tahoma")
            .style("font-weight", "400")
            .style("font-size", "13px")
            .text(d => d.y);
