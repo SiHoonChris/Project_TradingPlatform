@@ -21,8 +21,14 @@
       return {
         listPart: "watch-list-stock",
         chartPart: "tradingview-widget-stock", 
-        defaultStockSymbol: "NASDAQ:AAPL",
-        watch_list: [
+        watch_list: [],
+        interval: "D"
+      }
+    },
+    mounted () {
+      // 관심종목 테이블에서 불러오기
+      this.watch_list = [
+          "META",
           "AAPL",
           "TSLA",
           "PLTR",
@@ -30,12 +36,9 @@
           "PANW",
           "NVO",
           "TSM"
-        ],
-        interval: "D"
-      }
-    },
-    mounted () {
-      this.initializeWidget(this.defaultStockSymbol);
+        ];
+
+      this.initializeWidget(this.watch_list[0]);
     },
     methods: {
       initializeWidget(symbol) {

@@ -52,6 +52,7 @@
       }
     },
     mounted () {
+      // 보유종목 테이블에서 불러오기
       this.data = [
         {name:'AAPL', price:100, amount:10},
         {name:'TSLA', price:103, amount:12},
@@ -76,36 +77,56 @@
         {name:'METAa', price:130, amount:31},
         {name:'005930a', price:40, amount:23}
       ];
+
+      this.data.sort((a, b) => (b.price * b.amount) - (a.price * a.amount));
+
       this.totalValue = this.data.reduce((sum, element) => sum + element.price * element.amount, 0);
       this.setPortfolioChart(this.data, `#${this.portfolioPart} > #chart-display`);
     },
     methods: {
       setPortfolioChart: function(data, container) {
-        const WIDTH = document.querySelector(container).offsetWidth;
+        const WIDTH  = document.querySelector(container).offsetWidth;
         const HEIGHT = document.querySelector(container).offsetWidth;
         const MARGIN = WIDTH * 0.05;
         const RADIUS = Math.min(WIDTH, HEIGHT) / 2 - MARGIN;
 
-        const Color_Palette = ["#233253", "#7fa224", "#ff1595", "#0673c5", "#c8bdb9", "#f6f5fa"];
+        const Color_Palette = [
+          "#19234c", "#920e0c", "#f2edfa", "#286096", "#e9be3b", 
+          "#dbc3d7", "#f92f10", "#b4dff4", "#0aaf3f", "#9e7dd6"
+        ];
 
-        // Transform the data
-        const transformedData = data.map(item => ({
-          name: item.name,
-          total: item.price * item.amount
-        }));
+        // Sort data by total value (desc)
+        let sortedData = 
+          data.map(item => ({
+            name: item.name,
+            total: item.price * item.amount
+          }))
+          .sort((a, b) => b.total - a.total);
 
-        // Extend the color palette if needed
-        while (Color_Palette.length < transformedData.length) {
-          Color_Palette.push(...Color_Palette);
+        // Extract top 8 assets
+        let topAssets = sortedData.slice(0, 9);
+
+        // Sum remaining assets into "Others"
+        let otherTotal = sortedData.slice(9).reduce((sum, item) => sum + item.total, 0);
+        
+        // Add "Others" as the last element if necessary
+        if (sortedData.length > 10) {
+          topAssets.push({ name: "Others", total: otherTotal });
         }
 
-        const color = d3.scaleOrdinal().domain(transformedData.map(d => d.name)).range(Color_Palette);
+        // Ensure "Others" is always last in the chart order
+        const pie = d3.pie()
+          .sort(null)  // Disable automatic sorting
+          .value(d => d.total);
 
-        // Remove previous chart if it exists
+        const color = d3.scaleOrdinal().domain(topAssets.map(d => d.name)).range(Color_Palette);
+
+        // Remove previous chart
         if (document.querySelector(`${container} > svg`)) {
           document.querySelector(`${container} > svg`).remove();
         }
 
+        // Create SVG container
         const svg = d3
           .select(container)
           .append("svg")
@@ -114,10 +135,22 @@
           .append("g")
           .attr("transform", `translate(${WIDTH / 2}, ${HEIGHT / 2})`);
 
-        const pie = d3.pie().value(d => d.total); // Use the `total` field for pie slices
-        const dataReady = pie(transformedData);
-
+        const dataReady = pie(topAssets);
         const arc = d3.arc().innerRadius(MARGIN * 4).outerRadius(RADIUS);
+
+        // Tooltip
+        const tooltip = d3.select(container)
+          .append("div")
+          .style("position", "absolute")
+          .style("background", "rgba(0, 0, 0, 0.7)")
+          .style("color", "#fff")
+          .style("padding", "6px 12px")
+          .style("border", "1px solid #fff")
+          .style("border-radius", "5px")
+          .style("font-size", "12px")
+          .style("font-family", "Tahoma")
+          .style("pointer-events", "none")
+          .style("opacity", 0);
 
         // Draw the chart
         svg
@@ -127,7 +160,7 @@
           .append("path")
           .attr("class", "mainChart_Portion")
           .attr("d", arc)
-          .attr("fill", d => color(d.data.name)) // Use `d.data.name` for color
+          .attr("fill", d => color(d.data.name))
           .attr("stroke", "#171a1e")
           .style("stroke-width", "1px")
           .transition()
@@ -137,6 +170,23 @@
             return function(t) {
               return arc(interpolate(t));
             };
+          });
+
+        // Tooltip Events
+        svg.selectAll(".mainChart_Portion")
+          .on("mouseover", function(event, d) {
+            tooltip.style("opacity", 1);
+            d3.select(this).style("opacity", 0.7);
+          })
+          .on("mousemove", function(event, d) {
+            tooltip
+              .html(d.data.name)
+              .style("left", `${event.pageX + 10}px`)
+              .style("top", `${event.pageY - 20}px`);
+          })
+          .on("mouseout", function() {
+            tooltip.style("opacity", 0);
+            d3.select(this).style("opacity", 1);
           });
       }
     }

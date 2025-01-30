@@ -129,6 +129,7 @@
            .call(d3.axisBottom(xAxis))
            .attr("class", "x-axis")
            .selectAll("text")
+           .attr("font-family", "Tahoma")
            .attr("fill", "#e2e2e2")
            .attr("opacity", 0.9);
 

@@ -23,7 +23,22 @@
     data () {
       return {
         dividendPart: 'list-dividend-payment',
-        dividend_list: [
+        dividend_list: [],
+        date_set: '',
+        config_set: {
+          inline: true,
+          enableTime: false,
+          onYearChange: function(){  },
+          onMonthChange: function(){  }
+        }
+      }
+    },
+    mounted(){
+      // 1. 선택된 날짜를 서버로 전송
+      // 2. 선택된 날짜에 배당 일정이 있는 종목을 검색 (검색 대상 : 보유종목, 관심종목)
+      //    (보유종목 테이블과 관심종목 테이블 Union 하기)
+      // 3. 결과 전송 - dividend_list 배열에 값 입력
+      this.dividend_list = [
           'AAPL',
           'TSLA',
           'CRM',
@@ -35,15 +50,7 @@
           'XOM',
           'META',
           '005930'
-        ],
-        date_set: '',
-        config_set: {
-          inline: true,
-          enableTime: false,
-          onYearChange: function(){  },
-          onMonthChange: function(){  }
-        }
-      }
+        ]
     },
     methods: {
 
