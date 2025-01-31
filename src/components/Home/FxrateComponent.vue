@@ -21,21 +21,15 @@
       return {
         listPart: "watch-list-fxrate",
         chartPart: "tradingview-widget-fxrate",
-        defaultFxRateSymbol: "USDKRW",
-        fxrate_list: [
-          'USD/KRW',
-          'CNY/KRW',
-          'JPY/KRW',
-          'HKD/KRW',
-          'SGD/KRW',
-          'EUR/KRW',
-          'GBP/KRW'
-        ],
+        fxrate_list: [],
         interval: "D"
       }
     },
     mounted () {
-      this.initializeWidget(this.defaultFxRateSymbol);
+      this.$http.get("/getFxList")
+        .then(res => this.fxrate_list = res.data.map(fx => fx.currency_fx))
+        .then(done => this.initializeWidget(this.fxrate_list[0].replace("/", "")))
+        .catch(err => console.log(err));
     },
     methods: {
       initializeWidget(symbol) {

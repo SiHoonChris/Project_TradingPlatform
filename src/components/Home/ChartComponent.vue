@@ -26,19 +26,10 @@
       }
     },
     mounted () {
-      // 관심종목 테이블에서 불러오기
-      this.watch_list = [
-          "META",
-          "AAPL",
-          "TSLA",
-          "PLTR",
-          "LLY",
-          "PANW",
-          "NVO",
-          "TSM"
-        ];
-
-      this.initializeWidget(this.watch_list[0]);
+      this.$http.get("/getWatchList")
+        .then(res => this.watch_list = res.data.map(asset => asset.asset_code))
+        .then(done => this.initializeWidget(this.watch_list[0]))
+        .catch(err => console.log(err));
     },
     methods: {
       initializeWidget(symbol) {

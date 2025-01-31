@@ -7,19 +7,19 @@
           <tbody>
             <tr>
               <td>Total Invested, KRW</td>
-              <td id="total-invested">{{(123224563).toLocaleString()}}</td>
+              <td id="total-invested">{{(Math.floor(this.totalPurchased)).toLocaleString()}}</td>
             </tr>
             <tr>
               <td>Number of assets</td>
-              <td id="number-of-assets">{{this.data.length}}</td>
+              <td id="number-of-assets">{{this.portfolioData.length}}</td>
             </tr>
             <tr>
               <td>Yield Rate, %</td>
-              <td id="yield-rate">{{(123.123426).toFixed(4)}}</td>
+              <td id="yield-rate">{{((this.totalValued - this.totalPurchased) / this.totalPurchased * 100).toFixed(4)}}</td>
             </tr>
             <tr>
               <td>Expected Dividend Rate, %</td>
-              <td id="expected-divident-rate">{{(123.123426).toFixed(4)}}</td>
+              <td id="expected-divident-rate">{{(3.123426).toFixed(4)}}</td>
             </tr>
           </tbody>
         </table>
@@ -30,10 +30,10 @@
         <p>In-portfolio</p>
       </div>
       <ul id="portfolio-list">
-        <li v-for="(element, idx) in data" :key="idx">
+        <li v-for="(elem, idx) in portfolioData" :key="idx">
           <p>
-            <span @click="this.$moveToChartPage_Click(element.name)">{{element.name}}</span>
-            <span>{{((element.price * element.amount) / this.totalValue * 100).toFixed(2)}}%</span>
+            <span @click="this.$moveToChartPage_Click(elem.ticker)">{{elem.ticker}}</span>
+            <span>{{(elem.valued / this.totalValued * 100).toFixed(2)}}%</span>
           </p>
         </li>
       </ul>
@@ -47,41 +47,25 @@
       return {
         portfolioPart: 'portfolio-chart',
         informationPart: 'portfolio-information',
-        data: [],
-        totalValue: 0
+        portfolioData: [],
+        totalPurchased: 0,
+        totalValued: 0
       }
     },
     mounted () {
-      // 보유종목 테이블에서 불러오기
-      this.data = [
-        {name:'AAPL', price:100, amount:10},
-        {name:'TSLA', price:103, amount:12},
-        {name:'CRM', price:90, amount:18},
-        {name:'LLY', price:160, amount:38},
-        {name:'NVDA', price:130, amount:24},
-        {name:'MSFT', price:104, amount:16},
-        {name:'GOOGL', price:100, amount:456},
-        {name:'PG', price:111, amount:10},
-        {name:'XOM', price:104, amount:54},
-        {name:'META', price:101, amount:123},
-        {name:'005930', price:190, amount:13},
-        {name:'AAPLa', price:163, amount:70},
-        {name:'TSLAa', price:160, amount:10},
-        {name:'CRMa', price:10, amount:18},
-        {name:'LLYa', price:750, amount:10},
-        {name:'NVDAa', price:10, amount:19},
-        {name:'MSFTa', price:132, amount:10},
-        {name:'GOOGLa', price:10, amount:54},
-        {name:'PGa', price:230, amount:2},
-        {name:'XOMa', price:104, amount:23},
-        {name:'METAa', price:130, amount:31},
-        {name:'005930a', price:40, amount:23}
-      ];
-
-      this.data.sort((a, b) => (b.price * b.amount) - (a.price * a.amount));
-
-      this.totalValue = this.data.reduce((sum, element) => sum + element.price * element.amount, 0);
-      this.setPortfolioChart(this.data, `#${this.portfolioPart} > #chart-display`);
+      this.$http.get("/getPortfolioData")
+        .then(
+          res => {
+            this.portfolioData = res.data;
+            this.portfolioData.sort((a, b) => (b.valued) - (a.valued));
+            this.totalPurchased = this.portfolioData.reduce((sum, elem) => sum + elem.purchased, 0);
+            this.totalValued = this.portfolioData.reduce((sum, elem) => sum + elem.valued, 0);
+          }
+        ).then(
+          done => this.setPortfolioChart(this.portfolioData, `#${this.portfolioPart} > #chart-display`)
+        ).catch(
+          err => console.log(err)
+        );
     },
     methods: {
       setPortfolioChart: function(data, container) {
@@ -97,27 +81,23 @@
 
         // Sort data by total value (desc)
         let sortedData = 
-          data.map(item => ({
-            name: item.name,
-            total: item.price * item.amount
-          }))
-          .sort((a, b) => b.total - a.total);
+          data.sort((a, b) => b.valued - a.valued);
 
         // Extract top 8 assets
         let topAssets = sortedData.slice(0, 9);
 
         // Sum remaining assets into "Others"
-        let otherTotal = sortedData.slice(9).reduce((sum, item) => sum + item.total, 0);
+        let othersValued = sortedData.slice(9).reduce((sum, item) => sum + item.valued, 0);
         
         // Add "Others" as the last element if necessary
         if (sortedData.length > 10) {
-          topAssets.push({ name: "Others", total: otherTotal });
+          topAssets.push({ ticker: "Others", valued: othersValued });
         }
 
         // Ensure "Others" is always last in the chart order
         const pie = d3.pie()
           .sort(null)  // Disable automatic sorting
-          .value(d => d.total);
+          .value(d => d.valued);
 
         const color = d3.scaleOrdinal().domain(topAssets.map(d => d.name)).range(Color_Palette);
 
@@ -158,9 +138,9 @@
           .data(dataReady)
           .enter()
           .append("path")
-          .attr("class", "mainChart_Portion")
+          .attr("class", "portion")
           .attr("d", arc)
-          .attr("fill", d => color(d.data.name))
+          .attr("fill", d => color(d.data.ticker))
           .attr("stroke", "#171a1e")
           .style("stroke-width", "1px")
           .transition()
@@ -173,14 +153,14 @@
           });
 
         // Tooltip Events
-        svg.selectAll(".mainChart_Portion")
+        svg.selectAll(".portion")
           .on("mouseover", function(event, d) {
             tooltip.style("opacity", 1);
             d3.select(this).style("opacity", 0.7);
           })
           .on("mousemove", function(event, d) {
             tooltip
-              .html(d.data.name)
+              .html(d.data.ticker)
               .style("left", `${event.pageX + 10}px`)
               .style("top", `${event.pageY - 20}px`);
           })
