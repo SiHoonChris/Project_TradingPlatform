@@ -1,8 +1,8 @@
 <template>
-  <div id="transaction-table">
+  <div id="component-expense-table">
     <div id="table-info">
       <div id="tbl-period">
-        <span class="label">Period in detail</span>
+        <span class="label">Selected Period</span>
         <div id="period-result">
           <input type="text" readonly id="period-date-from" value=""/>
           <span style="color:#ffffff; margin:0 4px; font-size:13px;">~</span>
@@ -13,7 +13,7 @@
         <span class="label">Expense in total</span>
         <div id="expense-result">
           <input type="text" readonly :value="(expenseTotal).toLocaleString()"/>
-          <span style="color:#ffffff; margin-left:2px; font-size:13px;">(\)</span>
+          <span style="color:#ffffff; margin-left:2px; font-size:13px;">(KRW)</span>
         </div>
       </div>
     </div>
@@ -93,5 +93,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Transactions/Table.scss";
+  @import "@/assets/css/Expense/Components/Table.scss";
 </style>

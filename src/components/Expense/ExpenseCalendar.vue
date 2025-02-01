@@ -23,7 +23,7 @@
 <script>
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-import { setCalendarBaseStyle } from '../../assets/js/Transaction/TransactionCalendar.js'
+// import { setCalendarBaseStyle } from '../../assets/js/Transaction/TransactionCalendar.js'
 
 export default {
   components: { flatPickr },
@@ -55,10 +55,10 @@ export default {
     [this.date_from, this.date_to] = [dataInit, dataInit]; 
   },
   mounted(){
-    setCalendarBaseStyle(); 
+    // setCalendarBaseStyle(); 
   },
   updated(){
-    setCalendarBaseStyle(); 
+    // setCalendarBaseStyle(); 
   },
   watch: {
     date_from: function(val){
@@ -81,5 +81,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Transactions/Calendar.scss";
+  @import "@/assets/css/Expense/Components/Calendar.scss";
 </style>

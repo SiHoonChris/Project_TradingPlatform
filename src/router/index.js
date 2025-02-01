@@ -13,9 +13,9 @@ const routes = [
     component: () => import('../views/PortfoliosView.vue')
   },
   {
-    path: '/transactions',
-    name: 'transactions',
-    component: () => import('../views/TransactionsView.vue')
+    path: '/expense',
+    name: 'expense',
+    component: () => import('../views/ExpenseView.vue')
   },
   {
     path: '/financial-statements',

@@ -1,17 +1,18 @@
-#transaction-chart {
-  width: 100%;
-  height: 100%;
+#component-expense-chart {
+  width: calc(100% - 8px * 2);
+  height: calc(100% - 4px * 2);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  #chart-setting {
+  #chart-header {
     width: calc(100% - 10px * 2);
     height: 40px;
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
 
-    #setting-input {
+    #chart-setting {
       width: 50%;
       height: 100%;
       display: flex;
@@ -26,14 +27,19 @@
         width: 228px;
         
         /* .label */
-        .label { width: 38px; }
+        .label { 
+          width: 38px;
+          font-family: Tahoma;
+        }
       }
       #set-transaction {
         display: flex;
         align-items: center;
         margin-right: 20px;
 
-        /* .label */
+        .label { 
+          font-family: Tahoma;
+        }
         select {
           height: 25px;
           padding-left: 8px;
@@ -41,6 +47,7 @@
           border: 1px solid #555555;
           border-radius: 2px;
           color: #b9b9b9;
+          font-family: Tahoma;
           font-size: 13px;
         }
       }
@@ -79,6 +86,7 @@
 
       span {
         font-size: 13px;
+        font-family: Tahoma;
         color: #ffffff;
       }
     }

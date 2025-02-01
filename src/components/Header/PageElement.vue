@@ -29,7 +29,7 @@
           },
           {
             page: 'Expense', 
-            moveTo: 'transactions'
+            moveTo: 'expense'
           },
           {
             page: 'Profit / Loss', 
