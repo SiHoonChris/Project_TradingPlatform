@@ -10,9 +10,9 @@
         </div>
       </div>
       <div id="tbl-result">
-        <span class="label">Expense in total</span>
+        <span class="label">Expense</span>
         <div id="expense-result">
-          <input type="text" readonly :value="(expenseTotal).toLocaleString()"/>
+          <input type="text" readonly :value="(expenseTotal).toLocaleString()"/>&nbsp;
           <span style="color:#ffffff; margin-left:2px; font-size:13px;">(KRW)</span>
         </div>
       </div>

@@ -1,0 +1,44 @@
+@mixin setFlex($ai, $jc) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+}
+
+#component-expense-detail-chart {
+  width: calc(50% - 4px * 2);
+  height: calc(100% - 4px * 2);
+  flex-direction: column;
+  @include setFlex(center, center);
+
+  #detail-chart-blank {
+    width: 100%;
+    height: 40px;
+    margin-top: 2px;
+  }
+  
+  #detail-chart-result {
+    width: 100%;    
+    height: calc(100% - 40px);
+    display: flex;
+    justify-content: center;
+
+    #detail-chart-canvas {
+      width: 100%;
+      height: 96%;
+      background: #000000;
+      @include setFlex(center, space-evenly);
+
+      #frequency-chart-svg {
+        width: calc(50% - 10px * 2);
+        height: calc(100% - 10px * 2);
+        background: blue; /* 차트 그리고 이거 없애기 */
+      }
+      #amount-chart-svg {
+        width: calc(50% - 10px * 2);
+        height: calc(100% - 10px * 2);
+        background: blue; /* 차트 그리고 이거 없애기 */
+      }
+    }
+  }
+}
+  

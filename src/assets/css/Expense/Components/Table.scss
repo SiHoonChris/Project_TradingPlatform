@@ -1,26 +1,28 @@
-#component-expense-table {
-  width: calc(100% - 8px * 2);
-  height: calc(100% - 4px * 2);
+@mixin setFlex($ai, $jc) {
   display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+}
+
+#component-expense-table {
+  width: calc(50% - 4px * 2);
+  height: calc(100% - 4px * 2);
+  font-family: Tahoma;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  @include setFlex(center, center);
 
   #table-info {
     width: calc(100% - 10px * 2);
     height: 40px;
-    display: flex;
-    justify-content: right;
-    align-items: center;
     padding: 0 10px;
-    margin-top:  2px;
+    margin-top: 2px;
+    @include setFlex(center, space-between);
 
     #tbl-period {
       display: flex;
       align-items: flex-end;
       margin-right: 20px;
       
-      /* .label */
       #period-result {
         input {
           width: 160px;
@@ -30,7 +32,10 @@
           border: 1px solid #555555;
           text-align: center;
           color: #b9b9b9;
-          &:focus { outline: none; }
+          
+          &:focus {
+            outline: none;
+          }
         }
       }
     }
@@ -38,7 +43,6 @@
       display: flex;
       align-items: flex-end;
       
-      /* .label */
       #expense-result {
         display: flex;
         align-items: flex-end;
@@ -52,7 +56,10 @@
           border-radius: 2px;
           text-align: right;
           color: #b9b9b9;
-          &:focus { outline: none; }
+
+          &:focus {
+            outline: none;
+          }
         }
       }
     }

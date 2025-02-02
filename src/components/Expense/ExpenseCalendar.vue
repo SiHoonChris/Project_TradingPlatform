@@ -23,9 +23,10 @@
 <script>
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
-// import { setCalendarBaseStyle } from '../../assets/js/Transaction/TransactionCalendar.js'
 
 export default {
+  /* 기본 연도 세팅은 1년전 ~ 오늘 */
+  /* 캘린더 가장 최초 데이터는 첫 데이터, 마지막 데이터는 오늘 */
   components: { flatPickr },
   data() {
     return {

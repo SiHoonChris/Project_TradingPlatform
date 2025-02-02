@@ -1,10 +1,15 @@
+@mixin setFlex($ai, $jc) {
+  display: flex;
+  align-items: $ai;
+  justify-content: $jc;
+}
+
 #component-expense-chart {
   width: calc(100% - 8px * 2);
   height: calc(100% - 4px * 2);
-  display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  font-family: Tahoma;
+  @include setFlex(center, center);
 
   #chart-header {
     width: calc(100% - 10px * 2);
@@ -15,21 +20,16 @@
     #chart-setting {
       width: 50%;
       height: 100%;
-      display: flex;
-      justify-content: left;
-      align-items: center;
+      @include setFlex(center, left);
 
       #set-period {
-        display: flex;
-        align-items: center;
-        justify-content: left;
-        margin-right: 20px;
         width: 228px;
+        margin-right: 20px;
+        @include setFlex(center, left);
         
         /* .label */
         .label { 
           width: 38px;
-          font-family: Tahoma;
         }
       }
       #set-transaction {
@@ -37,9 +37,6 @@
         align-items: center;
         margin-right: 20px;
 
-        .label { 
-          font-family: Tahoma;
-        }
         select {
           height: 25px;
           padding-left: 8px;
@@ -47,8 +44,11 @@
           border: 1px solid #555555;
           border-radius: 2px;
           color: #b9b9b9;
-          font-family: Tahoma;
           font-size: 13px;
+
+          &:focus {
+            outline: none;
+          }
         }
       }
       #set-button {
@@ -56,9 +56,6 @@
         align-items: center;
 
         button {
-          display: flex;
-          align-items: center;
-          justify-content: center;
           width: 26px;
           height: 26px;
           padding: 0;
@@ -66,6 +63,7 @@
           border-radius: 3px;
           background: #34f2a1;
           cursor: pointer;
+          @include setFlex(center, center);
 
           img {
             width: 98%;
@@ -80,13 +78,13 @@
         font-size: 13px;
       }
     }
-    #result-num {
-      display: flex;
-      align-items: center;
+    #result-number {
+      width: 50%;
+      height: 100%;
+      @include setFlex(center, right);
 
       span {
         font-size: 13px;
-        font-family: Tahoma;
         color: #ffffff;
       }
     }

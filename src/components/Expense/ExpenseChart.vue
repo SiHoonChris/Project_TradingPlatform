@@ -18,8 +18,10 @@
           </button>
         </div>
       </div>
-      <div id="result-num">
-        <span>num:</span>&nbsp;<span>{{(data.length).toLocaleString()}}</span>
+      <div id="result-number">
+        <span>num: {{(data.length).toLocaleString()}}</span>
+        <span>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;</span>
+        <span>expense in total: {{(Math.round(expenseInTotal)).toLocaleString()}} (KRW)</span>
       </div>
     </div>
     <div id="chart-result">
@@ -29,19 +31,17 @@
 </template>
 
 <script>
-import TransactionCalendar from '@/components/Expense/ExpenseCalendar.vue' /* 수정 필요 */
+import TransactionCalendar from '@/components/Expense/ExpenseCalendar.vue'
 
 export default {
-  /* 기본 연도 세팅은 1년전 ~ 오늘 */
-  /* 국내주식, 해외주식, 가상화폐 색상 구분 */
-  /* 캘린더 가장 최초 데이터는 첫 데이터, 마지막 데이터는 오늘 */
   components: { TransactionCalendar },
   data() {
     return {
       btn: {fn:'search', img:require("@/assets/img/btnImg/Expense/magnify_glass.png")},
       data: [],
       transactionType: '전체',
-      transaction_list: []
+      transaction_list: [],
+      expenseInTotal: 0
     }
   },
   mounted() {
@@ -68,6 +68,7 @@ export default {
         }).then(res => {
           this.data = res.data;
           this.setScatterPlotChart(res.data, 'chart-svg');
+          this.expenseInTotal = this.data.reduce((sum, elem) => sum + elem.Expense, 0);
 
           // this.$emit('sendTransaction', tD); // TransactionsView.vue
         }).catch(err => console.log(err));
@@ -121,14 +122,14 @@ export default {
         // Add dots
         const dot = 
           svg.append("g")
-              .attr("fill", "none")
-              .attr("stroke", "purple")
-              .attr("stroke-width", 1.8)
               .selectAll("circle")
               .data(data)
               .join("circle")
               .attr("transform", d => `translate(${xScale(new Date(d["Date"]))},${yScale(d["Expense"])})`)
-              .attr("r", 2.2);
+              .attr("r", 2.2)
+              .attr("fill", "none")
+              .attr("stroke", d => d["Color"])
+              .attr("stroke-width", 1.8);
 
         // Brush
         svg.call(
