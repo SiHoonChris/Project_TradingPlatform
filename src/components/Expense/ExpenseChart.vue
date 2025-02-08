@@ -4,7 +4,35 @@
       <div id="chart-setting">
         <div id="set-period">
           <span class="label">Period</span>
-          <TransactionCalendar/>
+          <div id="select-period">
+            <div id="date-from">
+              <select v-model="fromDate.Year">
+                <option v-for="year in fromYearRange" :key="year" :value="year">{{year}}</option>
+              </select>
+              <span>&nbsp;.&nbsp;</span>
+              <select v-model="fromDate.Month">
+                <option v-for="n in 12" :key="n" :value="n">{{n}}</option>
+              </select>
+              <span>&nbsp;.&nbsp;</span>
+              <select v-model="fromDate.Date">
+                <option v-for="day in fromDaysInMonth" :key="day" :value="day">{{day}}</option>
+              </select>
+            </div>
+            <div>&nbsp;~&nbsp;</div>
+            <div id="date-to">
+              <select v-model="toDate.Year">
+                <option v-for="year in toYearRange" :key="year" :value="year">{{year}}</option>
+              </select>
+              <span>&nbsp;.&nbsp;</span>
+              <select v-model="toDate.Month">
+                <option v-for="n in 12" :key="n" :value="n">{{n}}</option>
+              </select>
+              <span>&nbsp;.&nbsp;</span>
+              <select v-model="toDate.Date">
+                <option v-for="day in toDaysInMonth" :key="day" :value="day">{{day}}</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div id="set-transaction">
           <span class="label">Transaction</span>
@@ -31,20 +59,41 @@
 </template>
 
 <script>
-import TransactionCalendar from '@/components/Expense/ExpenseCalendar.vue'
-
 export default {
-  components: { TransactionCalendar },
   data() {
     return {
       btn: {fn:'search', img:require("@/assets/img/btnImg/Expense/magnify_glass.png")},
       data: [],
+      startDate: { Year: 0, Month: 0, Date: 0 },
+      endDate: { Year: 0, Month: 0, Date: 0 },
+      fromDate: { Year: 0, Month: 0, Date: 0 },
+      toDate: { Year: 0, Month: 0, Date: 0 },
       transactionType: '전체',
       transaction_list: [],
       expenseInTotal: 0
     }
   },
+  computed: {
+    // fromDate가 startDate보다 이르지 않도록 , toDate가 endDate보다 늦지 않도록 막아주는 함수 기능 필요
+    fromYearRange() {
+      const currentYear = new Date().getFullYear();
+      return Array.from({ length: currentYear - this.startDate.Year + 1 }, (_, i) => this.startDate.Year + i);
+    },
+    toYearRange() {
+      const currentYear = new Date().getFullYear();
+      return Array.from({ length: currentYear - this.startDate.Year + 1 }, (_, i) => this.startDate.Year + i);
+    },
+    fromDaysInMonth() {
+      const fromDate = new Date(this.fromDate.Year, this.fromDate.Month, 0);
+      return Array.from({ length: fromDate.getDate() }, (_, i) => i + 1);
+    },
+    toDaysInMonth() {
+      const toDate = new Date(this.toDate.Year, this.toDate.Month, 0);
+      return Array.from({ length: toDate.getDate() }, (_, i) => i + 1);
+    }
+  },
   mounted() {
+    this.setInitDate();
     this.$http.get("/getTransactionTypeList")
       .then(res => {
         this.transaction_list = res.data.map(list => list.transaction_type);
@@ -54,16 +103,47 @@ export default {
       .catch(err => console.log(err));
   },
   methods: {
-    getTransactionHistoryDataForChart : function () {
-      let t  = this.transactionType === '전체' ? '' : this.transactionType,
-          df = document.getElementById("dateFrom").textContent.replaceAll(".", "-"),
-          dt = document.getElementById("dateTo").textContent.replaceAll(".", "-");
+    setInitDate : function () { 
+      this.$http.get("/getTransactionFirstDay")
+        .then(res => {
+          this.startDate = {
+            Year: res.data.Year, 
+            Month: res.data.Month, 
+            Date: res.data.Date
+          };
+        })
+        .catch(err => console.log(err));
 
-      this.$http.get("/getTransactionHistoryDataForChart", {
+      console.log(this.startDate);
+
+      const today = new Date();
+      const oneYearAgo = new Date();
+      oneYearAgo.setDate(today.getDate() - 364);
+
+      this.fromDate = { 
+        Year: oneYearAgo.getFullYear(), 
+        Month: oneYearAgo.getMonth() + 1, 
+        Date: oneYearAgo.getDate()
+      };
+      this.toDate = {
+        Year: today.getFullYear(), 
+        Month: today.getMonth() + 1, 
+        Date: today.getDate()
+      };
+      this.endDate = {
+        Year: today.getFullYear(), 
+        Month: today.getMonth() + 1, 
+        Date: today.getDate()
+      };
+    },
+    getTransactionHistoryDataForChart : function () {
+      // fromDate가 toDate보다 늦으면 함수 실행 막는 기능 필요
+
+      this.$http.get("/getTransactionHistoryDataForChart", { // 쿼리문 수정 필요 - 파라미터 조건문 추가 필요
           params: { 
-            Transaction: t,
-            DateFrom   : df,
-            DateTo     : dt
+            Transaction: this.transactionType === '전체' ? '' : this.transactionType,
+            DateFrom   : `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date}`,
+            DateTo     : `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date}`
           }
         }).then(res => {
           this.data = res.data;
@@ -75,7 +155,7 @@ export default {
 
         // document.getElementById('period-date-from').value = '';
         // document.getElementById('period-date-to').value = '';
-      },
+    },
       setScatterPlotChart: function (data, elementId) {
         if(document.getElementById(elementId).hasChildNodes()){
           document.getElementById(elementId).querySelector("svg").remove();
