@@ -74,7 +74,6 @@ export default {
     }
   },
   computed: {
-    // fromDate가 startDate보다 이르지 않도록 , toDate가 endDate보다 늦지 않도록 막아주는 함수 기능 필요
     fromYearRange() {
       const currentYear = new Date().getFullYear();
       return Array.from({ length: currentYear - this.startDate.Year + 1 }, (_, i) => this.startDate.Year + i);
@@ -114,8 +113,6 @@ export default {
         })
         .catch(err => console.log(err));
 
-      console.log(this.startDate);
-
       const today = new Date();
       const oneYearAgo = new Date();
       oneYearAgo.setDate(today.getDate() - 364);
@@ -137,13 +134,22 @@ export default {
       };
     },
     getTransactionHistoryDataForChart : function () {
-      // fromDate가 toDate보다 늦으면 함수 실행 막는 기능 필요
+      /* Parameter Setting */
+      let Transaction = this.transactionType === '전체' ? '' : this.transactionType;
+      let DateFrom = `${this.fromDate.Year}-${String(this.fromDate.Month).padStart(2, '0')}-${String(this.fromDate.Date).padStart(2, '0')}`,
+          DateTo   = `${this.toDate.Year}-${String(this.toDate.Month).padStart(2, '0')}-${String(this.toDate.Date).padStart(2, '0')}`;
+      let [D_From, D_To] = [new Date(DateFrom), new Date(DateTo)];
 
-      this.$http.get("/getTransactionHistoryDataForChart", { // 쿼리문 수정 필요 - 파라미터 조건문 추가 필요
+      if(D_From > D_To) {
+        DateFrom = `${this.startDate.Year}-${String(this.startDate.Month).padStart(2, '0')}-${String(this.startDate.Date).padStart(2, '0')}`;
+        DateTo   = `${this.endDate.Year}-${String(this.endDate.Month).padStart(2, '0')}-${String(this.endDate.Date).padStart(2, '0')}`;
+      }
+      
+      this.$http.get("/getTransactionHistoryDataForChart", {
           params: { 
-            Transaction: this.transactionType === '전체' ? '' : this.transactionType,
-            DateFrom   : `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date}`,
-            DateTo     : `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date}`
+            Transaction: Transaction,
+            DateFrom   : DateFrom,
+            DateTo     : DateTo
           }
         }).then(res => {
           this.data = res.data;
@@ -156,7 +162,7 @@ export default {
         // document.getElementById('period-date-from').value = '';
         // document.getElementById('period-date-to').value = '';
     },
-      setScatterPlotChart: function (data, elementId) {
+    setScatterPlotChart: function (data, elementId) {
         if(document.getElementById(elementId).hasChildNodes()){
           document.getElementById(elementId).querySelector("svg").remove();
         }
@@ -239,7 +245,7 @@ export default {
           .attr('fill', '#56ae77')
           .attr("fill-opacity", 0.2)
           .attr('stroke', '#41915f');
-      }
+    }
   }
 }
 </script>
