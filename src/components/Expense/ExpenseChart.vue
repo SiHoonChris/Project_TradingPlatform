@@ -155,12 +155,7 @@ export default {
           this.data = res.data;
           this.setScatterPlotChart(res.data, 'chart-svg');
           this.expenseInTotal = this.data.reduce((sum, elem) => sum + elem.Expense, 0);
-
-          // this.$emit('sendTransaction', tD); // TransactionsView.vue
         }).catch(err => console.log(err));
-
-        // document.getElementById('period-date-from').value = '';
-        // document.getElementById('period-date-to').value = '';
     },
     setScatterPlotChart: function (data, elementId) {
         if(document.getElementById(elementId).hasChildNodes()){
@@ -217,6 +212,7 @@ export default {
               .attr("stroke", d => d["Color"])
               .attr("stroke-width", 1.8);
 
+        const self = this;
         // Brush
         svg.call(
           d3.brush()
@@ -227,13 +223,19 @@ export default {
                 if(selectedArea !== null) {
                   let dateFrom = new Date(xScale.invert(selectedArea[0][0])).toLocaleString('ja-JP'),
                       dateTo   = new Date(xScale.invert(selectedArea[1][0])).toLocaleString('ja-JP'),
-                      expenseMin = yScale.invert(selectedArea[1][1]),
-                      expenseMax = yScale.invert(selectedArea[0][1]);
+                      expenseStart = yScale.invert(selectedArea[1][1]),
+                      expenseFrom  = yScale.invert(selectedArea[0][1]);
                     
                   document.getElementById('period-date-from').value = dateFrom.replaceAll('/', '.');
                   document.getElementById('period-date-to').value   = dateTo.replaceAll('/', '.');
-                  setExpense['expenseMin'] = expenseMin;
-                  setExpense['expenseMax'] = expenseMax;
+
+                  self.$emit('transactionCondition', {
+                    dateFrom: dateFrom.replaceAll('/', '-'),
+                    dateTo: dateTo.replaceAll('/', '-'),
+                    expenseStart: expenseStart,
+                    expenseFrom: expenseFrom,
+                    transactionType: self.transactionType === '전체' ? '' : self.transactionType
+                  });
 
                   setTimeout(() => document.getElementById('createTblButton').click(), 100);
                 }

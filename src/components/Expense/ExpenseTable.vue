@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  props: ["transactionFromChart"],
+  props: ["transactionConditionForTable"],
   data() {
     return {
       data : [],
@@ -34,28 +34,29 @@ export default {
     }
   },
   methods: {
-    getTransactionHistoryDataForTable : 
-    function(){
-      let tD   = this.transactionFromChart, 
-          eMin = this.$setExpense['expenseMin'], 
-          eMax = this.$setExpense['expenseMax'], 
-          df   = document.getElementById('period-date-from').value.replaceAll('.', '-'), 
-          dt   = document.getElementById('period-date-to').value.replaceAll('.', '-');
+    getTransactionHistoryDataForTable : function(){
+      let eMin  = this.transactionConditionForTable['expenseStart'], 
+          eMax  = this.transactionConditionForTable['expenseFrom'],  
+          dFrom = this.transactionConditionForTable['dateFrom'], 
+          dTo   = this.transactionConditionForTable['dateTo'],
+          tType = this.transactionConditionForTable['transactionType'];
 
       this.$http.get("/getTransactionHistoryDataForTable", {
           params: { 
-            Transaction: tD,
             ExpenseMin : eMin,
             ExpenseMax : eMax,
-            DateFrom   : df,
-            DateTo     : dt
+            DateFrom   : dFrom,
+            DateTo     : dTo,
+            TransactionType : tType
           }
         }).then(res => {
           this.data = [];
 
           if(res.data.length !== 0) {
-            // 테이블 생성
-            this.data = res.data;
+            [this.data, this.expenseTotal] = [res.data.data, res.data.expenseTotal];
+            console.log("ExpenseTable");
+            console.log(this.data);
+            console.log(this.expenseTotal)
             
             if(document.getElementById('table-canvas').nextSibling){
               document.getElementById('table-canvas').nextSibling.remove();
@@ -68,25 +69,8 @@ export default {
               false
             );
             document.getElementById('table-canvas').nextSibling.style.position='absolute';
-            
-            // Expense 총계
-            this.getExpenseSumForTable(tD, eMin, eMax, df, dt);
           }
         }).catch(err => console.log(err));
-    },
-    getExpenseSumForTable : 
-    function(tD, eMin, eMax, df, dt){
-      this.$http.get("/getExpenseSumForTable", {
-          params: { 
-            Transaction: tD,
-            ExpenseMin : eMin,
-            ExpenseMax : eMax,
-            DateFrom   : df,
-            DateTo     : dt
-          }
-        })
-        .then(res => this.expenseTotal = res.data[0].expense_sum)
-        .catch(err => console.log(err));
     }
   }
 }

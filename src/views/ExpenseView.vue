@@ -2,10 +2,10 @@
   <main id="main-expense">
     <div id="expense-background">
       <div id="expense-chart">
-        <ExpenseChart @sendTransaction="defineTransaction"/>
+        <ExpenseChart @transactionCondition="receiveTransactionCondition"/>
       </div>
       <div id="expense-detail">
-        <ExpenseTable :transactionFromChart="transactionToSet"/>
+        <ExpenseTable :transactionConditionForTable="transactionConditionToSend"/>
         <ExpenseDetailChart/>
       </div>
     </div>
@@ -22,12 +22,12 @@ export default {
   components: { ExpenseChart, ExpenseTable, ExpenseDetailChart },
   data() {
     return {
-      transactionToSet: ''
+      transactionConditionToSend: null
     }
   },
   methods: {
-    defineTransaction(val) {
-      this.transactionToSet = val;
+    receiveTransactionCondition(val) {
+      this.transactionConditionToSend = val;
     }
   }
 }
