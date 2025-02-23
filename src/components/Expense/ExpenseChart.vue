@@ -153,11 +153,11 @@ export default {
           }
         }).then(res => {
           this.data = res.data;
-          this.setScatterPlotChart(res.data, 'chart-svg');
+          this.setScatterPlotChart([DateFrom, DateTo], res.data, 'chart-svg');
           this.expenseInTotal = this.data.reduce((sum, elem) => sum + elem.Expense, 0);
         }).catch(err => console.log(err));
     },
-    setScatterPlotChart: function (data, elementId) {
+    setScatterPlotChart: function (periodArr, data, elementId) {
         if(document.getElementById(elementId).hasChildNodes()){
           document.getElementById(elementId).querySelector("svg").remove();
         }
@@ -177,9 +177,12 @@ export default {
               .attr("transform", `translate(${margin.Left}, ${margin.Top})`);
 
         // Add X axis
-        const xScale = /* x축의 tick 개수는 6개로 고정*/
+        const xScale = /* x축의 tick 개수는 6개로 고정 */
           d3.scaleUtc()
-            .domain([d3.min(data, d => new Date(d["Date"])), d3.max(data, d => new Date(d["Date"]))])
+            .domain([
+              new Date(periodArr[0]).setHours(0, 0, 0, 0), 
+              new Date(periodArr[1]).setHours(23, 59, 59, 999)
+            ])
             .range([margin.Left, Width - (margin.Left + margin.Right)]);
         svg.append("g")
             .attr("class", "xAxis")
@@ -221,10 +224,13 @@ export default {
                 let selectedArea = d3.brushSelection(this);
                 
                 if(selectedArea !== null) {
-                  let dateFrom = new Date(xScale.invert(selectedArea[0][0])).toLocaleString('ja-JP'),
-                      dateTo   = new Date(xScale.invert(selectedArea[1][0])).toLocaleString('ja-JP'),
-                      expenseStart = yScale.invert(selectedArea[1][1]),
-                      expenseFrom  = yScale.invert(selectedArea[0][1]);
+                  let 
+                    /* coordinate : Top-Left */
+                    dateFrom   = new Date(xScale.invert(selectedArea[0][0])).toLocaleString('ja-JP'),
+                    expenseMax = yScale.invert(selectedArea[0][1]),
+                    /* coordinate : Bottom-Right */
+                    dateTo     = new Date(xScale.invert(selectedArea[1][0])).toLocaleString('ja-JP'),
+                    expenseMin = yScale.invert(selectedArea[1][1]);
                     
                   document.getElementById('period-date-from').value = dateFrom.replaceAll('/', '.');
                   document.getElementById('period-date-to').value   = dateTo.replaceAll('/', '.');
@@ -232,8 +238,8 @@ export default {
                   self.$emit('transactionCondition', {
                     dateFrom: dateFrom.replaceAll('/', '-'),
                     dateTo: dateTo.replaceAll('/', '-'),
-                    expenseStart: expenseStart,
-                    expenseFrom: expenseFrom,
+                    expenseMin: expenseMin,
+                    expenseMax: expenseMax,
                     transactionType: self.transactionType === '전체' ? '' : self.transactionType
                   });
 

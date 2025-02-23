@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     getTransactionHistoryDataForTable : function(){
-      let eMin  = this.transactionConditionForTable['expenseStart'], 
-          eMax  = this.transactionConditionForTable['expenseFrom'],  
+      let eMin  = this.transactionConditionForTable['expenseMin'], 
+          eMax  = this.transactionConditionForTable['expenseMax'],  
           dFrom = this.transactionConditionForTable['dateFrom'], 
           dTo   = this.transactionConditionForTable['dateTo'],
           tType = this.transactionConditionForTable['transactionType'];
@@ -54,9 +54,6 @@ export default {
 
           if(res.data.length !== 0) {
             [this.data, this.expenseTotal] = [res.data.data, res.data.expenseTotal];
-            console.log("ExpenseTable");
-            console.log(this.data);
-            console.log(this.expenseTotal)
             
             if(document.getElementById('table-canvas').nextSibling){
               document.getElementById('table-canvas').nextSibling.remove();
