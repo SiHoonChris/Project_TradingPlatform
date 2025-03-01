@@ -19,7 +19,28 @@
     </div>
     <div id="table-result">
       <button id="createTblButton" style="display: none;" @click="getTransactionHistoryDataForTable()"></button>
-      <div id="table-canvas"></div>
+      <div id="table-transaction-list">
+        <div id="list-header">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Transaction</th>
+                <th>Expense</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div id="list-body">
+          <ul>
+            <li v-for="(d, i) in data" :key="i">
+              <div><span>{{d.Date}}</span></div>
+              <div><span>{{d.Transaction}}</span></div>
+              <div><span>{{Number(d.Expense).toLocaleString()}}</span></div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -54,18 +75,6 @@ export default {
 
           if(res.data.length !== 0) {
             [this.data, this.expenseTotal] = [res.data.data, res.data.expenseTotal];
-            
-            if(document.getElementById('table-canvas').nextSibling){
-              document.getElementById('table-canvas').nextSibling.remove();
-            }
-            this.$Create_Table (
-              this.data, 
-              "table-result", 
-              getComputedStyle(document.getElementById('table-canvas')).width, 
-              getComputedStyle(document.getElementById('table-canvas')).height, 
-              false
-            );
-            document.getElementById('table-canvas').nextSibling.style.position='absolute';
           }
         }).catch(err => console.log(err));
     }
