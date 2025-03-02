@@ -34,7 +34,7 @@
         <div id="list-body">
           <ul>
             <li v-for="(d, i) in data" :key="i">
-              <div><span>{{d.Date}}</span></div>
+              <div><span>{{convertToKST(d.Date)}}</span></div>
               <div><span>{{d.Transaction}}</span></div>
               <div><span>{{Number(d.Expense).toLocaleString()}}</span></div>
             </li>
@@ -55,7 +55,7 @@ export default {
     }
   },
   methods: {
-    getTransactionHistoryDataForTable : function(){
+    getTransactionHistoryDataForTable : function () {
       let eMin  = this.transactionConditionForTable['expenseMin'], 
           eMax  = this.transactionConditionForTable['expenseMax'],  
           dFrom = this.transactionConditionForTable['dateFrom'], 
@@ -77,6 +77,11 @@ export default {
             [this.data, this.expenseTotal] = [res.data.data, res.data.expenseTotal];
           }
         }).catch(err => console.log(err));
+    },
+    convertToKST : function (utcDate) {
+      const date = new Date(utcDate); // Convert to Date object
+      const kstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000); // Add 9 hours for KST
+      return kstDate.toISOString().slice(0, 19).replace("T", " "); // Format as 'yyyy-MM-dd HH:mm:ss'
     }
   }
 }
