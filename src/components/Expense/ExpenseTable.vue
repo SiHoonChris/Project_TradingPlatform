@@ -21,15 +21,9 @@
       <button id="createTblButton" style="display: none;" @click="getTransactionHistoryDataForTable()"></button>
       <div id="table-transaction-list">
         <div id="list-header">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Transaction</th>
-                <th>Expense</th>
-              </tr>
-            </thead>
-          </table>
+          <div><span>Date</span></div>
+          <div><span>Transaction</span></div>
+          <div><span>Expense</span></div>    
         </div>
         <div id="list-body">
           <ul>
