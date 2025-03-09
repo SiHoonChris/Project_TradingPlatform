@@ -99,6 +99,23 @@ export default {
         this.transaction_type = this.transaction_list[0];
         this.getTransactionHistoryDataForChart();
       })
+      .then(done => { // send data to table-component right after chart-component mounted
+        const initFromDatetime = `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date} 0:00:00`;
+        const initToDatetime   = `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date} 23:59:59`;
+        
+        this.$emit('transactionCondition', { 
+          dateFrom: initFromDatetime, 
+          dateTo: initToDatetime, 
+          expenseMin: 0, 
+          expenseMax: Number.MAX_SAFE_INTEGER, 
+          transactionType: ''
+        });
+
+        document.getElementById('period-date-from').value = initFromDatetime;
+        document.getElementById('period-date-to').value   = initToDatetime;
+
+        setTimeout(() => document.getElementById('createTblButton').click(), 100);
+      })
       .catch(err => console.log(err));
   },
   methods: {
