@@ -48,7 +48,18 @@ export default {
       expenseTotal: 0
     }
   },
+  mounted() {
+    this.setTableMaxHeight();
+    window.addEventListener("resize", this.setTableMaxHeight);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.setTableMaxHeight);
+  },
   methods: {
+    setTableMaxHeight : function () {
+      const maxHeight = parseFloat(document.getElementById("detail-chart-canvas").getBoundingClientRect().height);
+      document.getElementById("table-transaction-list").style.maxHeight = `${maxHeight}px`;
+    },
     getTransactionHistoryDataForTable : function () {
       let eMin  = this.transactionConditionForTable['expenseMin'], 
           eMax  = this.transactionConditionForTable['expenseMax'],  
