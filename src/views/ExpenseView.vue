@@ -2,10 +2,10 @@
   <main id="main-expense">
     <div id="expense-background">
       <div id="expense-chart">
-        <ExpenseChart @transactionCondition="receiveTransactionCondition"/>
+        <ExpenseChart/>
       </div>
       <div id="expense-detail">
-        <ExpenseTable :transactionConditionForTable="transactionConditionToSend"/>
+        <ExpenseTable/>
         <ExpenseDetailChart/>
       </div>
     </div>
@@ -22,13 +22,11 @@ export default {
   components: { ExpenseChart, ExpenseTable, ExpenseDetailChart },
   data() {
     return {
-      transactionConditionToSend: null
+
     }
   },
   methods: {
-    receiveTransactionCondition(val) {
-      this.transactionConditionToSend = val;
-    }
+
   }
 }
 </script>

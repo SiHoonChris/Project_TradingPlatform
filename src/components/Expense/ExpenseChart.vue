@@ -103,7 +103,7 @@ export default {
         const initFromDatetime = `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date} 0:00:00`;
         const initToDatetime   = `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date} 23:59:59`;
         
-        this.$emit('transactionCondition', { 
+        this.$store.commit("updateTransactionCondition", {
           dateFrom: initFromDatetime, 
           dateTo: initToDatetime, 
           expenseMin: 0, 
@@ -114,7 +114,11 @@ export default {
         document.getElementById('period-date-from').value = initFromDatetime;
         document.getElementById('period-date-to').value   = initToDatetime;
 
-        setTimeout(() => document.getElementById('createTblButton').click(), 100);
+        setTimeout(() => {
+          document.getElementById('createTblButton').click();
+          document.getElementById('createDetailFrequencyChartButton').click();
+          document.getElementById('createDetailAmountChartButton').click();
+        }, 100);
       })
       .catch(err => console.log(err));
   },
@@ -252,7 +256,7 @@ export default {
                   document.getElementById('period-date-from').value = dateFrom.replaceAll('/', '.');
                   document.getElementById('period-date-to').value   = dateTo.replaceAll('/', '.');
 
-                  self.$emit('transactionCondition', {
+                  self.$store.commit("updateTransactionCondition", {
                     dateFrom: dateFrom.replaceAll('/', '-'),
                     dateTo: dateTo.replaceAll('/', '-'),
                     expenseMin: expenseMin,
@@ -260,7 +264,11 @@ export default {
                     transactionType: self.transactionType === '전체' ? '' : self.transactionType
                   });
 
-                  setTimeout(() => document.getElementById('createTblButton').click(), 100);
+                  setTimeout(() => {
+                    document.getElementById('createTblButton').click();
+                    document.getElementById('createDetailFrequencyChartButton').click();
+                    document.getElementById('createDetailAmountChartButton').click();
+                  }, 100);
                 }
             })
         );

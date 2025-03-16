@@ -41,7 +41,6 @@
 
 <script>
 export default {
-  props: ["transactionConditionForTable"],
   data() {
     return {
       data : [],
@@ -61,19 +60,13 @@ export default {
       document.getElementById("table-transaction-list").style.maxHeight = `${maxHeight}px`;
     },
     getTransactionHistoryDataForTable : function () {
-      let eMin  = this.transactionConditionForTable['expenseMin'], 
-          eMax  = this.transactionConditionForTable['expenseMax'],  
-          dFrom = this.transactionConditionForTable['dateFrom'], 
-          dTo   = this.transactionConditionForTable['dateTo'],
-          tType = this.transactionConditionForTable['transactionType'];
-
       this.$http.get("/getTransactionHistoryDataForTable", {
           params: { 
-            ExpenseMin : eMin,
-            ExpenseMax : eMax,
-            DateFrom   : dFrom,
-            DateTo     : dTo,
-            TransactionType : tType
+            ExpenseMin : this.$store.state.expenseMin,
+            ExpenseMax : this.$store.state.expenseMax,
+            DateFrom   : this.$store.state.dateFrom,
+            DateTo     : this.$store.state.dateTo,
+            TransactionType : this.$store.state.transactionType
           }
         }).then(res => {
           this.data = [];
