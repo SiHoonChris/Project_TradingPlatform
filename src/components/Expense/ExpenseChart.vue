@@ -41,7 +41,7 @@
           </select>
         </div>
         <div id="set-button">
-          <button @click="getTransactionHistoryDataForChart()">
+          <button @click="func_setButtion()">
             <img :src="btn.img" :alt="btn.fn">
           </button>
         </div>
@@ -100,29 +100,35 @@ export default {
         this.getTransactionHistoryDataForChart();
       })
       .then(done => { // send data to table-component right after chart-component mounted
-        const initFromDatetime = `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date} 0:00:00`;
-        const initToDatetime   = `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date} 23:59:59`;
-        
-        this.$store.commit("updateTransactionCondition", {
-          dateFrom: initFromDatetime, 
-          dateTo: initToDatetime, 
-          expenseMin: 0, 
-          expenseMax: Number.MAX_SAFE_INTEGER, 
-          transactionType: ''
-        });
-
-        document.getElementById('period-date-from').value = initFromDatetime;
-        document.getElementById('period-date-to').value   = initToDatetime;
-
-        setTimeout(() => {
-          document.getElementById('createTblButton').click();
-          document.getElementById('createDetailFrequencyChartButton').click();
-          document.getElementById('createDetailAmountChartButton').click();
-        }, 100);
+        this.setSelectedPeriod(
+          `${this.fromDate.Year}.${this.fromDate.Month}.${this.fromDate.Date} 0:00:00`, 
+          `${this.toDate.Year}.${this.toDate.Month}.${this.toDate.Date} 23:59:59`
+        );
+        this.updateTransactionConditionAndUpdateTable(
+          `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date} 0:00:00`, 
+          `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date} 23:59:59`, 
+          0, 
+          Number.MAX_SAFE_INTEGER, 
+          ''
+        );
       })
       .catch(err => console.log(err));
   },
   methods: {
+    func_setButtion: function() {
+      this.getTransactionHistoryDataForChart();
+      this.setSelectedPeriod(
+        `${this.fromDate.Year}.${this.fromDate.Month}.${this.fromDate.Date} 0:00:00`, 
+        `${this.toDate.Year}.${this.toDate.Month}.${this.toDate.Date} 23:59:59`
+      );
+      this.updateTransactionConditionAndUpdateTable(
+        `${this.fromDate.Year}-${this.fromDate.Month}-${this.fromDate.Date} 0:00:00`, 
+        `${this.toDate.Year}-${this.toDate.Month}-${this.toDate.Date} 23:59:59`, 
+        0, 
+        Number.MAX_SAFE_INTEGER, 
+        this.transactionType === '전체' ? '' : this.transactionType
+      );
+    },
     setInitDate : function () { 
       this.$http.get("/getTransactionFirstDay")
         .then(res => {
@@ -177,6 +183,25 @@ export default {
           this.setScatterPlotChart([DateFrom, DateTo], res.data, 'chart-svg');
           this.expenseInTotal = this.data.reduce((sum, elem) => sum + elem.Expense, 0);
         }).catch(err => console.log(err));
+    },
+    setSelectedPeriod: function(from, to) {
+      document.getElementById('period-date-from').value = from;
+      document.getElementById('period-date-to').value   = to;
+    },
+    updateTransactionConditionAndUpdateTable: function(dateFrom, dateTo, expenseMin, expenseMax, transactionType) {
+      this.$store.commit("updateTransactionCondition", {
+        dateFrom: dateFrom, 
+        dateTo: dateTo, 
+        expenseMin: expenseMin, 
+        expenseMax: expenseMax, 
+        transactionType: transactionType
+      });
+
+      setTimeout(() => {
+        document.getElementById('createTblButton').click();
+        document.getElementById('createDetailFrequencyChartButton').click();
+        document.getElementById('createDetailAmountChartButton').click();
+      }, 100);
     },
     setScatterPlotChart: function (periodArr, data, elementId) {
         if(document.getElementById(elementId).hasChildNodes()){
@@ -253,22 +278,14 @@ export default {
                     dateTo     = new Date(xScale.invert(selectedArea[1][0])).toLocaleString('ja-JP'),
                     expenseMin = yScale.invert(selectedArea[1][1]);
                     
-                  document.getElementById('period-date-from').value = dateFrom.replaceAll('/', '.');
-                  document.getElementById('period-date-to').value   = dateTo.replaceAll('/', '.');
-
-                  self.$store.commit("updateTransactionCondition", {
-                    dateFrom: dateFrom.replaceAll('/', '-'),
-                    dateTo: dateTo.replaceAll('/', '-'),
-                    expenseMin: expenseMin,
-                    expenseMax: expenseMax,
-                    transactionType: self.transactionType === '전체' ? '' : self.transactionType
-                  });
-
-                  setTimeout(() => {
-                    document.getElementById('createTblButton').click();
-                    document.getElementById('createDetailFrequencyChartButton').click();
-                    document.getElementById('createDetailAmountChartButton').click();
-                  }, 100);
+                  self.setSelectedPeriod(dateFrom.replaceAll('/', '.'), dateTo.replaceAll('/', '.'));
+                  self.updateTransactionConditionAndUpdateTable(
+                    dateFrom.replaceAll('/', '-'), 
+                    dateTo.replaceAll('/', '-'), 
+                    expenseMin, 
+                    expenseMax, 
+                    self.transactionType === '전체' ? '' : self.transactionType
+                  );
                 }
             })
         );
