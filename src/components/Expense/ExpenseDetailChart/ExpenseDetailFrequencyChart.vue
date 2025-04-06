@@ -117,7 +117,7 @@ export default {
             .style("font-family", "Tahoma")
             .style("font-weight", "400")
             .style("font-size", "13px")
-            .text(d => d.value);
+            .text(d => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(d.value));
         }).catch(err => console.log(err));
     }
   }
