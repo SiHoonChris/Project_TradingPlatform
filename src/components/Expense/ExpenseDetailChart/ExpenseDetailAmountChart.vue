@@ -65,6 +65,22 @@ export default {
                           .domain([0, d3.max(this.data, d => d.value * 1.2)])
                           .nice()
                           .range([Height - Margin.bottom, Margin.top]);
+                        
+          // Remove previous tooltip if exists
+          d3.selectAll(".amount-chart-tooltip").remove();
+          // Create tooltip element (only once)
+          const tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "amount-chart-tooltip")
+            .style("position", "absolute")
+            .style("background", "#333")
+            .style("color", "#fff")
+            .style("padding", "6px 10px")
+            .style("border-radius", "4px")
+            .style("font-size", "12px")
+            .style("font-family", "Tahoma")
+            .style("pointer-events", "none")
+            .style("opacity", 0);
 
           svg.selectAll(".bar") // Draw the bars
               .data(this.data)
@@ -82,7 +98,19 @@ export default {
               .attr("y", d => yAxis(d.value))
               .attr("width", xAxis.bandwidth()*0.75)
               .attr("height", d => yAxis(0) - yAxis(d.value))
-              .attr("transform", `translate(${xAxis.bandwidth()*0.125},0)`);
+              .attr("transform", `translate(${xAxis.bandwidth()*0.125},0)`)
+              .on("mouseover", (event, d) => {
+                tooltip.transition().duration(200).style("opacity", 0.95);
+                tooltip.html(new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(d.value));
+              })
+              .on("mousemove", event => {
+                tooltip
+                  .style("left", (event.pageX + 10) + "px")
+                  .style("top", (event.pageY - 28) + "px");
+              })
+              .on("mouseout", () => {
+                tooltip.transition().duration(300).style("opacity", 0);
+              });
 
           svg.append("g") // Add the x-axis
               .attr("transform", `translate(0,${Height - Margin.bottom})`)
@@ -95,7 +123,16 @@ export default {
 
           svg.append("g") // Add the y-axis
               .attr("transform", `translate(${Margin.left},0)`)
-              .call(d3.axisLeft(yAxis).ticks(3))
+              .call(
+                d3.axisLeft(yAxis)
+                  .ticks(3)
+                  .tickFormat(d => {
+                    if      (d >= 1000000000) return (d / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+                    else if (d >= 1000000) return (d / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+                    else if (d >= 1000) return (d / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+                    else return d;
+                  })
+              )
               .attr("class", "y-axis")
               .selectAll("text")
               .attr("fill", "#e2e2e2")
@@ -117,7 +154,24 @@ export default {
             .style("font-family", "Tahoma")
             .style("font-weight", "400")
             .style("font-size", "13px")
-            .text(d => new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(d.value));
+            .text(d => {
+              if      (d.value >= 1000000000) return (d.value / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+              else if (d.value >= 1000000) return (d.value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+              else if (d.value >= 1000) return (d.value / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+              else return d.value;
+            })
+            .on("mouseover", (event, d) => {
+              tooltip.transition().duration(200).style("opacity", 0.95);
+              tooltip.html(new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(d.value));
+            })
+            .on("mousemove", event => {
+              tooltip
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+              tooltip.transition().duration(300).style("opacity", 0);
+            });
         }).catch(err => console.log(err));
     }
   }
