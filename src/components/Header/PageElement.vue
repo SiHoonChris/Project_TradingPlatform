@@ -33,7 +33,7 @@
           },
           {
             page: 'Profit / Loss', 
-            moveTo: 'portfolios'
+            moveTo: 'profit-loss'
           }
         ],
         dropdown: false

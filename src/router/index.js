@@ -8,14 +8,14 @@ const routes = [
     component: HomeView
   },
   {
-    path: '/portfolios',
-    name: 'portfolios',
-    component: () => import('../views/PortfoliosView.vue')
-  },
-  {
     path: '/expense',
     name: 'expense',
     component: () => import('../views/ExpenseView.vue')
+  },
+  {
+    path: '/profit-loss', 
+    name: 'profit-loss',
+    component: () => import('../views/ProfitLossView.vue')
   },
   {
     path: '/financial-statements',
