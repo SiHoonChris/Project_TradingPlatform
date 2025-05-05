@@ -42,7 +42,6 @@
       #profit-loss-chart {
         width: calc(100% - 340px);
         height: 100%;
-        background: green;
         @include setFlex(center, center);
       }
       #profit-loss-table {

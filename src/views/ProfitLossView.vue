@@ -8,7 +8,7 @@
       </div>
       <div id="profit-loss-chart_n_table">
         <div id="profit-loss-chart">
-          <div></div>
+          <ProfitLossChart/>
         </div>
         <div id="profit-loss-table">
           <ProfitLossTable/>
@@ -19,12 +19,11 @@
 </template>
 
 <script>
-// import ProfitLossTableChart from '@/components/ProfitLoss/ProfitLossTableChart.vue'
+import ProfitLossChart from '@/components/ProfitLoss/ProfitLossChart.vue'
 import ProfitLossTable from '@/components/ProfitLoss/ProfitLossTable.vue'
 
-
 export default {
-  components: { ProfitLossTable },
+  components: { ProfitLossChart, ProfitLossTable },
   data() {
     return {
       selectYear: 0,
