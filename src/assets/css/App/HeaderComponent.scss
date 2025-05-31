@@ -1,0 +1,76 @@
+header {
+  $period-setter: 420px;
+  @mixin flexSetter($ai, $jc) {
+    display: flex;
+    align-items: $ai;
+    justify-content: $jc;
+  }
+
+  height: 49px;
+  background: #12141b;
+  border-bottom: 1px solid #232323;
+  @include flexSetter(center, center);
+  
+  #period-setter {
+    width: $period-setter;
+    height: 100%;
+    padding-left: 6px;
+
+    #button {
+      height: 50%;
+      @include flexSetter(flex-end, left);
+
+      input {
+        width: 22px;
+        height: 20px;
+        padding: 0px 0px 1px 0px;
+        margin-right: 4px;
+      }
+    }
+    #selectbox {
+      height: 50%;
+      padding-left: 1px;
+      @include flexSetter(center, left);
+
+      .select {
+        color: #aaaaaa;
+        font-family: Tahoma;
+        font-size: 12px;
+
+        &#year {
+          margin-right: 6px;
+        }
+
+        select{
+          font-size: 12px;
+          margin-left: 4px;
+        
+          &:focus {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+  #fixed-fx-rate {
+    width: calc(100% - $period-setter);
+    height: 100%;
+    @include flexSetter(flex-end, right);
+
+    p {
+      margin: 0px 8px 4px 0px;
+
+      span {
+        margin-right: 10px;
+        margin-left: 10px;
+        color: #aaaaaa;
+        font-family: Tahoma;
+        font-size: 12px;
+
+        &:first-child, &:last-child {
+          margin-right: 0px;
+        }
+      }
+    }
+  }
+}

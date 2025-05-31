@@ -1,7 +1,7 @@
 <template>
   <div>
     <HeaderComponent/>
-    <div id="main-view">
+    <div id="app-view">
       <router-view/>
     </div>
   </div>
@@ -23,7 +23,7 @@
     padding: 0;
     overflow: hidden;
   }
-  #main-view {
+  #app-view {
     display: flex;
   }
 </style>

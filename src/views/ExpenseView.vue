@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import ExpenseChart from '@/components/Expense/ExpenseChart.vue'
-import ExpenseTable from '@/components/Expense/ExpenseTable.vue'
-import ExpenseDetailChart from '@/components/Expense/ExpenseDetailChart.vue'
+import ExpenseChart from '@/components/View/Expense/ExpenseChart.vue'
+import ExpenseTable from '@/components/View/Expense/ExpenseTable.vue'
+import ExpenseDetailChart from '@/components/View/Expense/ExpenseDetailChart.vue'
 
 
 export default {

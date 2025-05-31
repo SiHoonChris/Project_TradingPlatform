@@ -19,8 +19,8 @@
 </template>
 
 <script>
-import ProfitLossChart from '@/components/ProfitLoss/ProfitLossChart.vue'
-import ProfitLossTable from '@/components/ProfitLoss/ProfitLossTable.vue'
+import ProfitLossChart from '@/components/View/ProfitLoss/ProfitLossChart.vue'
+import ProfitLossTable from '@/components/View/ProfitLoss/ProfitLossTable.vue'
 
 export default {
   components: { ProfitLossChart, ProfitLossTable },
