@@ -11,25 +11,14 @@
 </template>
 
 <script>
-import FrequencyChart from '@/components/Expense/ExpenseDetailChart/ExpenseDetailFrequencyChart.vue'
-import AmountChart from '@/components/Expense/ExpenseDetailChart/ExpenseDetailAmountChart.vue'
+// import FrequencyChart from '@/components/Expense/ExpenseDetailChart/ExpenseDetailFrequencyChart.vue'
+// import AmountChart from '@/components/Expense/ExpenseDetailChart/ExpenseDetailAmountChart.vue'
 
 export default {
-  components: { FrequencyChart, AmountChart },
-  data() {
-    return {
-      data : [],
-    }
-  },
-  mounted() {
-    
-  },
-  methods: {
-    
-  }
+  // components: { FrequencyChart, AmountChart },
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Expense/Components/DetailChart.scss";
+  @import "@/assets/css/components/MainDashboard/ExpenseComponent/Components/DetailChart.scss";
 </style>

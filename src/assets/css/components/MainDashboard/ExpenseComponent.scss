@@ -1,6 +1,33 @@
+@mixin flexSetterCenter() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 #expense-component {
   width: 100%;
   height: 100%;
-  background-color: greenyellow;
-    
+  background: #111111;
+  overflow: hidden;
+  @include flexSetterCenter();
+
+  #expense-background {
+    width: calc(100% - 10px * 2);
+    height: calc(100% - 12px * 2);
+    margin: 12px 10px;
+    background: #181a1e;
+
+    #expense-chart {
+      width: 100%;
+      height: 55%;
+      @include flexSetterCenter();
+    }
+    #expense-detail {
+      width: 100%;
+      height: 45%;
+      @include flexSetterCenter();
+    }
+  }
 }
+
+

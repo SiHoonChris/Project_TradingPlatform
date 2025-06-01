@@ -179,5 +179,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/Expense/Components/DetailChart/DetailAmountChart.scss";
+  @import "@/assets/css/components/MainDashboard/ExpenseComponent/ExpenseDetailChart/DetailAmountChart.scss";
 </style>

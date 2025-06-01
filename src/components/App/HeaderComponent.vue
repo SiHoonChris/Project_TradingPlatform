@@ -3,9 +3,10 @@
     <!-- Header (left) -->
     <div id="period-setter">
       <div id="button">
-        <input type="button" value="Y" @click="change_btn_selected('Y')">
-        <input type="button" value="Q" @click="change_btn_selected('Q')">
-        <input type="button" value="M" @click="change_btn_selected('M')">
+        <input type="button"
+          v-for="p in ['Y', 'Q', 'M']" :key="p" :value="p"
+          @click="change_btn_selected(p)"
+        >
       </div>
       <div id="selectbox">
         <div v-if="['Y', 'Q', 'M'].includes(btn_selected)" id="year" class="select">
@@ -45,13 +46,14 @@
   export default {
     data() {
       return {
-        btn_selected: 'Y',
+        btn_selected: this.$store.state.btnSelected,
         quarters: ['4Q', '3Q', '2Q', '1Q'],
         months: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
       }
     },
     methods: {
       change_btn_selected(param) {
+        this.$store.commit("setBtnSelected", param);
         this.btn_selected = param;
       }
     }
