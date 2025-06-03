@@ -1,7 +1,12 @@
-@mixin flexSetterCenter() {
+$expense-chart-height: 54%;
+$expense-detail-info-height: 6%;
+$expense-detail-height: 40%;
+$padding-of-components-in-expense-background: 14px;
+
+@mixin flexSetter($ai, $jc) {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: $ai;
+  justify-content: $jc;
 }
 
 #expense-component {
@@ -9,7 +14,7 @@
   height: 100%;
   background: #111111;
   overflow: hidden;
-  @include flexSetterCenter();
+  @include flexSetter(center, center);
 
   #expense-background {
     width: calc(100% - 10px * 2);
@@ -18,14 +23,76 @@
     background: #181a1e;
 
     #expense-chart {
-      width: 100%;
-      height: 55%;
-      @include flexSetterCenter();
+      width: calc(100% - $padding-of-components-in-expense-background * 2);
+      height: $expense-chart-height;
+      padding: 0 $padding-of-components-in-expense-background;
+      @include flexSetter(center, center);
     }
+
+    #expense-detail-info {
+      width: calc(100% - $padding-of-components-in-expense-background * 2);
+      height: $expense-detail-info-height;
+      padding: 0 $padding-of-components-in-expense-background;
+      font-family: Tahoma;
+      @include flexSetter(center, space-between);
+
+      #expense-detail-period {
+        display: flex;
+        align-items: flex-end;
+      
+        #period-result {
+          input {
+            width: 154px;
+            height: 20px;
+            background: #121212;
+            border-radius: 2px;
+            border: 1px solid #555555;
+            text-align: center;
+            color: #b9b9b9;
+          
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+      }
+      #expense-detail-result {
+        display: flex;
+        align-items: flex-end;
+        
+        #expense-result {
+          display: flex;
+          align-items: flex-end;
+
+          input {
+            width: 120px;
+            height: 20px;
+            padding-right: 8px;
+            background: #121212;
+            border: 1px solid #555555;
+            border-radius: 2px;
+            text-align: right;
+            color: #b9b9b9;
+
+            &:focus {
+              outline: none;
+            }
+          }
+        }
+      }
+
+      .label {
+        color: #ffffff;
+        margin-right: 8px;
+        font-size: 13px;
+      }
+    }
+
     #expense-detail {
-      width: 100%;
-      height: 45%;
-      @include flexSetterCenter();
+      width: calc(100% - $padding-of-components-in-expense-background * 2);
+      height: $expense-detail-height;
+      padding: 0 $padding-of-components-in-expense-background;
+      @include flexSetter(center, center);
     }
   }
 }

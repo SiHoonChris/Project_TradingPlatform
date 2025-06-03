@@ -1,30 +1,32 @@
-@mixin setFlex($ai, $jc) {
+$chart-header-height: 40px;
+
+@mixin flexSetter($ai, $jc) {
   display: flex;
   align-items: $ai;
   justify-content: $jc;
 }
 
 #component-expense-chart { 
-  width: calc(100% - 8px * 2); 
-  height: calc(100% - 4px * 2);
+  width: 100%; 
+  height: 100%;
   flex-direction: column;
   font-family: Tahoma;
-  @include setFlex(center, center);
+  @include flexSetter(center, center);
 
   #chart-header {
-    width: calc(100% - 10px * 2);
-    height: 40px;
+    width: 100%;
+    height: $chart-header-height;
     display: flex;
     justify-content: space-between;
 
     #chart-setting {
-      width: 60%;
+      width: 100%;
       height: 100%;
-      @include setFlex(center, left);
+      @include flexSetter(center, left);
 
       #set-period {
         margin-right: 20px;
-        @include setFlex(center, left);
+        @include flexSetter(center, left);
         
         .label { 
           width: 38px;
@@ -36,7 +38,7 @@
           border: 1px solid #0b3851;
           border-radius: 2px;
           color: #b9b9b9;
-          @include setFlex(center, space-evenly);
+          @include flexSetter(center, space-evenly);
           
           #date-from, #date-to {
             display: flex;
@@ -93,7 +95,7 @@
           border-radius: 3px;
           background: #34f2a1;
           cursor: pointer;
-          @include setFlex(center, center);
+          @include flexSetter(center, center);
 
           img {
             width: 98%;
@@ -108,25 +110,15 @@
         font-size: 13px;
       }
     }
-    #result-number {
-      width: 40%;
-      height: 100%;
-      @include setFlex(center, right);
-
-      span {
-        font-size: 13px;
-        color: #ffffff;
-      }
-    }
   }
   #chart-result {
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100% - $chart-header-height);
     display: flex;
     justify-content: center;
 
     #chart-svg {
-      width: calc(100% - 10px * 2);
+      width: calc(100% - 6px * 2);
       height: 100%;
       background: #000000;
     }

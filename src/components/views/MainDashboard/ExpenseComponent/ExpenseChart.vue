@@ -46,11 +46,6 @@
           </button>
         </div>
       </div>
-      <div id="result-number">
-        <span>num: {{(data.length).toLocaleString()}}</span>
-        <span>&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;</span>
-        <span>expense in total: {{(Math.round(expenseInTotal)).toLocaleString()}} (KRW)</span>
-      </div>
     </div>
     <div id="chart-result">
       <div id="chart-svg"></div>
@@ -69,8 +64,7 @@ export default {
       fromDate: { Year: 0, Month: 0, Date: 0 },
       toDate: { Year: 0, Month: 0, Date: 0 },
       transactionType: '전체',
-      transaction_list: [],
-      expenseInTotal: 0
+      transaction_list: []
     }
   },
   computed: {
@@ -179,9 +173,7 @@ export default {
             DateTo     : DateTo
           }
         }).then(res => {
-          this.data = res.data;
           this.setScatterPlotChart([DateFrom, DateTo], res.data, 'chart-svg');
-          this.expenseInTotal = this.data.reduce((sum, elem) => sum + elem.Expense, 0);
         }).catch(err => console.log(err));
     },
     setSelectedPeriod: function(from, to) {
@@ -205,15 +197,17 @@ export default {
     },
     setScatterPlotChart: function (periodArr, data, elementId) {
         if(document.getElementById(elementId).hasChildNodes()){
-          document.getElementById(elementId).querySelector("svg").remove();
+          const svgs = document.getElementById(elementId).querySelectorAll("svg");
+          svgs.forEach(svg => svg.remove());
         }
 
         // Specify the chart’s dimensions.
-        const Width = window.getComputedStyle(document.getElementById(elementId)).width.replace('px', '');
-        const Height = window.getComputedStyle(document.getElementById(elementId)).height.replace('px', '');
-        const margin = { Top: 10, Right: 20, Bottom: 30, Left: 20 }
+        const SubWidth = 100;
+        const Width    = window.getComputedStyle(document.getElementById(elementId)).width.replace('px', '') - SubWidth;
+        const Height   = window.getComputedStyle(document.getElementById(elementId)).height.replace('px', '');
+        const margin   = { Top: 10, Right: 20, Bottom: 30, Left: 20 }
 
-        // Create the SVG container.
+        // Create the SVG chart container.
         const svg = 
           d3.select(`#${elementId}`)
             .append("svg")
@@ -256,10 +250,10 @@ export default {
               .data(data)
               .join("circle")
               .attr("transform", d => `translate(${xScale(new Date(d["Date"]))},${yScale(d["Expense"])})`)
-              .attr("r", 2.2)
+              .attr("r", 1.8)
               .attr("fill", "none")
               .attr("stroke", d => d["Color"])
-              .attr("stroke-width", 1.8);
+              .attr("stroke-width", 1.2);
 
         const self = this;
         // Brush
@@ -295,6 +289,38 @@ export default {
           .attr('fill', '#56ae77')
           .attr("fill-opacity", 0.2)
           .attr('stroke', '#41915f');
+
+        // Create the SVG summary container.
+        const subSvg = 
+          d3.select(`#${elementId}`)
+            .append("svg")
+              .attr("width", SubWidth)
+              .attr("height", Height)
+            .append("g")
+              .attr("transform", `translate(${margin.Left}, ${margin.Top})`);
+        
+        const DataNum = (data.length).toLocaleString();
+        const DataSum = (Math.round(data.reduce((sum, elem) => sum + elem.Expense, 0))).toLocaleString();
+        
+        // Append first line: number of items
+        subSvg.append("text")
+          .attr("x", 0)
+          .attr("y", 20)
+          .attr("fill", "white")
+          .text(`num : ${DataNum}`);
+
+        // Append second line: total expense
+        subSvg.append("text")
+          .attr("x", 0)
+          .attr("y", 40)
+          .attr("fill", "white")
+          .selectAll("tspan")
+          .data(["expense in total :", `${DataSum} (KRW)`])
+          .enter()
+          .append("tspan")
+            .attr("x", 0)
+            .attr("dy", (d, i) => i === 0 ? 0 : "1.2em")  // vertical spacing
+            .text(d => d);
     }
   }
 }

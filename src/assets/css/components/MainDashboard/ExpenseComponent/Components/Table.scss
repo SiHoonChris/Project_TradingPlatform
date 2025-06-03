@@ -1,85 +1,26 @@
 $scroll-width: 9px;
-@mixin setFlex($ai, $jc) {
+
+@mixin flexSetter($ai, $jc) {
   display: flex;
   align-items: $ai;
   justify-content: $jc;
 }
 
 #component-expense-table {
-  width: calc(50% - 4px * 2);
-  height: calc(100% - 4px * 2);
+  width: 50%;
+  height: 100%;
   font-family: Tahoma;
-  flex-direction: column;
-  @include setFlex(center, center);
-
-  #table-info {
-    width: calc(100% - 10px * 2);
-    height: 40px;
-    padding: 0 10px;
-    margin-top: 2px;
-    @include setFlex(center, space-between);
-
-    #tbl-period {
-      display: flex;
-      align-items: flex-end;
-      margin-right: 20px;
-      
-      #period-result {
-        input {
-          width: 160px;
-          height: 20px;
-          background: #121212;
-          border-radius: 2px;
-          border: 1px solid #555555;
-          text-align: center;
-          color: #b9b9b9;
-          
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-    }
-    #tbl-result {
-      display: flex;
-      align-items: flex-end;
-      
-      #expense-result {
-        display: flex;
-        align-items: flex-end;
-
-        input {
-          width: 120px;
-          height: 20px;
-          padding-right: 8px;
-          background: #121212;
-          border: 1px solid #555555;
-          border-radius: 2px;
-          text-align: right;
-          color: #b9b9b9;
-
-          &:focus {
-            outline: none;
-          }
-        }
-      }
-    }
-
-    .label {
-      color: #ffffff;
-      margin-right: 8px;
-      font-size: 13px;
-    }
-  }
+  @include flexSetter(start, center);
 
   #table-result {
-    width: 100%;
-    height: calc(100% - 40px);
+    width: calc(100% - 6px);
+    height: 100%;
+    margin-left: 6px;
     display: flex;
-    justify-content: center;
+    justify-content: start;
 
     #table-transaction-list {
-      width: calc(100% - 10px * 2);
+      width: calc(100% - 5px);
       height: 96%;
       background: #000000;
 
@@ -88,12 +29,12 @@ $scroll-width: 9px;
         height: 8%;
         border-bottom: 1px solid #555555;
         padding-right: $scroll-width;
-        @include setFlex(center, left);
+        @include flexSetter(center, left);
 
         div {
           height: 100%;
           color: #b9b9b9;
-          @include setFlex(center, center);
+          @include flexSetter(center, center);
 
           &:nth-child(1) {
             width: calc(21% - 1px); 
@@ -149,13 +90,13 @@ $scroll-width: 9px;
             div {
               &:nth-child(1) {
                 width: calc(21% - 1px);
-                @include setFlex(center, center);
+                @include flexSetter(center, center);
               }
               &:nth-child(2) {
                 width: calc(59% - 1px);
                 border-right: 1px solid #555555;
                 border-left: 1px solid #555555;
-                @include setFlex(center, left);
+                @include flexSetter(center, left);
 
                 span {
                   margin-left: 8px;
@@ -164,7 +105,7 @@ $scroll-width: 9px;
               &:nth-child(3) {
                 width: calc(20% - 1px);
                 border-right: 1px solid #555555;        
-                @include setFlex(center, right);
+                @include flexSetter(center, right);
 
                 span {
                   margin-right: 8px;

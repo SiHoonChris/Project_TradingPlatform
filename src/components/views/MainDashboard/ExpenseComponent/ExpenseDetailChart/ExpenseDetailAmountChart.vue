@@ -47,7 +47,7 @@ export default {
           // 1. Create New Chart
           const Width  = document.getElementById(this.chartPart).offsetWidth,
                 Height = document.getElementById(this.chartPart).offsetHeight,
-                Margin = { top: 24, right: 20, bottom: 30, left: 44 };
+                Margin = { top: 12, right: 10, bottom: 15, left: 22 };
 
           const svg = d3.select('#'+this.chartPart)
                         .append("svg")
@@ -179,5 +179,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/components/MainDashboard/ExpenseComponent/ExpenseDetailChart/DetailAmountChart.scss";
+  @import "@/assets/css/components/MainDashboard/ExpenseComponent/Components/DetailChart/DetailAmountChart.scss";
 </style>
