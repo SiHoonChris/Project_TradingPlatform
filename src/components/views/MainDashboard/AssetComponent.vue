@@ -2,11 +2,11 @@
   <div id="asset-component">
     <p id="period-setter-candle">
       <input
-        v-for="p in ['Y', 'Q', 'M', 'W', 'D']"
+        v-for="p in ['Y', 'Q', 'M', 'W']"
         :key="p"
         type="button"
         :value="p"
-        @click="btn_selected_for_candle_period = p"
+        @click="this.getAssetSizeGrowthData(p)"
       >
     </p>
     <div id="asset-size-chart">
@@ -20,27 +20,22 @@
   export default {
     data() {
       return {
-        data: [
-          { date: new Date('2025-05-20'), open: 95, high: 100, low: 90, close: 92 },
-          { date: new Date('2025-05-21'), open: 92, high: 98, low: 91, close: 96 },
-          { date: new Date('2025-05-22'), open: 96, high: 97, low: 93, close: 95 },
-          { date: new Date('2025-05-23'), open: 95, high: 99, low: 94, close: 98 },
-          { date: new Date('2025-05-24'), open: 98, high: 105, low: 97, close: 104 },
-          { date: new Date('2025-05-25'), open: 104, high: 106, low: 100, close: 102 },
-          { date: new Date('2025-05-26'), open: 102, high: 108, low: 101, close: 107 },
-          { date: new Date('2025-05-27'), open: 107, high: 110, low: 105, close: 106 },
-          { date: new Date('2025-05-28'), open: 106, high: 109, low: 103, close: 104 },
-          { date: new Date('2025-05-29'), open: 104, high: 107, low: 100, close: 102 },
-        ],
-        btn_selected_for_candle_period: '',
+        data: [],
         chartPart: 'candle-chart-area'
       }
     },
     mounted() {
-      this.createAssetSizeCandleChart();
+      this.getAssetSizeGrowthData('M');
     },
     methods: {
-      createAssetSizeCandleChart : function () {
+      getAssetSizeGrowthData : function (p) {
+        this.$http.get("/getAssetSizeGrowthData", {
+          params: { Period: p }
+        }).then(
+          res => this.createAssetSizeCandleChart(res.data)
+        ).catch(err => console.log(err));
+      },
+      createAssetSizeCandleChart : function (DATA) {
         const margin = { top: 0, right: 40, bottom: 50, left: 0 };
         const width  = document.getElementById(this.chartPart).offsetWidth - margin.left - margin.right;
         const height = document.getElementById(this.chartPart).offsetHeight - margin.top - margin.bottom;
@@ -55,14 +50,14 @@
           .attr("transform", `translate(${margin.left},${margin.top})`);
 
         const x = d3.scaleBand()
-          .domain(this.data.map(d => d.date))
+          .domain(DATA.map(d => d.date))
           .range([0, width])
           .padding(0.3);
 
         const y = d3.scaleLinear()
           .domain([
-            d3.min(this.data, d => d.low) * 0.98,
-            d3.max(this.data, d => d.high) * 1.02
+            d3.min(DATA, d => d.low) * 0.98,
+            d3.max(DATA, d => d.high) * 1.02
           ])
           .range([height, 0]);
 
@@ -95,7 +90,7 @@
           .call(d3.axisRight(y).ticks(4));
 
         svg.selectAll("line.stem") // 꼬리 (wick)
-          .data(this.data)
+          .data(DATA)
           .enter()
           .append("line")
           .attr("class", "stem")
@@ -109,7 +104,7 @@
         const tooltip = d3.select("#tooltip");
         
         svg.selectAll("rect.candle") // 몸통 (candle body)
-          .data(this.data)
+          .data(DATA)
           .enter()
           .append("rect")
           .attr("class", "candle")
