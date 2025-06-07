@@ -35,7 +35,7 @@
           res => this.createAssetSizeCandleChart(res.data)
         ).catch(err => console.log(err));
       },
-      createAssetSizeCandleChart : function (DATA) {
+      createAssetSizeCandleChart : function (DATA, PERIOD) {
         const margin = { top: 0, right: 40, bottom: 50, left: 0 };
         const width  = document.getElementById(this.chartPart).offsetWidth - margin.left - margin.right;
         const height = document.getElementById(this.chartPart).offsetHeight - margin.top - margin.bottom;
@@ -54,24 +54,35 @@
           .range([0, width])
           .padding(0.3);
 
+        const yMin = d3.min(DATA, d => d.low);
+        const yMax = d3.max(DATA, d => d.high);
+        const yMarginRatio = 0.05; // 5% 여유
+
         const y = d3.scaleLinear()
           .domain([
-            d3.min(DATA, d => d.low) * 0.98,
-            d3.max(DATA, d => d.high) * 1.02
+            yMin - (yMax - yMin) * yMarginRatio,
+            yMax + (yMax - yMin) * yMarginRatio
           ])
           .range([height, 0]);
+
+        let tickValues = [];
+
+        if (PERIOD === 'Y') {
+          tickValues = DATA.map(d => d.date); // 전체 날짜
+        } else {
+          const interval = Math.ceil(DATA.length / 5);
+          tickValues = DATA.map((d, i) => (i % interval === 0 ? d.date : null)).filter(d => d);
+        }
 
         svg.append("g") // X축 배경선
           .attr("class", "grid-x")
           .attr("transform", `translate(0,${height})`)
-          .call(d3.axisBottom(x).tickSize(-height).tickFormat(""))
-          .attr('color', '#333232')
-          .attr("stroke", "#b8b8b8")
-          .attr("stroke-opacity", 0.5);
-
-        svg.append("g") // Y축 배경선
-          .attr("class", "grid-y")
-          .call(d3.axisLeft(y).ticks(4).tickSize(-width).tickFormat(""))
+          .call(
+            d3.axisBottom(x)
+              .tickValues(tickValues)
+              .tickSize(-height)
+              .tickFormat("")
+          )
           .attr('color', '#333232')
           .attr("stroke", "#b8b8b8")
           .attr("stroke-opacity", 0.5);
@@ -80,7 +91,10 @@
           .attr("transform", `translate(0,${height})`)
           .attr('color', '#333232')
           .attr("stroke", "#b8b8b8")
-          .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y-%m-%d")));
+          .call(
+            d3.axisBottom(x)
+              .tickValues(tickValues)
+        );
 
         svg.append("g") // Y축
           .attr("class", "y-axis")
@@ -88,6 +102,13 @@
           .attr('color', '#333232')
           .attr("stroke", "#b8b8b8")
           .call(d3.axisRight(y).ticks(4));
+
+        svg.append("g") // Y축 배경선
+          .attr("class", "grid-y")
+          .call(d3.axisLeft(y).ticks(4).tickSize(-width).tickFormat(""))
+          .attr('color', '#333232')
+          .attr("stroke", "#b8b8b8")
+          .attr("stroke-opacity", 0.5);
 
         svg.selectAll("line.stem") // 꼬리 (wick)
           .data(DATA)
@@ -102,7 +123,8 @@
           .attr("stroke-width", 2);
 
         const tooltip = d3.select("#tooltip");
-        
+        const formatNumber = d3.format(",");  // Adds commas
+
         svg.selectAll("rect.candle") // 몸통 (candle body)
           .data(DATA)
           .enter()
@@ -117,17 +139,32 @@
             tooltip
               .style("opacity", 1)
               .html(`
-                <strong>${d3.timeFormat("%Y-%m-%d")(d.date)}</strong><br>
-                Open: ${d.open}<br>
-                High: ${d.high}<br>
-                Low: ${d.low}<br>
-                Close: ${d.close}
+                <strong>${d.date}</strong><br>
+                <table style="font-size: 12px; margin-top: 4px;">
+                  <tr><td style="padding-right: 4px;">Open:</td><td style="text-align: right;">${formatNumber(d.open)}</td></tr>
+                  <tr><td style="padding-right: 4px;">High:</td><td style="text-align: right;">${formatNumber(d.high)}</td></tr>
+                  <tr><td style="padding-right: 4px;">Low:</td><td style="text-align: right;">${formatNumber(d.low)}</td></tr>
+                  <tr><td style="padding-right: 4px;">Close:</td><td style="text-align: right;">${formatNumber(d.close)}</td></tr>
+                </table>
               `);
           })
           .on("mousemove", function (event) {
+            const chartRect = document.getElementById("asset-size-chart").getBoundingClientRect();
+            const cursorX = event.clientX;
+            const tooltipWidth = 154;
+            const tooltipOffset = 8;
+
+            let tooltipLeft;
+
+            if (cursorX > chartRect.left + chartRect.width / 2) {
+              tooltipLeft = event.pageX - tooltipWidth + 3 * tooltipOffset;
+            } else {
+              tooltipLeft = event.pageX + tooltipOffset;
+            }
+
             tooltip
-              .style("left", (event.pageX + 8) + "px")
-              .style("top", (event.pageY - 54) + "px");
+              .style("left", tooltipLeft + "px")
+              .style("top", (event.pageY - 72) + "px");
           })
           .on("mouseout", function () {
             tooltip.style("opacity", 0);

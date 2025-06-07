@@ -29,12 +29,13 @@ $scroll-width: 9px;
         height: 8%;
         border-bottom: 1px solid #555555;
         padding-right: $scroll-width;
+        font-size: 14px;
         @include flexSetter(center, left);
 
         div {
           height: 100%;
           color: #b9b9b9;
-          @include flexSetter(center, center);
+          @include flexSetter(start, center);
 
           &:nth-child(1) {
             width: calc(21% - 1px); 
@@ -86,6 +87,7 @@ $scroll-width: 9px;
             color: #b9b9b9;
             display: flex;
             border-bottom: 1px solid #555555;
+            font-size: 12px;
             
             div {
               &:nth-child(1) {

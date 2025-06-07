@@ -47,14 +47,14 @@ export default {
           // 1. Create New Chart
           const Width  = document.getElementById(this.chartPart).offsetWidth,
                 Height = document.getElementById(this.chartPart).offsetHeight,
-                Margin = { top: 12, right: 10, bottom: 15, left: 22 };
+                Margin = { top: 16, right: 12, bottom: 18, left: 24 };
 
           const svg = d3.select('#'+this.chartPart)
                         .append("svg")
                         .attr("width", Width)
                         .attr("height", Height)
                         .append("g")
-                        .attr("transform", `translate(${Width * 0}, ${Height * 0})`);
+                        .attr("transform", `translate(${Margin.left / 2}, ${Height * 0})`);
 
           const xAxis = d3.scaleBand()
                           .domain(this.data.map(d => d.type))
@@ -112,6 +112,37 @@ export default {
                 tooltip.transition().duration(300).style("opacity", 0);
               });
 
+          svg.selectAll(".hit-area") // Add invisible hit areas for better tooltip interaction
+            .data(this.data)
+            .join("rect")
+            .attr("class", "hit-area")
+            .attr("x", d => xAxis(d.type))
+            .attr("y", d => {
+              const barTop = yAxis(d.value);
+              const paddedTop = Math.max(barTop - 12, Margin.top); // 16px 위까지 허용
+              return paddedTop;
+            })
+            .attr("width", xAxis.bandwidth())
+            .attr("height", d => {
+              const barBottom = yAxis(0);
+              const barTop = yAxis(d.value);
+              const height = barBottom - barTop;
+              return Math.max(height + 12, 20); // 최소 높이 설정
+            })
+            .attr("fill", "transparent")
+            .on("mouseover", (event, d) => {
+              tooltip.transition().duration(200).style("opacity", 0.95);
+              tooltip.html(new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(d.value));
+            })
+            .on("mousemove", event => {
+              tooltip
+                .style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+            })
+            .on("mouseout", () => {
+              tooltip.transition().duration(300).style("opacity", 0);
+            });    
+
           svg.append("g") // Add the x-axis
               .attr("transform", `translate(0,${Height - Margin.bottom})`)
               .call(d3.axisBottom(xAxis))
@@ -142,36 +173,6 @@ export default {
           svg.selectAll(".x-axis path, .x-axis .tick line, .y-axis path, .y-axis .tick line")
              .attr("stroke", "#e2e2e2")
              .attr("opacity", 0.6);
-
-          svg.selectAll(".label") // Add labels on the bars
-            .data(this.data)
-            .join("text")
-            .attr("class", "label")
-            .attr("x", d => xAxis(d.type) + xAxis.bandwidth() / 2)
-            .attr("y", d => yAxis(d.value) - 6)
-            .attr("text-anchor", "middle")
-            .style("fill", "white") 
-            .style("font-family", "Tahoma")
-            .style("font-weight", "400")
-            .style("font-size", "13px")
-            .text(d => {
-              if      (d.value >= 1000000000) return (d.value / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
-              else if (d.value >= 1000000) return (d.value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
-              else if (d.value >= 1000) return (d.value / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
-              else return d.value;
-            })
-            .on("mouseover", (event, d) => {
-              tooltip.transition().duration(200).style("opacity", 0.95);
-              tooltip.html(new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(d.value));
-            })
-            .on("mousemove", event => {
-              tooltip
-                .style("left", (event.pageX + 10) + "px")
-                .style("top", (event.pageY - 28) + "px");
-            })
-            .on("mouseout", () => {
-              tooltip.transition().duration(300).style("opacity", 0);
-            });
         }).catch(err => console.log(err));
     }
   }
