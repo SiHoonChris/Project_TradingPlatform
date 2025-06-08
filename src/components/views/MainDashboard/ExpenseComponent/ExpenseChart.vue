@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
@@ -64,10 +66,13 @@ export default {
       fromDate: { Year: 0, Month: 0, Date: 0 },
       toDate: { Year: 0, Month: 0, Date: 0 },
       transactionType: '전체',
-      transaction_list: []
+      transaction_list: [],
+      primary_set: true
     }
   },
   computed: {
+    ...mapState(['periodRange']), // pulls from store.state.periodRange
+
     fromYearRange() {
       const currentYear = new Date().getFullYear();
       return Array.from({ length: currentYear - this.startDate.Year + 1 }, (_, i) => this.startDate.Year + i);
@@ -83,6 +88,11 @@ export default {
     toDaysInMonth() {
       const toDate = new Date(this.toDate.Year, this.toDate.Month, 0);
       return Array.from({ length: toDate.getDate() }, (_, i) => i + 1);
+    }
+  },
+  watch: {
+    periodRange(newVal) {
+      this.setPeriodAndChart_mapState(newVal);
     }
   },
   mounted() {
@@ -109,6 +119,29 @@ export default {
       .catch(err => console.log(err));
   },
   methods: {
+    setPeriodAndChart_mapState: function(param) {
+      if(this.primary_set) {
+        this.primary_set = false;
+      } else {
+        if(param.includes('-Q')) {
+          let paramArrQ = param.split('-Q');
+          [this.fromDate.Year , this.toDate.Year ] = [Number(paramArrQ[0]), Number(paramArrQ[0])];
+          [this.fromDate.Month, this.toDate.Month] = [Number(paramArrQ[1]) * 3 - 2, Number(paramArrQ[1]) * 3];
+          [this.fromDate.Date , this.toDate.Date ] = [1, [3, 12].includes(Number(paramArrQ[1]) * 3) ? 31 : 30 ];
+        } else if(param.includes('-M')) {
+          let paramArrM = param.split('-M');
+          [this.fromDate.Year,  this.toDate.Year ] = [Number(paramArrM[0]), Number(paramArrM[0])];
+          [this.fromDate.Month, this.toDate.Month] = [Number(paramArrM[1]), Number(paramArrM[1])];
+          [this.fromDate.Date,  this.toDate.Date ] = [1, new Date(Number(paramArrM[0]), Number(paramArrM[1]), 0).getDate()];
+        } else {
+          [this.fromDate.Year , this.toDate.Year ] = [Number(param), Number(param)];
+          [this.fromDate.Month, this.toDate.Month] = [1, 12];
+          [this.fromDate.Date , this.toDate.Date ] = [1, 31];
+        }
+
+        this.func_setButtion();
+      }
+    },
     func_setButtion: function() {
       this.getTransactionHistoryDataForChart();
       this.setSelectedPeriod(
@@ -297,7 +330,7 @@ export default {
               .attr("width", SubWidth)
               .attr("height", Height)
             .append("g")
-              .attr("transform", `translate(${margin.Left}, ${margin.Top})`);
+              .attr("transform", `translate(${0}, ${Height - 2 * (margin.Bottom + margin.Top)})`);
         
         const DataNum = (data.length).toLocaleString();
         const DataSum = (Math.round(data.reduce((sum, elem) => sum + elem.Expense, 0))).toLocaleString();
@@ -306,20 +339,22 @@ export default {
         subSvg.append("text")
           .attr("x", 0)
           .attr("y", 20)
-          .attr("fill", "white")
+          .attr("fill", "#b8b8b8")
+          .attr("font-size", "12px")
           .text(`num : ${DataNum}`);
 
         // Append second line: total expense
         subSvg.append("text")
           .attr("x", 0)
           .attr("y", 40)
-          .attr("fill", "white")
+          .attr("fill", "#b8b8b8")
+          .attr("font-size", "12px")
           .selectAll("tspan")
           .data(["expense in total :", `${DataSum} (KRW)`])
           .enter()
           .append("tspan")
             .attr("x", 0)
-            .attr("dy", (d, i) => i === 0 ? 0 : "1.2em")  // vertical spacing
+            .attr("dy", (d, i) => i === 0 ? 0 : "1.3em")  // vertical spacing
             .text(d => d);
     }
   }

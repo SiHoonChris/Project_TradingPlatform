@@ -3,8 +3,9 @@ import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
   state: {
-    btnSelected: 'Y',
-
+    /* Header */
+    periodRange: '',
+    /* Expense */
     dateFrom: '',
     dateTo: '',
     expenseMin: 0,
@@ -15,10 +16,11 @@ export default createStore({
   getters: {},
 
   mutations: {
-    setBtnSelected(state, payload) {
-      state.btnSelected = payload;
+    /* Header */
+    setPeriodRange(state, payload) {
+      state.periodRange = payload;
     },
-
+    /* Expense */
     updateTransactionCondition(state, payload) {
       state.dateFrom        = payload.dateFrom;
       state.dateTo          = payload.dateTo;
