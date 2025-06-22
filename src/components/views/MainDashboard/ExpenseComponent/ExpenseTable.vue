@@ -70,5 +70,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/components/MainDashboard/ExpenseComponent/Components/Table.scss";
+  @import "@/assets/css/components/MainDashboard/ExpenseComponent/Table.scss";
 </style>

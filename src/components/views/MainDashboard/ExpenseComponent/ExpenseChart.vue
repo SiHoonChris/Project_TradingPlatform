@@ -362,5 +362,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "@/assets/css/components/MainDashboard/ExpenseComponent/Components/Chart.scss";
+  @import "@/assets/css/components/MainDashboard/ExpenseComponent/Chart.scss";
 </style>
